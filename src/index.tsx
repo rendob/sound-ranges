@@ -14,6 +14,8 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
+// <Provider store={store}>でAppを囲むことで, Appの中でstoreを使えるようになる
+
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

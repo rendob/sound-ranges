@@ -1,9 +1,13 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import instrumentsReducer from '../features/instruments/instrumentsSlice';
+import keyboardReducer from '../features/keyboard/keyboardSlice';
+
+export const unitNoteWidth = 12;
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
+    activeInstruments: instrumentsReducer,
+    activeNotes: keyboardReducer,
   },
 });
 
