@@ -1,23 +1,25 @@
+import React from 'react';
 import { unitNoteWidth } from '../../app/store';
 import { useAppSelector } from '../../app/hooks';
 import { Instrument } from '../../app/data';
 import { selectInstruments } from '../instruments/instrumentsSlice';
-import { selectNotes } from '../keyboard/keyboardSlice';
+import { selectNotes } from './keyboardSlice';
 import { noteToPitchOctave } from './sound';
 
 interface SoundItem {
-  name: string,
-  pitchRange: [number, number],
-  color: string,
-  y: number,
+  name: string;
+  pitchRange: [number, number];
+  color: string;
+  y: number;
 }
 function SoundRange(props: SoundItem) {
-  const pitchOctave = props.pitchRange.map( noteNum =>
-    noteToPitchOctave(noteNum)
-  ).join("–");
+  const pitchOctave = props.pitchRange
+    .map((noteNum) => noteToPitchOctave(noteNum))
+    .join('–');
   const x = props.pitchRange[0] * unitNoteWidth;
   const y = 100 + props.y * 40;
   const width = (props.pitchRange[1] - props.pitchRange[0] + 1) * unitNoteWidth;
+  // prettier-ignore
   return (
     <g>
       <line
@@ -50,26 +52,30 @@ function SoundRange(props: SoundItem) {
   )
 }
 
-
 function isBetween(noteRange: [number, number], pitchRange: [number, number]) {
   // noteRangeがpitchRangeに含まれるか
-  return (pitchRange[0] <= noteRange[0]) && (noteRange[1] <= pitchRange[1]);
+  return pitchRange[0] <= noteRange[0] && noteRange[1] <= pitchRange[1];
 }
 
 function layoutRanges(instruments: Instrument[]) {
-  const isIntersect = (a: [number, number], b:[number, number]) => ((a[0] <= b[1]) && (b[0] <= a[1]));
+  const isIntersect = (a: [number, number], b: [number, number]) =>
+    a[0] <= b[1] && b[0] <= a[1];
 
   const layouts: Instrument[][] = [];
   for (let i = 0; i < instruments.length; i++) {
     const instrument = instruments[i];
 
-    for (let j = 0; j < layouts.length+1; j++) {
-      if (j === layouts.length) {  // 新たな行を追加
+    for (let j = 0; j < layouts.length + 1; j++) {
+      if (j === layouts.length) {
+        // 新たな行を追加
         layouts.push([instrument]);
         break;
       }
-      const someIntersect = layouts[j].some( item => isIntersect(instrument.pitchRange, item.pitchRange));
-      if (!someIntersect) {  // 被ってない行があればそこに入れ込む
+      const someIntersect = layouts[j].some((item) =>
+        isIntersect(instrument.pitchRange, item.pitchRange)
+      );
+      if (!someIntersect) {
+        // 被ってない行があればそこに入れ込む
         layouts[j].push(instrument);
         break;
       }
@@ -84,22 +90,24 @@ export function RangeCanvas() {
   const activeNotes = useAppSelector(selectNotes);
 
   let activeInstruments: Instrument[];
-  if (activeNotes.length === 0) {  // 空だったら全楽器表示
-    activeInstruments = instruments.filter( item =>
-      item.selected
-    );
+  if (activeNotes.length === 0) {
+    // 空だったら全楽器表示
+    activeInstruments = instruments.filter((item) => item.selected);
   } else {
-    const noteRange: [number, number] = [Math.min(...activeNotes), Math.max(...activeNotes)];
-    activeInstruments = instruments.filter( item =>
-      item.selected && isBetween(noteRange, item.pitchRange)
+    const noteRange: [number, number] = [
+      Math.min(...activeNotes),
+      Math.max(...activeNotes),
+    ];
+    activeInstruments = instruments.filter(
+      (item) => item.selected && isBetween(noteRange, item.pitchRange)
     );
   }
 
   const alignedInstruments = layoutRanges(activeInstruments);
 
-  const items: JSX.Element[] = [];
+  const items: React.ReactElement[] = [];
   for (let i = 0; i < alignedInstruments.length; i++) {
-    alignedInstruments[i].forEach( item => {
+    alignedInstruments[i].forEach((item) => {
       items.unshift(
         <SoundRange
           key={item.name}
@@ -117,9 +125,14 @@ export function RangeCanvas() {
   const viewBox = `0 0 ${width} ${height}`;
   return (
     <div>
-      <svg width={width} height={height} viewBox={viewBox} xmlns="http://www.w3.org/2000/svg">
+      <svg
+        width={width}
+        height={height}
+        viewBox={viewBox}
+        xmlns="http://www.w3.org/2000/svg"
+      >
         {items}
       </svg>
     </div>
-  )
+  );
 }

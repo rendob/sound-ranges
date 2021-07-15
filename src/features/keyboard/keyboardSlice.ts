@@ -2,12 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 
 export interface keyboardState {
-  notes: number[],
+  notes: number[];
 }
 
 const initialState: keyboardState = {
   notes: [],
-}
+};
 
 export const keyboardSlice = createSlice({
   name: 'selectedNotes',
@@ -17,12 +17,12 @@ export const keyboardSlice = createSlice({
       state.notes.push(action.payload);
     },
     remove: (state, action: PayloadAction<number>) => {
-      state.notes = state.notes.filter( (value) => value !== action.payload);
+      state.notes = state.notes.filter((value) => value !== action.payload);
     },
     clear: (state) => {
       state.notes = [];
     },
-  }
+  },
 });
 
 export const { add, remove, clear } = keyboardSlice.actions;
@@ -32,4 +32,4 @@ export const { add, remove, clear } = keyboardSlice.actions;
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
 export const selectNotes = (state: RootState) => state.activeNotes.notes;
 
-export default keyboardSlice.reducer;  // counterReducerとして参照されている
+export default keyboardSlice.reducer; // counterReducerとして参照されている
