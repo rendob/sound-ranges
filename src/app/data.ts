@@ -21,6 +21,15 @@ const items: InstSeed[] = [
   { name: 'Clarinet', pitchRange: [50, 91], color: 'forestgreen' },
   { name: 'Timpani', pitchRange: [36, 57], color: 'beige' },
   { name: 'Chorus', pitchRange: [48, 79], color: 'purple' },
+  { name: 'Celesta', pitchRange: [60, 108], color: 'sienna' },
+  { name: 'Glockenspiel', pitchRange: [72, 108], color: 'lightgray' },
+  { name: 'Vibraphone', pitchRange: [53, 89], color: 'whitesmoke' },
+  { name: 'Marimba', pitchRange: [48, 84], color: 'darkred' },
+  { name: 'Organ', pitchRange: [36, 96], color: 'chocolate' },
+  { name: 'Accordion', pitchRange: [53, 89], color: 'red' },
+  { name: 'Harmonica', pitchRange: [60, 84], color: 'wheat' },
+  { name: 'Guitar', pitchRange: [40, 84], color: 'darkorange' },
+  { name: 'Bass Guitar', pitchRange: [28, 55], color: 'gray' },
 ];
 
 export type Instrument = {

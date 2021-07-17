@@ -1,27 +1,29 @@
 .svgCanvas {
   position: absolute;
   top: 10px;
-  left: 120px;
+  left: 150px;
   border: solid 1px black;
-  width: calc(100% - 120px);
+  width: calc(100% - 150px);
   height: calc(100% - 20px);
   overflow-x: scroll;
+  overflow-y: scroll;
+  z-index: 0;
 }
 
 .keyboard {
-  position: absolute;
+  position: sticky;
   top: 0px;
-  left: 0px;
   border: solid 1px black;
   width: calc(100% - 120px);
   height: 50px;
+  z-index: 1;
 }
 
 .rangeCanvas {
   position: absolute;
-  top: 50px;
+  top: 0px;
   left: 0px;
   width: calc(100% - 120px);
-  height: calc(100% - 20px);
-  overflow-y: scroll;
+  height: 1000px;
+  z-index: 0;
 }

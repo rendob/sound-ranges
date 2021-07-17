@@ -5,6 +5,7 @@ import { Instrument } from '../../app/data';
 import { selectInstruments } from '../instruments/instrumentsSlice';
 import { selectNotes } from './keyboardSlice';
 import { noteToPitchOctave } from './sound';
+import styles from './pianoRoll.module.css';
 
 interface SoundItem {
   name: string;
@@ -121,10 +122,10 @@ export function RangeCanvas() {
   }
 
   const width = 128 * unitNoteWidth;
-  const height = window.innerHeight - 60;
+  const height = 1000;
   const viewBox = `0 0 ${width} ${height}`;
   return (
-    <div>
+    <div className={styles.rangeCanvas}>
       <svg
         width={width}
         height={height}
