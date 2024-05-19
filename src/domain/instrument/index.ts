@@ -2,12 +2,14 @@ import { ValidationError } from "../error/appError";
 import { InstrumentCategory } from "./instrumentCategory";
 import { Note } from "../note";
 import { NoteRange } from "../noteRange";
+import { RgbColor } from "../rgbColor";
 
 export class Instrument {
   private constructor(
     public readonly name: string,
     public readonly category: InstrumentCategory,
     public readonly range: NoteRange,
+    public readonly color: RgbColor,
     public readonly isSelected: boolean,
   ) {
     this.validate();
@@ -19,8 +21,9 @@ export class Instrument {
     name: string,
     category: InstrumentCategory,
     range: NoteRange,
+    color: RgbColor,
   ): Instrument {
-    return new Instrument(name, category, range, false);
+    return new Instrument(name, category, range, color, false);
   }
 
   // ***** getter *****
@@ -40,7 +43,13 @@ export class Instrument {
   }
 
   public selectionUpdated(isSelected: boolean): Instrument {
-    return new Instrument(this.name, this.category, this.range, isSelected);
+    return new Instrument(
+      this.name,
+      this.category,
+      this.range,
+      this.color,
+      isSelected,
+    );
   }
 
   private validate() {

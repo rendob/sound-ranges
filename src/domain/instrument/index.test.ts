@@ -4,22 +4,26 @@ import { Instrument } from ".";
 import { NoteRange } from "../noteRange";
 import { Note } from "../note";
 import { ValidationError } from "../error/appError";
+import { RgbColor } from "../rgbColor";
 
 const createInstrument = ({
   name = "xxx",
   category = InstrumentCategory.BRASS,
   min = 0,
   max = 127,
+  color = new RgbColor(0, 0, 0),
 }: {
   name?: string;
   category?: InstrumentCategory;
   min?: number;
   max?: number;
+  color?: RgbColor;
 } = {}) => {
   return Instrument.new(
     name,
     category,
     new NoteRange(new Note(min), new Note(max)),
+    color,
   );
 };
 
