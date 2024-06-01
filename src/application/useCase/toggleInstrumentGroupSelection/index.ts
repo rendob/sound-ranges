@@ -1,9 +1,19 @@
+import { useMemo } from "react";
 import { InstrumentCategory } from "../../../domain/instrument/instrumentCategory";
 import {
   SelectionStatus,
   getInstrumentGroup,
 } from "../../../domain/instrumentService";
 import { InstrumentRepository } from "../../../domain/interface/repository/instrumentRepository";
+import { useJotaiInstrumentRepository } from "../../../infrastructure/repository/jotaiInstrumentRepository";
+
+export const useToggleInstrumentGroupSelectionUseCase = () => {
+  const repository = useJotaiInstrumentRepository();
+  return useMemo(
+    () => createToggleInstrumentGroupSelectionUseCase(repository),
+    [repository],
+  );
+};
 
 export const createToggleInstrumentGroupSelectionUseCase = (
   instrumentRepository: InstrumentRepository,

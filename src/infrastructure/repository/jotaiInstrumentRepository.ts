@@ -6,40 +6,50 @@ import { Instrument } from "../../domain/instrument";
 import { assertExists } from "../../util/exists";
 import { InstrumentCategory } from "../../domain/instrument/instrumentCategory";
 
-const instrumentsAtom = atom(createInstruments());
+const instrumentAtoms = createInstruments().map((instrument) =>
+  atom(instrument),
+);
+const instrumentsAtom = atom((get) => instrumentAtoms.map(get));
+const setInstrumentAtom = atom(null, (get, set, instrument: Instrument) => {
+  const instrumentAtom = instrumentAtoms.find(
+    (item) => get(item).id === instrument.id,
+  );
+  assertExists(instrumentAtom);
+  set(instrumentAtom, instrument);
+});
 
 export const useJotaiInstrumentRepository = (): InstrumentRepository => {
-  const [instruments, setInstruments] = useAtom(instrumentsAtom);
+  const [instruments] = useAtom(instrumentsAtom);
+  const [, setInstrument] = useAtom(setInstrumentAtom);
   return useMemo(
-    () => createJotaiInstrumentRepository(instruments, setInstruments),
-    [instruments, setInstruments],
+    () => createJotaiInstrumentRepository(instruments, setInstrument),
+    [instruments, setInstrument],
   );
 };
 
 export const createJotaiInstrumentRepository = (
-  instruments: Instrument[],
-  setInstruments: (instruments: Instrument[]) => void,
+  currentInstruments: Instrument[],
+  setInstrument: (instrument: Instrument) => void,
 ): InstrumentRepository => ({
   getAll(): Instrument[] {
-    return instruments;
+    return currentInstruments;
   },
 
   findById(id: string): Instrument {
-    const instrument = instruments.find((instrument) => instrument.id === id);
+    const instrument = currentInstruments.find(
+      (instrument) => instrument.id === id,
+    );
     assertExists(instrument);
     return instrument;
   },
 
   findByCategory(category: InstrumentCategory): Instrument[] {
-    return instruments.filter((instrument) => instrument.category === category);
+    return currentInstruments.filter(
+      (instrument) => instrument.category === category,
+    );
   },
 
   save(instrument: Instrument) {
-    const index = instruments.findIndex((item) => item.id === instrument.id);
-    if (index === -1) throw new Error(`${instrument.id} not found!`);
-
-    const newInstruments = [...instruments];
-    newInstruments[index] = instrument;
-    setInstruments(newInstruments);
+    setInstrument(instrument);
   },
 });
