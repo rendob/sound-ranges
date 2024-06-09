@@ -10,3 +10,15 @@ export class ValidationError extends AppError {
     super(message);
   }
 }
+
+export class TypeAssertionError extends ValidationError {
+  constructor(type: string, message: string) {
+    super(`not assignable to ${type}.\n${message}`);
+  }
+}
+
+export class InitializationError extends ValidationError {
+  constructor(type: string, message: string) {
+    super(`invalid initialization of ${type}.\n${message}`);
+  }
+}

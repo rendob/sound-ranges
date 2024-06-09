@@ -1,60 +1,74 @@
-import { ValidationError } from "../error/appError";
 import { InstrumentCategory } from "./instrumentCategory";
-import { Note } from "../note";
-import { NoteRange } from "../noteRange";
+import { NoteRange, contains } from "../noteRange";
 import { RgbColor } from "../rgbColor";
+import { NoteNumber } from "../noteNumber";
+import { Brand } from "../brand";
+import { InstrumentId, asInstrumentId } from "./instrumentId";
+import { FilledString } from "../filledString";
+import { TypeAssertionError } from "../error/appError";
 
-export class Instrument {
-  private constructor(
-    public readonly name: string,
-    public readonly category: InstrumentCategory,
-    public readonly range: NoteRange,
-    public readonly color: RgbColor,
-    public readonly isSelected: boolean,
-  ) {
-    this.validate();
-  }
+const typeName = "Instrument";
+type InstrumentType = {
+  readonly id: InstrumentId;
+  readonly name: FilledString;
+  readonly category: InstrumentCategory;
+  readonly range: NoteRange;
+  readonly color: RgbColor;
+  readonly isSelected: boolean;
+};
+export type Instrument = Brand<InstrumentType, typeof typeName>;
 
-  // ***** factory *****
+// ***** initialization *****
 
-  public static new(
-    name: string,
-    category: InstrumentCategory,
-    range: NoteRange,
-    color: RgbColor,
-  ): Instrument {
-    return new Instrument(name, category, range, color, false);
-  }
+export const createInstrument = (
+  name: FilledString,
+  category: InstrumentCategory,
+  range: NoteRange,
+  color: RgbColor,
+): Instrument =>
+  asInstrument({
+    id: asInstrumentId(name),
+    name,
+    category,
+    range,
+    color,
+    isSelected: false,
+  });
 
-  // ***** getter *****
+// ***** assertion *****
 
-  public get id() {
-    return this.name;
-  }
-
-  // ***** method *****
-
-  public canPlay(note: Note) {
-    return this.range.contains(note);
-  }
-
-  public canPlayAll(noteRange: NoteRange) {
-    return this.canPlay(noteRange.min) && this.canPlay(noteRange.max);
-  }
-
-  public selectionUpdated(isSelected: boolean): Instrument {
-    return new Instrument(
-      this.name,
-      this.category,
-      this.range,
-      this.color,
-      isSelected,
+function assertInstrument(v: InstrumentType): asserts v is Instrument {
+  if (v.id !== v.name) {
+    throw new TypeAssertionError(
+      typeName,
+      `id (${v.id}) should equals name (${v.name})!`,
     );
   }
-
-  private validate() {
-    if (this.name.length === 0) {
-      throw new ValidationError("name should not be empty!");
-    }
-  }
 }
+
+const asInstrument = (v: InstrumentType): Instrument => {
+  assertInstrument(v);
+  return v;
+};
+
+// ***** method *****
+
+export const canPlay = (
+  instrument: Instrument,
+  noteNumber: NoteNumber,
+): boolean => contains(instrument.range, noteNumber);
+
+export const canPlayAll = (
+  instrument: Instrument,
+  noteRange: NoteRange,
+): boolean =>
+  canPlay(instrument, noteRange.min) && canPlay(instrument, noteRange.max);
+
+export const setIsSelected = (
+  instrument: Instrument,
+  isSelected: boolean,
+): Instrument =>
+  asInstrument({
+    ...instrument,
+    isSelected,
+  });

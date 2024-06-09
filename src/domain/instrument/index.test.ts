@@ -1,33 +1,34 @@
 import { assert, describe, expect, it } from "vitest";
 import { InstrumentCategory } from "./instrumentCategory";
-import { Instrument } from ".";
-import { NoteRange } from "../noteRange";
-import { Note } from "../note";
-import { ValidationError } from "../error/appError";
-import { RgbColor } from "../rgbColor";
+import { canPlay, canPlayAll, createInstrument, setIsSelected } from ".";
+import { TypeAssertionError } from "../error/appError";
+import { RgbColor, createRgbColor } from "../rgbColor";
+import { asNoteNumber, assertNoteNumber } from "../noteNumber";
+import { asUInt8 } from "../uint8";
+import { createNoteRange } from "../noteRange";
+import { asFilledString } from "../filledString";
 
-const createInstrument = ({
+const createTestInstrument = ({
   name = "xxx",
   category = InstrumentCategory.BRASS,
   min = 0,
   max = 127,
-  color = new RgbColor(0, 0, 0),
+  color = createRgbColor(asUInt8(0), asUInt8(0), asUInt8(0)),
 }: {
   name?: string;
   category?: InstrumentCategory;
   min?: number;
   max?: number;
   color?: RgbColor;
-} = {}) => {
-  return Instrument.new(
-    name,
+} = {}) =>
+  createInstrument(
+    asFilledString(name),
     category,
-    new NoteRange(new Note(min), new Note(max)),
+    createNoteRange(asNoteNumber(min), asNoteNumber(max)),
     color,
   );
-};
 
-describe("initialization", () => {
+describe(createInstrument, () => {
   it.each([{ name: "violin" }, { name: "piano" }])(
     "名前が空でない: $name => OK",
     ({ name }) => {
@@ -35,7 +36,7 @@ describe("initialization", () => {
 
       // when
       const block = () => {
-        createInstrument({ name });
+        createTestInstrument({ name });
       };
 
       // then
@@ -48,25 +49,27 @@ describe("initialization", () => {
 
     // when
     const block = () => {
-      createInstrument({ name: "" });
+      createTestInstrument({ name: "" });
     };
 
     // then
-    expect(block).toThrow(ValidationError);
+    expect(block).toThrow(TypeAssertionError);
   });
+});
 
+describe("initialization", () => {
   it("初期化時は非選択状態", () => {
     // given
 
     // when
-    const sut = createInstrument();
+    const sut = createTestInstrument();
 
     // then
     expect(sut.isSelected).toBe(false);
   });
 });
 
-describe(Instrument.prototype.canPlay, () => {
+describe(canPlay, () => {
   it.each([
     { min: 40, max: 99, noteNumber: 10, expected: false },
     { min: 40, max: 99, noteNumber: 39, expected: false },
@@ -79,19 +82,19 @@ describe(Instrument.prototype.canPlay, () => {
     "[$min, $max] can play $noteNumber => $expected",
     ({ min, max, noteNumber, expected }) => {
       // given
-      const sut = createInstrument({ min, max });
-      const note = new Note(noteNumber);
+      const sut = createTestInstrument({ min, max });
+      assertNoteNumber(noteNumber);
 
       // when
-      const canPlay = sut.canPlay(note);
+      const result = canPlay(sut, noteNumber);
 
       // then
-      expect(canPlay).toBe(expected);
+      expect(result).toBe(expected);
     },
   );
 });
 
-describe(Instrument.prototype.canPlayAll, () => {
+describe(canPlayAll, () => {
   it.each([
     { min: 40, max: 99, range: [0, 20], expected: false },
     { min: 40, max: 99, range: [30, 60], expected: false },
@@ -105,19 +108,22 @@ describe(Instrument.prototype.canPlayAll, () => {
     "[$min, $max] can play $range => $expected",
     ({ min, max, range, expected }) => {
       // given
-      const sut = createInstrument({ min, max });
-      const noteRange = new NoteRange(new Note(range[0]), new Note(range[1]));
+      const sut = createTestInstrument({ min, max });
+      const noteRange = createNoteRange(
+        asNoteNumber(range[0]),
+        asNoteNumber(range[1]),
+      );
 
       // when
-      const canPlayAll = sut.canPlayAll(noteRange);
+      const result = canPlayAll(sut, noteRange);
 
       // then
-      expect(canPlayAll).toBe(expected);
+      expect(result).toBe(expected);
     },
   );
 });
 
-describe(Instrument.prototype.selectionUpdated, () => {
+describe(setIsSelected, () => {
   it.each([
     { isSelected: false, expected: false },
     { isSelected: true, expected: true },
@@ -125,11 +131,11 @@ describe(Instrument.prototype.selectionUpdated, () => {
     "非選択状態で実行: set $isSelected => $expected",
     ({ isSelected, expected }) => {
       // given
-      const sut = createInstrument();
+      const sut = createTestInstrument();
       assert(!sut.isSelected, "非選択状態のはず");
 
       // when
-      const result = sut.selectionUpdated(isSelected);
+      const result = setIsSelected(sut, isSelected);
 
       // then
       expect(result.isSelected).toBe(expected);
@@ -143,11 +149,11 @@ describe(Instrument.prototype.selectionUpdated, () => {
     "選択状態で実行: set $isSelected => $expected",
     ({ isSelected, expected }) => {
       // given
-      const sut = createInstrument().selectionUpdated(true);
+      const sut = setIsSelected(createTestInstrument(), true);
       assert(sut.isSelected, "選択状態のはず");
 
       // when
-      const result = sut.selectionUpdated(isSelected);
+      const result = setIsSelected(sut, isSelected);
 
       // then
       expect(result.isSelected).toBe(expected);

@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { InstrumentRepository } from "../../../domain/interface/repository/instrumentRepository";
 import { useJotaiInstrumentRepository } from "../../../infrastructure/repository/jotaiInstrumentRepository";
+import { setIsSelected } from "../../../domain/instrument";
 
 export const useToggleInstrumentSelectionUseCase = () => {
   const repository = useJotaiInstrumentRepository();
@@ -15,7 +16,7 @@ export const createToggleInstrumentSelectionUseCase = (
 ) => {
   return (instrumentId: string) => {
     const instrument = instrumentRepository.findById(instrumentId);
-    const newInstrument = instrument.selectionUpdated(!instrument.isSelected);
+    const newInstrument = setIsSelected(instrument, !instrument.isSelected);
     instrumentRepository.save(newInstrument);
   };
 };

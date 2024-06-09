@@ -1,18 +1,16 @@
 import { describe, expect, it } from "vitest";
-import { Note } from "../note";
-import { NoteRange } from ".";
-import { ValidationError } from "../error/appError";
+import { contains, createNoteRange } from ".";
+import { TypeAssertionError } from "../error/appError";
+import { asNoteNumber, assertNoteNumber } from "../noteNumber";
 
-const createNoteRange = (min: number, max: number) => {
-  return new NoteRange(new Note(min), new Note(max));
-};
-
-describe("initialization", () => {
+describe(createNoteRange, () => {
   it.each([
     { min: 0, max: 0 },
     { min: 40, max: 80 },
   ])("min <= max: { min: $min, max: $max } => OK", ({ min, max }) => {
     // given
+    assertNoteNumber(min);
+    assertNoteNumber(max);
 
     // when
     const block = () => {
@@ -28,6 +26,8 @@ describe("initialization", () => {
     { min: 72, max: 25 },
   ])("min > max: { min: $min, max: $max } => Error", ({ min, max }) => {
     // given
+    assertNoteNumber(min);
+    assertNoteNumber(max);
 
     // when
     const block = () => {
@@ -35,33 +35,11 @@ describe("initialization", () => {
     };
 
     // then
-    expect(block).toThrow(ValidationError);
+    expect(block).toThrow(TypeAssertionError);
   });
 });
 
-describe(NoteRange.prototype.isEqual, () => {
-  it.each([
-    { min1: 0, max1: 44, min2: 0, max2: 44, expected: true },
-    { min1: 0, max1: 44, min2: 0, max2: 127, expected: false },
-    { min1: 0, max1: 44, min2: 44, max2: 44, expected: false },
-    { min1: 0, max1: 44, min2: 22, max2: 67, expected: false },
-  ])(
-    "[$min1, $max1] === [$min2, $max2] => $expected",
-    ({ min1, max1, min2, max2, expected }) => {
-      // given
-      const sut = createNoteRange(min1, max1);
-      const other = createNoteRange(min2, max2);
-
-      // when
-      const isEqual = sut.isEqual(other);
-
-      // then
-      expect(isEqual).toBe(expected);
-    },
-  );
-});
-
-describe(NoteRange.prototype.contains, () => {
+describe(contains, () => {
   it.each([
     { min: 40, max: 82, noteNumber: 0, expected: false },
     { min: 40, max: 82, noteNumber: 39, expected: false },
@@ -74,14 +52,14 @@ describe(NoteRange.prototype.contains, () => {
     "$noteNumber in [$min, $max] => $expected",
     ({ min, max, noteNumber, expected }) => {
       // given
-      const sut = createNoteRange(min, max);
-      const note = new Note(noteNumber);
+      const sut = createNoteRange(asNoteNumber(min), asNoteNumber(max));
+      assertNoteNumber(noteNumber);
 
       // when
-      const contains = sut.contains(note);
+      const result = contains(sut, noteNumber);
 
       // then
-      expect(contains).toBe(expected);
+      expect(result).toBe(expected);
     },
   );
 });

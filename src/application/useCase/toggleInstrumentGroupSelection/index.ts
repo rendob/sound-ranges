@@ -6,6 +6,7 @@ import {
 } from "../../../domain/instrumentService";
 import { InstrumentRepository } from "../../../domain/interface/repository/instrumentRepository";
 import { useJotaiInstrumentRepository } from "../../../infrastructure/repository/jotaiInstrumentRepository";
+import { setIsSelected } from "../../../domain/instrument";
 
 export const useToggleInstrumentGroupSelectionUseCase = () => {
   const repository = useJotaiInstrumentRepository();
@@ -26,7 +27,7 @@ export const createToggleInstrumentGroupSelectionUseCase = (
     const shouldSelect =
       instrumentGroup.selectionStatus !== SelectionStatus.SELECTED;
     instrumentGroup.instruments.forEach((instrument) => {
-      const newInstrument = instrument.selectionUpdated(shouldSelect);
+      const newInstrument = setIsSelected(instrument, shouldSelect);
       instrumentRepository.save(newInstrument);
     });
   };

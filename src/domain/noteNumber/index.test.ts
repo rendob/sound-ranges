@@ -1,17 +1,17 @@
 import { describe, expect, it } from "vitest";
-import { Note } from ".";
-import { ValidationError } from "../error/appError";
+import { asNoteNumber, assertNoteNumber, getNoteNames, isAccidental } from ".";
+import { TypeAssertionError } from "../error/appError";
 import { PitchType } from "./pitchType";
 
-describe("initialization", () => {
-  it.each([{ noteNumber: 0 }, { noteNumber: 60 }, { noteNumber: 127 }])(
-    "引数が0~127の整数: $noteNumber => OK",
-    ({ noteNumber }) => {
+describe(assertNoteNumber, () => {
+  it.each([{ v: 0 }, { v: 60 }, { v: 127 }])(
+    "引数が0~127の整数: $v => OK",
+    ({ v }) => {
       // given
 
       // when
       const block = () => {
-        new Note(noteNumber);
+        assertNoteNumber(v);
       };
 
       // then
@@ -19,40 +19,40 @@ describe("initialization", () => {
     },
   );
 
-  it.each([{ noteNumber: 0.1 }, { noteNumber: 99.9 }])(
-    "引数が整数でない: $noteNumber => Error",
-    ({ noteNumber }) => {
+  it.each([{ v: -100 }, { v: -1 }, { v: 128 }, { v: 300 }])(
+    "引数の値が範囲外: $v => Error",
+    ({ v }) => {
       // given
 
       // when
       const block = () => {
-        new Note(noteNumber);
+        assertNoteNumber(v);
       };
 
       // then
-      expect(block).toThrow(ValidationError);
+      expect(block).toThrow(TypeAssertionError);
     },
   );
 
   it.each([
-    { noteNumber: -100 },
-    { noteNumber: -1 },
-    { noteNumber: 128 },
-    { noteNumber: 300 },
-  ])("引数の値が範囲外: $noteNumber => Error", ({ noteNumber }) => {
+    { v: 0.1 },
+    { v: 99.9 },
+    { v: Number.POSITIVE_INFINITY },
+    { v: Number.NaN },
+  ])("引数が整数でない: $v => Error", ({ v }) => {
     // given
 
     // when
     const block = () => {
-      new Note(noteNumber);
+      assertNoteNumber(v);
     };
 
     // then
-    expect(block).toThrow(ValidationError);
+    expect(block).toThrow(TypeAssertionError);
   });
 });
 
-describe("isAccidental", () => {
+describe(isAccidental, () => {
   it.each([
     { noteNumber: 1, pitchName: "C♯/D♭" },
     { noteNumber: 15, pitchName: "D♯/E♭" },
@@ -61,13 +61,13 @@ describe("isAccidental", () => {
     { noteNumber: 58, pitchName: "A♯/B♭" },
   ])("派生音: $pitchName => true", ({ noteNumber }) => {
     // given
-    const sut = new Note(noteNumber);
+    const sut = asNoteNumber(noteNumber);
 
     // when
-    const isAccidental = sut.isAccidental;
+    const result = isAccidental(sut);
 
     // then
-    expect(isAccidental).toBe(true);
+    expect(result).toBe(true);
   });
 
   it.each([
@@ -80,17 +80,17 @@ describe("isAccidental", () => {
     { noteNumber: 83, pitchName: "B" },
   ])("幹音: $pitchName => false", ({ noteNumber }) => {
     // given
-    const sut = new Note(noteNumber);
+    const sut = asNoteNumber(noteNumber);
 
     // when
-    const isAccidental = sut.isAccidental;
+    const result = isAccidental(sut);
 
     // then
-    expect(isAccidental).toBe(false);
+    expect(result).toBe(false);
   });
 });
 
-describe(Note.prototype.getNoteNames, () => {
+describe(getNoteNames, () => {
   it.each([
     { noteNumber: 0, expected: ["C-2"] },
     { noteNumber: 58, expected: ["A♯2", "B♭2"] },
@@ -98,10 +98,10 @@ describe(Note.prototype.getNoteNames, () => {
     { noteNumber: 113, expected: ["F7"] },
   ])("ヤマハの場合: $noteNumber => $expected", ({ noteNumber, expected }) => {
     // given
-    const sut = new Note(noteNumber);
+    const sut = asNoteNumber(noteNumber);
 
     // when
-    const noteNames = sut.getNoteNames(PitchType.YAMAHA);
+    const noteNames = getNoteNames(sut, PitchType.YAMAHA);
 
     // then
     expect(noteNames).toStrictEqual(expected);
@@ -114,32 +114,12 @@ describe(Note.prototype.getNoteNames, () => {
     { noteNumber: 113, expected: ["F8"] },
   ])("国際式の場合: $noteNumber => $expected", ({ noteNumber, expected }) => {
     // given
-    const sut = new Note(noteNumber);
+    const sut = asNoteNumber(noteNumber);
 
     // when
-    const noteNames = sut.getNoteNames(PitchType.INTERNATIONAL);
+    const noteNames = getNoteNames(sut, PitchType.INTERNATIONAL);
 
     // then
     expect(noteNames).toStrictEqual(expected);
   });
-});
-
-describe(Note.prototype.isEqual, () => {
-  it.each([
-    { noteNumber1: 14, noteNumber2: 14, expected: true },
-    { noteNumber1: 32, noteNumber2: 23, expected: false },
-  ])(
-    "$noteNumber1 === $noteNumber2 => $expected",
-    ({ noteNumber1, noteNumber2, expected }) => {
-      // given
-      const sut = new Note(noteNumber1);
-      const other = new Note(noteNumber2);
-
-      // when
-      const isEqual = sut.isEqual(other);
-
-      // then
-      expect(isEqual).toBe(expected);
-    },
-  );
 });

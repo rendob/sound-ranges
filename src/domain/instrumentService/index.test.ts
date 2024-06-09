@@ -1,40 +1,42 @@
 import { describe, expect, it } from "vitest";
-import { Instrument } from "../instrument";
+import { Instrument, createInstrument, setIsSelected } from "../instrument";
 import { InstrumentCategory } from "../instrument/instrumentCategory";
-import { Note } from "../note";
-import { NoteRange } from "../noteRange";
-import { RgbColor } from "../rgbColor";
+import { createNoteRange } from "../noteRange";
+import { createRgbColor } from "../rgbColor";
 import {
   InstrumentGroup,
   SelectionStatus,
   getInstrumentGroup,
   groupByCategory,
 } from ".";
+import { asNoteNumber } from "../noteNumber";
+import { asUInt8 } from "../uint8";
+import { asFilledString } from "../filledString";
 
-const createInstrument = (
+const anInstrument = (
   name: string,
   category: InstrumentCategory,
   isSelected: boolean,
 ): Instrument => {
-  const instrument = Instrument.new(
-    name,
+  const instrument = createInstrument(
+    asFilledString(name),
     category,
-    new NoteRange(new Note(0), new Note(127)),
-    new RgbColor(0, 0, 0),
-  ).selectionUpdated(isSelected);
-  return instrument;
+    createNoteRange(asNoteNumber(0), asNoteNumber(127)),
+    createRgbColor(asUInt8(0), asUInt8(0), asUInt8(0)),
+  );
+  return setIsSelected(instrument, isSelected);
 };
 
 describe(getInstrumentGroup, () => {
   it("Success Case", () => {
     // given
-    const input: Instrument[] = [
-      createInstrument("piano", InstrumentCategory.PERCUSSION, true),
-      createInstrument("violin", InstrumentCategory.STRINGS, true),
-      createInstrument("horn", InstrumentCategory.BRASS, false),
-      createInstrument("flute", InstrumentCategory.WOODWIND, false),
-      createInstrument("piccolo", InstrumentCategory.WOODWIND, true),
-      createInstrument("cello", InstrumentCategory.STRINGS, true),
+    const input = [
+      anInstrument("piano", InstrumentCategory.PERCUSSION, true),
+      anInstrument("violin", InstrumentCategory.STRINGS, true),
+      anInstrument("horn", InstrumentCategory.BRASS, false),
+      anInstrument("flute", InstrumentCategory.WOODWIND, false),
+      anInstrument("piccolo", InstrumentCategory.WOODWIND, true),
+      anInstrument("cello", InstrumentCategory.STRINGS, true),
     ];
 
     // when
@@ -53,13 +55,13 @@ describe(getInstrumentGroup, () => {
 describe(groupByCategory, () => {
   it("Success Case", () => {
     // given
-    const input: Instrument[] = [
-      createInstrument("piano", InstrumentCategory.PERCUSSION, true),
-      createInstrument("violin", InstrumentCategory.STRINGS, true),
-      createInstrument("horn", InstrumentCategory.BRASS, false),
-      createInstrument("flute", InstrumentCategory.WOODWIND, false),
-      createInstrument("piccolo", InstrumentCategory.WOODWIND, true),
-      createInstrument("cello", InstrumentCategory.STRINGS, true),
+    const input = [
+      anInstrument("piano", InstrumentCategory.PERCUSSION, true),
+      anInstrument("violin", InstrumentCategory.STRINGS, true),
+      anInstrument("horn", InstrumentCategory.BRASS, false),
+      anInstrument("flute", InstrumentCategory.WOODWIND, false),
+      anInstrument("piccolo", InstrumentCategory.WOODWIND, true),
+      anInstrument("cello", InstrumentCategory.STRINGS, true),
     ];
 
     // when

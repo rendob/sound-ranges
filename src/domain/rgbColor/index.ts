@@ -1,54 +1,40 @@
-import { ValidationError } from "../error/appError";
-import { ValueObject } from "../valueObject";
+import { Brand } from "../brand";
+import { UInt8, assertUInt8 } from "../uint8";
 
-export class RgbColor implements ValueObject<RgbColor> {
-  private static readonly MIN_COLOR_VALUE = 0;
-  private static readonly MAX_COLOR_VALUE = 255;
-  constructor(
-    public readonly red: number,
-    public readonly green: number,
-    public readonly blue: number,
-  ) {
-    this.validate();
-  }
+const typeName = "RgbColor";
+type RgbColorType = {
+  readonly red: UInt8;
+  readonly green: UInt8;
+  readonly blue: UInt8;
+};
+export type RgbColor = Brand<RgbColorType, typeof typeName>;
 
-  // ***** getter *****
+export const createRgbColor = (
+  red: UInt8,
+  green: UInt8,
+  blue: UInt8,
+): RgbColor => asRgbColor({ red, green, blue });
 
-  public get colorCode() {
-    return (
-      "#" +
-      [this.red, this.green, this.blue]
-        .map((colorValue) => colorValue.toString(16).padStart(2, "0"))
-        .join("")
-    );
-  }
+// ***** assertion *****
 
-  // ***** method *****
-
-  public isEqual(other: RgbColor): boolean {
-    return (
-      this.red === other.red &&
-      this.green === other.green &&
-      this.blue === other.blue
-    );
-  }
-
-  private validate() {
-    [this.red, this.green, this.blue].forEach(this.validateColorValue);
-  }
-
-  private validateColorValue(colorValue: number) {
-    if (!Number.isInteger(colorValue)) {
-      throw new ValidationError("color value should be integer!");
-    }
-
-    if (
-      colorValue < RgbColor.MIN_COLOR_VALUE ||
-      colorValue > RgbColor.MAX_COLOR_VALUE
-    ) {
-      throw new ValidationError(
-        `color value should be in ${RgbColor.MIN_COLOR_VALUE} ~ ${RgbColor.MAX_COLOR_VALUE}!`,
-      );
-    }
-  }
+function assertRgbColor(v: RgbColorType): asserts v is RgbColor {
+  assertUInt8(v.red);
+  assertUInt8(v.green);
+  assertUInt8(v.blue);
 }
+
+const asRgbColor = (v: RgbColorType): RgbColor => {
+  assertRgbColor(v);
+  return v;
+};
+
+// ***** method *****
+
+export const getColorCode = (rgbColor: RgbColor) => {
+  return (
+    "#" +
+    [rgbColor.red, rgbColor.green, rgbColor.blue]
+      .map((colorValue) => colorValue.toString(16).padStart(2, "0"))
+      .join("")
+  );
+};
