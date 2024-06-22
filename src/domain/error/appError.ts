@@ -16,9 +16,3 @@ export class TypeAssertionError extends ValidationError {
     super(`not assignable to ${type}.\n${message}`);
   }
 }
-
-export class InitializationError extends ValidationError {
-  constructor(type: string, message: string) {
-    super(`invalid initialization of ${type}.\n${message}`);
-  }
-}
