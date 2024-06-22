@@ -13,6 +13,7 @@ export type SelectionStatus =
 export type InstrumentGroup = {
   id: InstrumentCategory;
   instrumentIds: InstrumentId[];
+  selectionStatus: SelectionStatus;
 };
 
 export const getInstrumentGroup = (
@@ -26,6 +27,7 @@ export const getInstrumentGroup = (
   return {
     id: category,
     instrumentIds: filteredInstruments.map((instrument) => instrument.id),
+    selectionStatus: getSelectionStatus(filteredInstruments),
   };
 };
 
@@ -38,9 +40,7 @@ export const groupByCategory = (
   );
 };
 
-export const getSelectionStatus = (
-  instruments: Instrument[],
-): SelectionStatus => {
+const getSelectionStatus = (instruments: Instrument[]): SelectionStatus => {
   if (instruments.every((instrument) => instrument.isSelected)) {
     return SelectionStatus.SELECTED;
   } else if (instruments.some((instrument) => instrument.isSelected)) {

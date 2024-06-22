@@ -6,8 +6,7 @@ import { createInstruments } from "../source/instrumentData";
 import {
   InstrumentGroup,
   SelectionStatus,
-  getSelectionStatus,
-  groupByCategory,
+  getInstrumentGroup,
 } from "../../domain/instrumentService";
 import {
   Normalized,
@@ -17,7 +16,6 @@ import {
 } from "../../util/normalize";
 
 type State = {
-  groups: Normalized<InstrumentCategory, InstrumentGroup>;
   instruments: Normalized<InstrumentId, Instrument>;
 };
 
@@ -28,9 +26,7 @@ type Actions = {
 
 const createInitialState = (): State => {
   const instruments = createInstruments();
-  const instrumentGroups = groupByCategory(instruments);
   return {
-    groups: normalize(instrumentGroups),
     instruments: normalize(instruments),
   };
 };
@@ -48,10 +44,9 @@ export const useInstrumentsStore = create<State & Actions>((set) => ({
     }),
   toggleInstrumentGroupSelection: (category) =>
     set((state) => {
-      const instrumentGroup = state.groups.byId[category];
+      const instrumentGroup = selectInstrumentGroup(category)(state);
       const shouldSelect =
-        selectGroupSelectionStatus(category)(state) !==
-        SelectionStatus.SELECTED;
+        instrumentGroup.selectionStatus !== SelectionStatus.SELECTED;
 
       return {
         ...state,
@@ -66,19 +61,15 @@ export const useInstrumentsStore = create<State & Actions>((set) => ({
 
 // ***** selectors *****
 
+export const selectInstruments = (state: State): Instrument[] =>
+  state.instruments.allIds.map((id) => state.instruments.byId[id]);
+
 export const selectInstrument = (id: InstrumentId) => (state: State) =>
   state.instruments.byId[id];
 
 export const selectInstrumentGroup =
-  (category: InstrumentCategory) => (state: State) =>
-    state.groups.byId[category];
-
-export const selectGroupSelectionStatus =
   (category: InstrumentCategory) =>
-  (state: State): SelectionStatus => {
-    const group = state.groups.byId[category];
-    const instruments = group.instrumentIds.map(
-      (id) => state.instruments.byId[id],
-    );
-    return getSelectionStatus(instruments);
+  (state: State): InstrumentGroup => {
+    const instruments = selectInstruments(state);
+    return getInstrumentGroup(instruments, category);
   };
