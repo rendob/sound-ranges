@@ -44,7 +44,7 @@ describe(getInstrumentGroup, () => {
 
     // then
     const expected: InstrumentGroup = {
-      category: InstrumentCategory.STRINGS,
+      id: InstrumentCategory.STRINGS,
       selectionStatus: SelectionStatus.SELECTED,
       instruments: [input[1], input[5]],
     };
@@ -70,22 +70,22 @@ describe(groupByCategory, () => {
     // then
     const expected: InstrumentGroup[] = [
       {
-        category: InstrumentCategory.STRINGS,
+        id: InstrumentCategory.STRINGS,
         selectionStatus: SelectionStatus.SELECTED,
         instruments: [input[1], input[5]],
       },
       {
-        category: InstrumentCategory.BRASS,
+        id: InstrumentCategory.BRASS,
         selectionStatus: SelectionStatus.UNSELECTED,
         instruments: [input[2]],
       },
       {
-        category: InstrumentCategory.WOODWIND,
+        id: InstrumentCategory.WOODWIND,
         selectionStatus: SelectionStatus.MIXED,
         instruments: [input[3], input[4]],
       },
       {
-        category: InstrumentCategory.PERCUSSION,
+        id: InstrumentCategory.PERCUSSION,
         selectionStatus: SelectionStatus.SELECTED,
         instruments: [input[0]],
       },

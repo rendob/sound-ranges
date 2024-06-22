@@ -1,20 +1,13 @@
-import { useGetInstrumentsUseCase } from "../../application/useCase/getInstruments";
-import { groupByCategory } from "../../domain/instrumentService";
+import { InstrumentCategory } from "../../domain/instrument/instrumentCategory";
 import { InstrumentGroupItem } from "./instrumentGroupItem";
 
 export const Instruments = () => {
-  const getInstruments = useGetInstrumentsUseCase();
-
-  const instruments = getInstruments();
-  const instrumentGroups = groupByCategory(instruments);
+  const categories = Object.values(InstrumentCategory);
 
   return (
     <div>
-      {instrumentGroups.map((instrumentGroup) => (
-        <InstrumentGroupItem
-          key={instrumentGroup.category}
-          instrumentGroup={instrumentGroup}
-        />
+      {categories.map((category) => (
+        <InstrumentGroupItem key={category} category={category} />
       ))}
     </div>
   );

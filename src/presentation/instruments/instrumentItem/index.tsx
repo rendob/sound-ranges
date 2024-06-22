@@ -1,12 +1,18 @@
-import { useToggleInstrumentSelectionUseCase } from "../../../application/useCase/toggleInstrumentSelection";
-import { Instrument } from "../../../domain/instrument";
+import {
+  selectInstrument,
+  useInstrumentsStore,
+} from "../../../infrastructure/zustand/instruments";
+import { InstrumentId } from "../../../domain/instrument/instrumentId";
 
-type Props = { instrument: Instrument };
+type Props = { id: InstrumentId };
 
-export const InstrumentItem = ({ instrument }: Props) => {
-  const toggleInstrumentSelection = useToggleInstrumentSelectionUseCase();
+export const InstrumentItem = ({ id }: Props) => {
+  const instrument = useInstrumentsStore(selectInstrument(id));
+  const toggleInstrumentSelection = useInstrumentsStore(
+    (state) => state.toggleInstrumentSelection,
+  );
 
-  const handleSelectionChange = () => toggleInstrumentSelection(instrument.id);
+  const handleSelectionChange = () => toggleInstrumentSelection(id);
 
   return (
     <div style={{ display: "flex", paddingLeft: "16px" }}>

@@ -1,18 +1,25 @@
-import { useToggleInstrumentGroupSelectionUseCase } from "../../../application/useCase/toggleInstrumentGroupSelection";
+import { InstrumentCategory } from "../../../domain/instrument/instrumentCategory";
+import { SelectionStatus } from "../../../domain/instrumentService";
 import {
-  InstrumentGroup,
-  SelectionStatus,
-} from "../../../domain/instrumentService";
+  selectGroupSelectionStatus,
+  selectInstrumentGroup,
+  useInstrumentsStore,
+} from "../../../infrastructure/zustand/instruments";
 import { InstrumentItem } from "../instrumentItem";
 
-type Props = { instrumentGroup: InstrumentGroup };
+type Props = { category: InstrumentCategory };
 
-export const InstrumentGroupItem = ({ instrumentGroup }: Props) => {
-  const toggleInstrumentGroupSelection =
-    useToggleInstrumentGroupSelectionUseCase();
+export const InstrumentGroupItem = ({ category }: Props) => {
+  const instrumentGroup = useInstrumentsStore(selectInstrumentGroup(category));
+  const selectionStatus = useInstrumentsStore(
+    selectGroupSelectionStatus(category),
+  );
 
-  const handleSelectionChange = () =>
-    toggleInstrumentGroupSelection(instrumentGroup.category);
+  const toggleInstrumentGroupSelection = useInstrumentsStore(
+    (state) => state.toggleInstrumentGroupSelection,
+  );
+
+  const handleSelectionChange = () => toggleInstrumentGroupSelection(category);
 
   return (
     <div>
@@ -20,15 +27,15 @@ export const InstrumentGroupItem = ({ instrumentGroup }: Props) => {
       <div style={{ display: "flex" }}>
         <input
           type="checkbox"
-          checked={instrumentGroup.selectionStatus === SelectionStatus.SELECTED}
+          checked={selectionStatus === SelectionStatus.SELECTED}
           onChange={handleSelectionChange}
         />
         <p>
-          {instrumentGroup.category} {instrumentGroup.selectionStatus}
+          {instrumentGroup.id} {selectionStatus}
         </p>
       </div>
-      {instrumentGroup.instruments.map((instrument) => (
-        <InstrumentItem key={instrument.id} instrument={instrument} />
+      {instrumentGroup.instrumentIds.map((id) => (
+        <InstrumentItem key={id} id={id} />
       ))}
     </div>
   );
