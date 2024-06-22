@@ -1,21 +1,17 @@
 import { InstrumentCategory } from "../../../domain/instrument/instrumentCategory";
 import { SelectionStatus } from "../../../domain/instrumentService";
-import {
-  selectInstrumentGroup,
-  useInstrumentsStore,
-} from "../../../infrastructure/zustand/instruments";
+import { toggleInstrumentGroupSelection } from "../../../infrastructure/zustand/instruments/action";
+import { dispatch } from "../../../infrastructure/zustand/appStore";
 import { InstrumentItem } from "../instrumentItem";
+import { useInstrumentGroup } from "../../../infrastructure/zustand/instruments/selector";
 
 type Props = { category: InstrumentCategory };
 
 export const InstrumentGroupItem = ({ category }: Props) => {
-  const instrumentGroup = useInstrumentsStore(selectInstrumentGroup(category));
+  const instrumentGroup = useInstrumentGroup(category);
 
-  const toggleInstrumentGroupSelection = useInstrumentsStore(
-    (state) => state.toggleInstrumentGroupSelection,
-  );
-
-  const handleSelectionChange = () => toggleInstrumentGroupSelection(category);
+  const handleSelectionChange = () =>
+    dispatch(toggleInstrumentGroupSelection(category));
 
   return (
     <div>
