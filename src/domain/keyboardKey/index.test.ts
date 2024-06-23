@@ -1,6 +1,13 @@
 import { assert, describe, expect, it } from "vitest";
-import { KeyboardKey, createKeyboardKey, isBlackKey, setIsSelected } from ".";
-import { asNoteNumber, assertNoteNumber } from "../noteNumber";
+import {
+  KeyboardKey,
+  createKeyboardKey,
+  getSelectedNoteRange,
+  isBlackKey,
+  setIsSelected,
+} from ".";
+import { allNoteNumbers, asNoteNumber, assertNoteNumber } from "../noteNumber";
+import { createNoteRange } from "../noteRange";
 
 const createTestKeyboardKey = (noteNumber: number = 0): KeyboardKey =>
   createKeyboardKey(asNoteNumber(noteNumber));
@@ -109,4 +116,42 @@ describe(setIsSelected, () => {
       expect(result.isSelected).toBe(expected);
     },
   );
+});
+
+describe(getSelectedNoteRange, () => {
+  it.each([
+    { selected: [3], range: [3, 3] },
+    { selected: [0, 1, 2], range: [0, 2] },
+    { selected: [5, 9, 30], range: [5, 30] },
+    { selected: [60, 61, 78, 102], range: [60, 102] },
+  ])("selected: $selected => noteRange: $range", ({ selected, range }) => {
+    // given
+    const keys = allNoteNumbers.map((noteNumber) =>
+      setIsSelected(
+        createKeyboardKey(noteNumber),
+        selected.includes(noteNumber),
+      ),
+    );
+
+    // when
+    const result = getSelectedNoteRange(keys);
+
+    // then
+    const expected = createNoteRange(
+      asNoteNumber(range[0]),
+      asNoteNumber(range[1]),
+    );
+    expect(result).toStrictEqual(expected);
+  });
+
+  it("選択されたキーがない => range: null", () => {
+    // given
+    const keys = allNoteNumbers.map(createKeyboardKey);
+
+    // when
+    const result = getSelectedNoteRange(keys);
+
+    // then
+    expect(result).toBeNull();
+  });
 });

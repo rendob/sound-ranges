@@ -21,6 +21,10 @@ export const normalize = <ID extends FilledString, T extends { id: ID }>(
   };
 };
 
+export const getAllItems = <ID extends FilledString, T extends { id: ID }>(
+  normalizedItems: Normalized<ID, T>,
+): T[] => normalizedItems.allIds.map((id) => normalizedItems.byId[id]);
+
 /**
  * `items[id]`を`update`で更新 (non-destructive)
  */

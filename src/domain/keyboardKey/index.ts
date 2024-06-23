@@ -1,6 +1,7 @@
 import { Brand } from "../brand";
 import { TypeAssertionError } from "../error/appError";
 import { NoteNumber, isAccidental } from "../noteNumber";
+import { NoteRange, createNoteRange } from "../noteRange";
 import { KeyboardKeyId, asKeyboardKeyId } from "./keyboardKeyId";
 
 const typeName = "KeyboardKey";
@@ -49,3 +50,16 @@ export const setIsSelected = (
     ...key,
     isSelected,
   });
+
+// ***** service *****
+
+export const getSelectedNoteRange = (
+  orderedKeys: KeyboardKey[],
+): NoteRange | null => {
+  const selectedKeys = orderedKeys.filter((key) => key.isSelected);
+  if (selectedKeys.length === 0) return null;
+  return createNoteRange(
+    selectedKeys[0].noteNumber,
+    selectedKeys[selectedKeys.length - 1].noteNumber,
+  );
+};

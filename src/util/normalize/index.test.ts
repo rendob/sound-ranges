@@ -1,5 +1,5 @@
 import { assert, describe, expect, it } from "vitest";
-import { normalize, updateItem, updateItems } from ".";
+import { getAllItems, normalize, updateItem, updateItems } from ".";
 import { asFilledString } from "../../domain/filledString";
 
 const list = [
@@ -27,6 +27,19 @@ describe(normalize, () => {
       },
     };
     expect(result).toStrictEqual(expected);
+  });
+});
+
+describe(getAllItems, () => {
+  it("Success Case", () => {
+    // given
+    const items = normalize(list);
+
+    // when
+    const result = getAllItems(items);
+
+    // then
+    expect(result).toStrictEqual(list);
   });
 });
 

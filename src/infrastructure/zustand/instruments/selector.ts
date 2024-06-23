@@ -5,15 +5,15 @@ import {
   InstrumentGroup,
   getInstrumentGroup,
 } from "../../../domain/instrumentGroup";
+import { getAllItems } from "../../../util/normalize";
 import { useAppStore } from "../appStore";
 import { InstrumentsState } from "./state";
 
 const selectInstruments = (state: InstrumentsState): Instrument[] =>
-  state.instruments.allIds.map((id) => state.instruments.byId[id]);
+  getAllItems(state.instruments);
 
-export const selectInstrument =
-  (id: InstrumentId) => (state: InstrumentsState) =>
-    state.instruments.byId[id];
+const selectInstrument = (id: InstrumentId) => (state: InstrumentsState) =>
+  state.instruments.byId[id];
 
 export const selectInstrumentGroup =
   (category: InstrumentCategory) =>

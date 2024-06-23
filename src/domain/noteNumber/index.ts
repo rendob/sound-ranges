@@ -62,3 +62,9 @@ export const getNoteNames = (
 };
 
 const getPitchNumber = (noteNumber: NoteNumber): Int => asInt(noteNumber % 12);
+
+// ***** service *****
+
+export const allNoteNumbers = new Array(MAX_NOTE_NUMBER - MIN_NOTE_NUMBER + 1)
+  .fill(0)
+  .map((_, index) => asNoteNumber(index));
