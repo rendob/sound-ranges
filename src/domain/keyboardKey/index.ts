@@ -1,3 +1,4 @@
+import { exists } from "../../util/exists";
 import { Brand } from "../brand";
 import { TypeAssertionError } from "../error/appError";
 import { NoteNumber, isAccidental } from "../noteNumber";
@@ -56,10 +57,10 @@ export const setIsSelected = (
 export const getSelectedNoteRange = (
   orderedKeys: KeyboardKey[],
 ): NoteRange | null => {
-  const selectedKeys = orderedKeys.filter((key) => key.isSelected);
-  if (selectedKeys.length === 0) return null;
-  return createNoteRange(
-    selectedKeys[0].noteNumber,
-    selectedKeys[selectedKeys.length - 1].noteNumber,
-  );
+  const min = orderedKeys.find((key) => key.isSelected);
+  const max = orderedKeys.findLast((key) => key.isSelected);
+
+  if (!exists(min) || !exists(max)) return null;
+
+  return createNoteRange(min.noteNumber, max.noteNumber);
 };
