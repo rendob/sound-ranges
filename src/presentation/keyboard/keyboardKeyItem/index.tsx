@@ -1,6 +1,10 @@
+import React from "react";
 import { KeyboardKeyId } from "../../../domain/keyboardKey/keyboardKeyId";
 import { dispatch } from "../../../infrastructure/zustand/appStore";
-import { setKeyboardSelection } from "../../../infrastructure/zustand/keyboard/action";
+import {
+  clearKeyboardSelection,
+  selectKeyboardKey,
+} from "../../../infrastructure/zustand/keyboard/action";
 import { useKeyboardKey } from "../../../infrastructure/zustand/keyboard/selector";
 
 type Props = { id: KeyboardKeyId };
@@ -8,11 +12,23 @@ type Props = { id: KeyboardKeyId };
 export const KeyboardKeyItem = ({ id }: Props) => {
   const keyboardKey = useKeyboardKey(id);
 
-  const handleClick = () =>
-    dispatch(setKeyboardSelection(id, !keyboardKey.isSelected));
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!e.shiftKey) {
+      dispatch(clearKeyboardSelection());
+    }
+    dispatch(selectKeyboardKey(id));
+    e.stopPropagation();
+  };
+
+  const handleMouseEnter = (e: React.MouseEvent) => {
+    // left click
+    if (e.buttons === 1) {
+      dispatch(selectKeyboardKey(id));
+    }
+  };
 
   return (
-    <p onClick={handleClick}>
+    <p onMouseDown={handleMouseDown} onMouseEnter={handleMouseEnter}>
       {keyboardKey.noteNumber} {String(keyboardKey.isSelected)}
     </p>
   );

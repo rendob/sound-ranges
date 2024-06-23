@@ -3,13 +3,11 @@ import { KeyboardKeyId } from "../../../domain/keyboardKey/keyboardKeyId";
 import { updateItem, updateItems } from "../../../util/normalize";
 import { createAction } from "../appStore";
 
-export const setKeyboardSelection = (id: KeyboardKeyId, isSelected: boolean) =>
+export const selectKeyboardKey = (id: KeyboardKeyId) =>
   createAction((state) => {
     return {
       ...state,
-      keys: updateItem(state.keys, id, (item) =>
-        setIsSelected(item, isSelected),
-      ),
+      keys: updateItem(state.keys, id, (item) => setIsSelected(item, true)),
     };
   });
 
