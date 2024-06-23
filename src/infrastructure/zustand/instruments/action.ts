@@ -4,15 +4,15 @@ import { InstrumentId } from "../../../domain/instrument/instrumentId";
 import { SelectionStatus } from "../../../domain/instrumentGroup";
 import { updateItem, updateItems } from "../../../util/normalize";
 import { createAction } from "../appStore";
-import { selectInstrument, selectInstrumentGroup } from "./selector";
+import { selectInstrumentGroup } from "./selector";
 
 export const toggleInstrumentSelection = (id: InstrumentId) =>
   createAction((state) => {
-    const instrument = selectInstrument(id)(state);
-    const newInstrument = setIsSelected(instrument, !instrument.isSelected);
     return {
       ...state,
-      instruments: updateItem(state.instruments, id, newInstrument),
+      instruments: updateItem(state.instruments, id, (item) =>
+        setIsSelected(item, !item.isSelected),
+      ),
     };
   });
 

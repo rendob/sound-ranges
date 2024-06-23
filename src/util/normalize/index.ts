@@ -1,11 +1,12 @@
-import { TypeAssertionError } from "../domain/error/appError";
+import { TypeAssertionError } from "../../domain/error/appError";
+import { FilledString } from "../../domain/filledString";
 
-export type Normalized<ID extends string, T extends { id: ID }> = {
+export type Normalized<ID extends FilledString, T extends { id: ID }> = {
   allIds: ID[];
   byId: { [key in ID]: T };
 };
 
-export const normalize = <ID extends string, T extends { id: ID }>(
+export const normalize = <ID extends FilledString, T extends { id: ID }>(
   list: T[],
 ): Normalized<ID, T> => {
   const allIds = list.map((item) => item.id);
@@ -20,20 +21,26 @@ export const normalize = <ID extends string, T extends { id: ID }>(
   };
 };
 
-export const updateItem = <ID extends string, T extends { id: ID }>(
+/**
+ * `items[id]`を`update`で更新 (non-destructive)
+ */
+export const updateItem = <ID extends FilledString, T extends { id: ID }>(
   items: Normalized<ID, T>,
   id: ID,
-  newItem: T,
+  update: (oldItem: T) => T,
 ): Normalized<ID, T> => {
   const newById = { ...items.byId };
-  newById[id] = newItem;
+  newById[id] = update(newById[id]);
   return {
     allIds: items.allIds,
     byId: newById,
   };
 };
 
-export const updateItems = <ID extends string, T extends { id: ID }>(
+/**
+ * `ids`に含まれる`id`の`items`要素を`update`で更新 (non-destructive)
+ */
+export const updateItems = <ID extends FilledString, T extends { id: ID }>(
   items: Normalized<ID, T>,
   ids: ID[],
   update: (oldItem: T) => T,
@@ -48,7 +55,7 @@ export const updateItems = <ID extends string, T extends { id: ID }>(
   };
 };
 
-function assertById<ID extends string, T extends { id: ID }>(
+function assertById<ID extends FilledString, T extends { id: ID }>(
   v: {
     [key: string]: T;
   },
