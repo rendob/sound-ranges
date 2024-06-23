@@ -1,0 +1,125 @@
+import { describe, expect, it } from "vitest";
+import { asNoteNumber, assertNoteNumber, getNoteNames, isAccidental } from ".";
+import { TypeAssertionError } from "../error/appError";
+import { PitchType } from "./pitchType";
+
+describe(assertNoteNumber, () => {
+  it.each([{ v: 0 }, { v: 60 }, { v: 127 }])(
+    "引数が0~127の整数: $v => OK",
+    ({ v }) => {
+      // given
+
+      // when
+      const block = () => {
+        assertNoteNumber(v);
+      };
+
+      // then
+      expect(block).not.toThrow();
+    },
+  );
+
+  it.each([{ v: -100 }, { v: -1 }, { v: 128 }, { v: 300 }])(
+    "引数の値が範囲外: $v => Error",
+    ({ v }) => {
+      // given
+
+      // when
+      const block = () => {
+        assertNoteNumber(v);
+      };
+
+      // then
+      expect(block).toThrow(TypeAssertionError);
+    },
+  );
+
+  it.each([
+    { v: 0.1 },
+    { v: 99.9 },
+    { v: Number.POSITIVE_INFINITY },
+    { v: Number.NaN },
+  ])("引数が整数でない: $v => Error", ({ v }) => {
+    // given
+
+    // when
+    const block = () => {
+      assertNoteNumber(v);
+    };
+
+    // then
+    expect(block).toThrow(TypeAssertionError);
+  });
+});
+
+describe(isAccidental, () => {
+  it.each([
+    { noteNumber: 1, pitchName: "C♯/D♭" },
+    { noteNumber: 15, pitchName: "D♯/E♭" },
+    { noteNumber: 30, pitchName: "E♯/F♭" },
+    { noteNumber: 44, pitchName: "G♯/A♭" },
+    { noteNumber: 58, pitchName: "A♯/B♭" },
+  ])("派生音: $pitchName => true", ({ noteNumber }) => {
+    // given
+    const sut = asNoteNumber(noteNumber);
+
+    // when
+    const result = isAccidental(sut);
+
+    // then
+    expect(result).toBe(true);
+  });
+
+  it.each([
+    { noteNumber: 0, pitchName: "C" },
+    { noteNumber: 14, pitchName: "D" },
+    { noteNumber: 28, pitchName: "E" },
+    { noteNumber: 41, pitchName: "F" },
+    { noteNumber: 55, pitchName: "G" },
+    { noteNumber: 69, pitchName: "A" },
+    { noteNumber: 83, pitchName: "B" },
+  ])("幹音: $pitchName => false", ({ noteNumber }) => {
+    // given
+    const sut = asNoteNumber(noteNumber);
+
+    // when
+    const result = isAccidental(sut);
+
+    // then
+    expect(result).toBe(false);
+  });
+});
+
+describe(getNoteNames, () => {
+  it.each([
+    { noteNumber: 0, expected: ["C-2"] },
+    { noteNumber: 58, expected: ["A♯2", "B♭2"] },
+    { noteNumber: 75, expected: ["D♯4", "E♭4"] },
+    { noteNumber: 113, expected: ["F7"] },
+  ])("ヤマハの場合: $noteNumber => $expected", ({ noteNumber, expected }) => {
+    // given
+    const sut = asNoteNumber(noteNumber);
+
+    // when
+    const noteNames = getNoteNames(sut, PitchType.YAMAHA);
+
+    // then
+    expect(noteNames).toStrictEqual(expected);
+  });
+
+  it.each([
+    { noteNumber: 0, expected: ["C-1"] },
+    { noteNumber: 58, expected: ["A♯3", "B♭3"] },
+    { noteNumber: 75, expected: ["D♯5", "E♭5"] },
+    { noteNumber: 113, expected: ["F8"] },
+  ])("国際式の場合: $noteNumber => $expected", ({ noteNumber, expected }) => {
+    // given
+    const sut = asNoteNumber(noteNumber);
+
+    // when
+    const noteNames = getNoteNames(sut, PitchType.INTERNATIONAL);
+
+    // then
+    expect(noteNames).toStrictEqual(expected);
+  });
+});
