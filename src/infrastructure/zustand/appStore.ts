@@ -1,11 +1,13 @@
 import { create } from "zustand";
 import { Brand } from "../../domain/brand";
 import { InstrumentsState, initialInstrumentsState } from "./instruments/state";
+import { KeyboardState, initialKeyboardState } from "./keyboard/state";
 
-type AppState = InstrumentsState;
+type AppState = InstrumentsState & KeyboardState;
 
 export const useAppStore = create<AppState>(() => ({
   ...initialInstrumentsState,
+  ...initialKeyboardState,
 }));
 
 type ActionType = (state: AppState) => AppState;

@@ -1,6 +1,6 @@
 import { Nullable } from "vitest";
 
-const exists = <T>(v: Nullable<T>): v is NonNullable<T> =>
+export const exists = <T>(v: Nullable<T>): v is NonNullable<T> =>
   typeof v !== "undefined" && v !== null;
 
 // 型推論の都合上functionで定義する必要がある
