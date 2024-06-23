@@ -1,7 +1,7 @@
 import { setIsSelected } from "../../../domain/instrument";
 import { InstrumentCategory } from "../../../domain/instrument/instrumentCategory";
 import { InstrumentId } from "../../../domain/instrument/instrumentId";
-import { SelectionStatus } from "../../../domain/instrumentService";
+import { SelectionStatus } from "../../../domain/instrumentGroup";
 import { updateItem, updateItems } from "../../../util/normalize";
 import { createAction } from "../appStore";
 import { selectInstrument, selectInstrumentGroup } from "./selector";

@@ -1,5 +1,5 @@
 import { InstrumentCategory } from "../../../domain/instrument/instrumentCategory";
-import { SelectionStatus } from "../../../domain/instrumentService";
+import { SelectionStatus } from "../../../domain/instrumentGroup";
 import { toggleInstrumentGroupSelection } from "../../../infrastructure/zustand/instruments/action";
 import { dispatch } from "../../../infrastructure/zustand/appStore";
 import { InstrumentItem } from "../instrumentItem";

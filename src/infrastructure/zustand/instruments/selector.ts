@@ -4,7 +4,7 @@ import { InstrumentId } from "../../../domain/instrument/instrumentId";
 import {
   InstrumentGroup,
   getInstrumentGroup,
-} from "../../../domain/instrumentService";
+} from "../../../domain/instrumentGroup";
 import { useAppStore } from "../appStore";
 import { InstrumentsState } from "./state";
 

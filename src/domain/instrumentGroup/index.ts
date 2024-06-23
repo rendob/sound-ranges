@@ -31,15 +31,6 @@ export const getInstrumentGroup = (
   };
 };
 
-export const groupByCategory = (
-  instruments: Instrument[],
-): InstrumentGroup[] => {
-  const categories: InstrumentCategory[] = Object.values(InstrumentCategory);
-  return categories.map((category) =>
-    getInstrumentGroup(instruments, category),
-  );
-};
-
 const getSelectionStatus = (instruments: Instrument[]): SelectionStatus => {
   if (instruments.every((instrument) => instrument.isSelected)) {
     return SelectionStatus.SELECTED;
