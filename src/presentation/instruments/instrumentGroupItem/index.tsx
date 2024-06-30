@@ -2,15 +2,16 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 import { InstrumentCategory } from "../../../domain/instrument/instrumentCategory";
-import { SelectionStatus } from "../../../domain/instrumentGroup";
 import { toggleInstrumentGroupSelection } from "../../../infrastructure/zustand/instruments/action";
 import { dispatch } from "../../../infrastructure/zustand/appStore";
 import { InstrumentItem } from "../instrumentItem";
 import { useInstrumentGroup } from "../../../infrastructure/zustand/instruments/selector";
 import { appColor } from "../../style/appColor";
+import { Checkbox } from "../../common/checkbox";
 
 const styles = {
   root: css({
+    alignItems: "center",
     backgroundColor: appColor.background,
     cursor: "pointer",
     display: "flex",
@@ -22,28 +23,25 @@ const styles = {
       backgroundColor: appColor.hover(appColor.background),
     },
   }),
+  label: css({
+    marginLeft: "4px",
+  }),
 };
 
 type Props = { category: InstrumentCategory };
 
 export const InstrumentGroupItem = ({ category }: Props) => {
   const instrumentGroup = useInstrumentGroup(category);
-  const elementId = `checkbox-${category}`;
 
-  const handleSelectionChange = () =>
-    dispatch(toggleInstrumentGroupSelection(category));
+  const handleClick = () => dispatch(toggleInstrumentGroupSelection(category));
 
   return (
     <div>
-      <label htmlFor={elementId} css={styles.root}>
-        <input
-          type="checkbox"
-          id={elementId}
-          checked={instrumentGroup.selectionStatus === SelectionStatus.SELECTED}
-          onChange={handleSelectionChange}
-        />
-        {instrumentGroup.id} {instrumentGroup.selectionStatus}
-      </label>
+      <div onClick={handleClick} css={styles.root}>
+        <Checkbox selectionStatus={instrumentGroup.selectionStatus} />
+        <span css={styles.label}>{category}</span>
+      </div>
+
       {instrumentGroup.instrumentIds.map((id) => (
         <InstrumentItem key={id} id={id} />
       ))}

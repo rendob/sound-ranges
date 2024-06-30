@@ -6,34 +6,39 @@ import { InstrumentId } from "../../../domain/instrument/instrumentId";
 import { dispatch } from "../../../infrastructure/zustand/appStore";
 import { useInstrument } from "../../../infrastructure/zustand/instruments/selector";
 import { appColor } from "../../style/appColor";
+import { SelectionStatus } from "../../../domain/instrumentGroup";
+import { Checkbox } from "../../common/checkbox";
 
-const style = css({
-  cursor: "pointer",
-  display: "flex",
-  padding: "4px 12px",
-  userSelect: "none",
-  ":hover": {
-    backgroundColor: appColor.hover(appColor.background),
-  },
-});
+const styles = {
+  root: css({
+    alignItems: "center",
+    cursor: "pointer",
+    display: "flex",
+    padding: "4px 16px",
+    userSelect: "none",
+    ":hover": {
+      backgroundColor: appColor.hover(appColor.background),
+    },
+  }),
+  label: css({
+    marginLeft: "4px",
+  }),
+};
 
 type Props = { id: InstrumentId };
 
 export const InstrumentItem = ({ id }: Props) => {
   const instrument = useInstrument(id);
-  const elementId = `checkbox-${id}`;
+  const selectionStatus = instrument.isSelected
+    ? SelectionStatus.SELECTED
+    : SelectionStatus.UNSELECTED;
 
-  const handleSelectionChange = () => dispatch(toggleInstrumentSelection(id));
+  const handleClick = () => dispatch(toggleInstrumentSelection(id));
 
   return (
-    <label htmlFor={elementId} css={style}>
-      <input
-        type="checkbox"
-        id={elementId}
-        checked={instrument.isSelected}
-        onChange={handleSelectionChange}
-      />
-      {instrument.name}
-    </label>
+    <div onClick={handleClick} css={styles.root}>
+      <Checkbox selectionStatus={selectionStatus} />
+      <span css={styles.label}>{instrument.name}</span>
+    </div>
   );
 };
