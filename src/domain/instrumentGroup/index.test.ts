@@ -1,17 +1,22 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import { Instrument, createInstrument, setIsSelected } from "../instrument";
+import {
+  Instrument,
+  createInstrument,
+  setSelectionStatus,
+} from "../instrument";
 import { InstrumentCategory } from "../instrument/instrumentCategory";
 import { createNoteRange } from "../noteRange";
 import { createRgbColor } from "../rgbColor";
-import { InstrumentGroup, SelectionStatus, getInstrumentGroup } from ".";
+import { InstrumentGroup, getInstrumentGroup } from ".";
 import { asNoteNumber } from "../noteNumber";
 import { asUInt8 } from "../uint8";
 import { asFilledString } from "../filledString";
+import { SelectionStatus } from "../instrument/selectionStatus";
 
 const anInstrument = (
   name: string,
   category: InstrumentCategory,
-  isSelected: boolean,
+  selectionStatus: Instrument["selectionStatus"],
 ): Instrument => {
   const instrument = createInstrument(
     asFilledString(name),
@@ -19,19 +24,43 @@ const anInstrument = (
     createNoteRange(asNoteNumber(0), asNoteNumber(127)),
     createRgbColor(asUInt8(0), asUInt8(0), asUInt8(0)),
   );
-  return setIsSelected(instrument, isSelected);
+  return setSelectionStatus(instrument, selectionStatus);
 };
 
 describe(getInstrumentGroup, () => {
   let instruments: Instrument[];
   beforeAll(() => {
     instruments = [
-      anInstrument("piano", InstrumentCategory.PERCUSSION, true),
-      anInstrument("violin", InstrumentCategory.STRINGS, true),
-      anInstrument("horn", InstrumentCategory.BRASS, false),
-      anInstrument("flute", InstrumentCategory.WOODWIND, false),
-      anInstrument("piccolo", InstrumentCategory.WOODWIND, true),
-      anInstrument("cello", InstrumentCategory.STRINGS, true),
+      anInstrument(
+        "piano",
+        InstrumentCategory.PERCUSSION,
+        SelectionStatus.SELECTED,
+      ),
+      anInstrument(
+        "violin",
+        InstrumentCategory.STRINGS,
+        SelectionStatus.SELECTED,
+      ),
+      anInstrument(
+        "horn",
+        InstrumentCategory.BRASS,
+        SelectionStatus.UNSELECTED,
+      ),
+      anInstrument(
+        "flute",
+        InstrumentCategory.WOODWIND,
+        SelectionStatus.UNSELECTED,
+      ),
+      anInstrument(
+        "piccolo",
+        InstrumentCategory.WOODWIND,
+        SelectionStatus.SELECTED,
+      ),
+      anInstrument(
+        "cello",
+        InstrumentCategory.STRINGS,
+        SelectionStatus.SELECTED,
+      ),
     ];
   });
 

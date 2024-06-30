@@ -1,4 +1,4 @@
-import { SelectionStatus } from "../../domain/instrumentGroup";
+import { SelectionStatus } from "../../domain/instrument/selectionStatus";
 import { appColor } from "../style/appColor";
 import { Fragment } from "react";
 

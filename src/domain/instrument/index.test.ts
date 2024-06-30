@@ -1,12 +1,13 @@
 import { assert, describe, expect, it } from "vitest";
 import { InstrumentCategory } from "./instrumentCategory";
-import { canPlay, canPlayAll, createInstrument, setIsSelected } from ".";
+import { canPlay, canPlayAll, createInstrument, setSelectionStatus } from ".";
 import { TypeAssertionError } from "../error/appError";
 import { RgbColor, createRgbColor } from "../rgbColor";
 import { asNoteNumber, assertNoteNumber } from "../noteNumber";
 import { asUInt8 } from "../uint8";
 import { createNoteRange } from "../noteRange";
 import { asFilledString } from "../filledString";
+import { SelectionStatus } from "./selectionStatus";
 
 const createTestInstrument = ({
   name = "xxx",
@@ -65,7 +66,7 @@ describe("initialization", () => {
     const sut = createTestInstrument();
 
     // then
-    expect(sut.isSelected).toBe(false);
+    expect(sut.selectionStatus).toBe(SelectionStatus.UNSELECTED);
   });
 });
 
@@ -123,40 +124,49 @@ describe(canPlayAll, () => {
   );
 });
 
-describe(setIsSelected, () => {
+describe(setSelectionStatus, () => {
   it.each([
-    { isSelected: false, expected: false },
-    { isSelected: true, expected: true },
+    { selectionStatus: SelectionStatus.UNSELECTED },
+    { selectionStatus: SelectionStatus.SELECTED },
   ])(
-    "非選択状態で実行: set $isSelected => $expected",
-    ({ isSelected, expected }) => {
+    "非選択状態で実行: set $selectionStatus => $selectionStatus",
+    ({ selectionStatus }) => {
       // given
       const sut = createTestInstrument();
-      assert(!sut.isSelected, "非選択状態のはず");
+      assert(
+        sut.selectionStatus === SelectionStatus.UNSELECTED,
+        "非選択状態のはず",
+      );
 
       // when
-      const result = setIsSelected(sut, isSelected);
+      const result = setSelectionStatus(sut, selectionStatus);
 
       // then
-      expect(result.isSelected).toBe(expected);
+      expect(result.selectionStatus).toBe(selectionStatus);
     },
   );
 
   it.each([
-    { isSelected: false, expected: false },
-    { isSelected: true, expected: true },
+    { selectionStatus: SelectionStatus.UNSELECTED },
+    { selectionStatus: SelectionStatus.SELECTED },
   ])(
-    "選択状態で実行: set $isSelected => $expected",
-    ({ isSelected, expected }) => {
+    "選択状態で実行: set $selectionStatus => $selectionStatus",
+    ({ selectionStatus }) => {
       // given
-      const sut = setIsSelected(createTestInstrument(), true);
-      assert(sut.isSelected, "選択状態のはず");
+      const sut = setSelectionStatus(
+        createTestInstrument(),
+        SelectionStatus.SELECTED,
+      );
+      assert(
+        sut.selectionStatus === SelectionStatus.SELECTED,
+        "選択状態のはず",
+      );
 
       // when
-      const result = setIsSelected(sut, isSelected);
+      const result = setSelectionStatus(sut, selectionStatus);
 
       // then
-      expect(result.isSelected).toBe(expected);
+      expect(result.selectionStatus).toBe(selectionStatus);
     },
   );
 });

@@ -6,7 +6,6 @@ import { InstrumentId } from "../../../domain/instrument/instrumentId";
 import { dispatch } from "../../../infrastructure/zustand/appStore";
 import { useInstrument } from "../../../infrastructure/zustand/instruments/selector";
 import { appColor } from "../../style/appColor";
-import { SelectionStatus } from "../../../domain/instrumentGroup";
 import { Checkbox } from "../../common/checkbox";
 
 const styles = {
@@ -29,15 +28,12 @@ type Props = { id: InstrumentId };
 
 export const InstrumentItem = ({ id }: Props) => {
   const instrument = useInstrument(id);
-  const selectionStatus = instrument.isSelected
-    ? SelectionStatus.SELECTED
-    : SelectionStatus.UNSELECTED;
 
   const handleClick = () => dispatch(toggleInstrumentSelection(id));
 
   return (
     <div onClick={handleClick} css={styles.root}>
-      <Checkbox selectionStatus={selectionStatus} />
+      <Checkbox selectionStatus={instrument.selectionStatus} />
       <span css={styles.label}>{instrument.name}</span>
     </div>
   );
