@@ -4,22 +4,19 @@ import { css, jsx } from "@emotion/react";
 import { Instruments } from "./instruments";
 import { Keyboard } from "./keyboard";
 import { AppBar } from "./appBar";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
+import { useShouldShowInstruments } from "../infrastructure/zustand/uiState/selector";
 
 const style = css({
   display: "flex",
 });
 
 function App() {
-  const [shouldShowInstruments, setShouldShowInstruments] = useState(false);
-
-  const handleInstrumentsMenuClick = () => {
-    setShouldShowInstruments(!shouldShowInstruments);
-  };
+  const shouldShowInstruments = useShouldShowInstruments();
 
   return (
     <Fragment>
-      <AppBar onInstrumentsMenuClick={handleInstrumentsMenuClick} />
+      <AppBar />
       <div css={style}>
         {shouldShowInstruments && <Instruments />}
         <Keyboard />
