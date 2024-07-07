@@ -2,7 +2,6 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 import { appColor } from "../style/appColor";
-import { appDimen } from "../style/appDimen";
 import { dispatch } from "../../infrastructure/zustand/appStore";
 import { toggleShouldShowInstruments } from "../../infrastructure/zustand/uiState/action";
 import { useShouldShowInstruments } from "../../infrastructure/zustand/uiState/selector";
@@ -13,7 +12,6 @@ const styles = {
     alignItems: "center",
     backgroundColor: appColor.background,
     display: "flex",
-    height: appDimen.appBarHeight,
     position: "sticky",
     top: 0,
     zIndex: 1,
