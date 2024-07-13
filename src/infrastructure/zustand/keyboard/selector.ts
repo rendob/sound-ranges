@@ -14,7 +14,9 @@ const selectKeyboardKeys = (state: KeyboardState): KeyboardKey[] =>
 const selectKeyboardKey = (id: KeyboardKeyId) => (state: KeyboardState) =>
   state.keys.byId[id];
 
-const selectSelectedNoteRange = (state: KeyboardState): NoteRange | null => {
+export const selectSelectedNoteRange = (
+  state: KeyboardState,
+): NoteRange | null => {
   const keys = selectKeyboardKeys(state);
   return getSelectedNoteRange(keys);
 };

@@ -1,6 +1,7 @@
 import { Instrument } from "../../../domain/instrument";
 import { InstrumentCategory } from "../../../domain/instrument/instrumentCategory";
 import { InstrumentId } from "../../../domain/instrument/instrumentId";
+import { SelectionStatus } from "../../../domain/instrument/selectionStatus";
 import {
   InstrumentGroup,
   getInstrumentGroup,
@@ -11,6 +12,13 @@ import { InstrumentsState } from "./state";
 
 const selectInstruments = (state: InstrumentsState): Instrument[] =>
   getAllItems(state.instruments);
+
+export const selectSelectedInstruments = (
+  state: InstrumentsState,
+): Instrument[] =>
+  selectInstruments(state).filter(
+    (instrument) => instrument.selectionStatus === SelectionStatus.SELECTED,
+  );
 
 const selectInstrument = (id: InstrumentId) => (state: InstrumentsState) =>
   state.instruments.byId[id];
