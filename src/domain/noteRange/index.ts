@@ -1,6 +1,8 @@
 import { TypeAssertionError } from "../error/appError";
-import { NoteNumber } from "../noteNumber";
+import { NoteNumber, getNoteNames } from "../noteNumber";
 import { Brand } from "../brand";
+import { Int, asInt } from "../int";
+import { PitchType } from "../noteNumber/pitchType";
 
 const typeName = "NoteRangeType";
 type NoteRangeType = {
@@ -29,6 +31,19 @@ const asNoteRange = (v: NoteRangeType): NoteRange => {
 };
 
 // ***** method *****
+
+export const getSize = (noteRange: NoteRange): Int =>
+  asInt(noteRange.max - noteRange.min + 1);
+
+export const getRangeName = (
+  noteRange: NoteRange,
+  pitchType: PitchType,
+): string => {
+  const separator = "/";
+  const min = getNoteNames(noteRange.min, pitchType).join(separator);
+  const max = getNoteNames(noteRange.max, pitchType).join(separator);
+  return `${min} 〜 ${max}`;
+};
 
 export const contains = (
   noteRange: NoteRange,

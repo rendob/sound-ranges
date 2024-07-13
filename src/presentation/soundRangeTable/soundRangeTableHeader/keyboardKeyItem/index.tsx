@@ -2,18 +2,18 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 import React from "react";
-import { KeyboardKeyId } from "../../../domain/keyboardKey/keyboardKeyId";
-import { dispatch } from "../../../infrastructure/zustand/appStore";
+import { KeyboardKeyId } from "../../../../domain/keyboardKey/keyboardKeyId";
+import { dispatch } from "../../../../infrastructure/zustand/appStore";
 import {
   clearKeyboardSelection,
   selectKeyboardKey,
-} from "../../../infrastructure/zustand/keyboard/action";
-import { useKeyboardKey } from "../../../infrastructure/zustand/keyboard/selector";
-import { appDimen } from "../../style/appDimen";
-import { appColor } from "../../style/appColor";
-import { isBlackKey } from "../../../domain/keyboardKey";
-import { getNoteNames, isC } from "../../../domain/noteNumber";
-import { PitchType } from "../../../domain/noteNumber/pitchType";
+} from "../../../../infrastructure/zustand/keyboard/action";
+import { useKeyboardKey } from "../../../../infrastructure/zustand/keyboard/selector";
+import { appDimen } from "../../../style/appDimen";
+import { appColor } from "../../../style/appColor";
+import { isBlackKey } from "../../../../domain/keyboardKey";
+import { getNoteNames, isC } from "../../../../domain/noteNumber";
+import { PitchType } from "../../../../domain/noteNumber/pitchType";
 
 const styles = {
   root: css({

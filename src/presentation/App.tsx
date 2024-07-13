@@ -2,9 +2,9 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 import { Instruments } from "./instruments";
-import { Keyboard } from "./keyboard";
 import { AppBar } from "./appBar";
 import { useShouldShowInstruments } from "../infrastructure/zustand/uiState/selector";
+import { SoundRangeTable } from "./soundRangeTable";
 
 const styles = {
   root: css({
@@ -27,7 +27,7 @@ function App() {
       <AppBar />
       <div css={styles.content}>
         {shouldShowInstruments && <Instruments />}
-        <Keyboard />
+        <SoundRangeTable />
       </div>
     </div>
   );
