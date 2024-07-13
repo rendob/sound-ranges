@@ -11,6 +11,7 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     height: "100vh",
+    userSelect: "none",
   }),
   content: css({
     display: "flex",

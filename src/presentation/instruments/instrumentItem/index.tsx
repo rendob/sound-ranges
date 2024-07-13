@@ -14,7 +14,6 @@ const styles = {
     cursor: "pointer",
     display: "flex",
     padding: "4px 16px",
-    userSelect: "none",
     ":hover": {
       backgroundColor: appColor.hover(appColor.background),
     },

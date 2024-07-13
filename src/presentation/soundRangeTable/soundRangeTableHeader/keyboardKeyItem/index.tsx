@@ -18,7 +18,6 @@ import { PitchType } from "../../../../domain/noteNumber/pitchType";
 const styles = {
   root: css({
     cursor: "pointer",
-    userSelect: "none",
   }),
 };
 

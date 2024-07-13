@@ -18,7 +18,6 @@ const styles = {
     padding: "4px",
     position: "sticky",
     top: "0",
-    userSelect: "none",
     ":hover": {
       backgroundColor: appColor.hover(appColor.background),
     },
