@@ -12,10 +12,13 @@ import { useKeyboardKey } from "../../../infrastructure/zustand/keyboard/selecto
 import { appDimen } from "../../style/appDimen";
 import { appColor } from "../../style/appColor";
 import { isBlackKey } from "../../../domain/keyboardKey";
+import { getNoteNames, isC } from "../../../domain/noteNumber";
+import { PitchType } from "../../../domain/noteNumber/pitchType";
 
 const styles = {
   root: css({
     cursor: "pointer",
+    userSelect: "none",
   }),
 };
 
@@ -28,6 +31,8 @@ export const KeyboardKeyItem = ({ id }: Props) => {
   const color = (
     isBlackKey(keyboardKey) ? appColor.keyboard.black : appColor.keyboard.white
   )(keyboardKey.isSelected);
+  const hasLabel = isC(keyboardKey.noteNumber);
+  const label = getNoteNames(keyboardKey.noteNumber, PitchType.YAMAHA)[0];
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!e.shiftKey) {
@@ -45,16 +50,44 @@ export const KeyboardKeyItem = ({ id }: Props) => {
   };
 
   return (
-    <rect
-      x={x}
-      y="0"
-      width={appDimen.keyboardKeyWidth}
-      height={appDimen.keyboardHeight}
-      fill={color}
-      stroke="black"
+    <g
       onMouseDown={handleMouseDown}
       onMouseEnter={handleMouseEnter}
       css={styles.root}
-    />
+    >
+      <rect
+        x={x}
+        y="0"
+        width={appDimen.keyboardKeyWidth}
+        height={appDimen.keyboardHeight}
+        fill={color}
+        stroke="black"
+      />
+
+      {hasLabel && <KeyLabel label={label} keyX={x} />}
+    </g>
+  );
+};
+
+type KeyLabelProps = {
+  label: string;
+  keyX: number;
+};
+
+const KeyLabel = ({ label, keyX }: KeyLabelProps) => {
+  const centerX = keyX + appDimen.keyboardKeyWidth / 2;
+  const baselineY = appDimen.keyboardHeight * 0.9;
+  const fontSize = appDimen.keyboardKeyWidth * 0.5;
+
+  return (
+    <text
+      x={centerX}
+      y={baselineY}
+      fill="black"
+      fontSize={fontSize}
+      textAnchor="middle"
+    >
+      {label}
+    </text>
   );
 };
