@@ -36,7 +36,7 @@ export const createInstrument = (
     category,
     range,
     color,
-    selectionStatus: SelectionStatus.UNSELECTED,
+    selectionStatus: SelectionStatus.SELECTED,
   });
 
 // ***** assertion *****

@@ -59,14 +59,14 @@ describe(createInstrument, () => {
 });
 
 describe("initialization", () => {
-  it("初期化時は非選択状態", () => {
+  it("初期化時は選択状態", () => {
     // given
 
     // when
     const sut = createTestInstrument();
 
     // then
-    expect(sut.selectionStatus).toBe(SelectionStatus.UNSELECTED);
+    expect(sut.selectionStatus).toBe(SelectionStatus.SELECTED);
   });
 });
 
@@ -129,13 +129,13 @@ describe(setSelectionStatus, () => {
     { selectionStatus: SelectionStatus.UNSELECTED },
     { selectionStatus: SelectionStatus.SELECTED },
   ])(
-    "非選択状態で実行: set $selectionStatus => $selectionStatus",
+    "選択状態で実行: set $selectionStatus => $selectionStatus",
     ({ selectionStatus }) => {
       // given
       const sut = createTestInstrument();
       assert(
-        sut.selectionStatus === SelectionStatus.UNSELECTED,
-        "非選択状態のはず",
+        sut.selectionStatus === SelectionStatus.SELECTED,
+        "選択状態のはず",
       );
 
       // when
@@ -150,16 +150,16 @@ describe(setSelectionStatus, () => {
     { selectionStatus: SelectionStatus.UNSELECTED },
     { selectionStatus: SelectionStatus.SELECTED },
   ])(
-    "選択状態で実行: set $selectionStatus => $selectionStatus",
+    "非選択状態で実行: set $selectionStatus => $selectionStatus",
     ({ selectionStatus }) => {
       // given
       const sut = setSelectionStatus(
         createTestInstrument(),
-        SelectionStatus.SELECTED,
+        SelectionStatus.UNSELECTED,
       );
       assert(
-        sut.selectionStatus === SelectionStatus.SELECTED,
-        "選択状態のはず",
+        sut.selectionStatus === SelectionStatus.UNSELECTED,
+        "非選択状態のはず",
       );
 
       // when
