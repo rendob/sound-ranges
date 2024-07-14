@@ -141,14 +141,17 @@ describe(getNoteNames, () => {
     { noteNumber: 58, expected: ["A♯3", "B♭3"] },
     { noteNumber: 75, expected: ["D♯5", "E♭5"] },
     { noteNumber: 113, expected: ["F8"] },
-  ])("国際式の場合: $noteNumber => $expected", ({ noteNumber, expected }) => {
-    // given
-    const sut = asNoteNumber(noteNumber);
+  ])(
+    "ローランドの場合: $noteNumber => $expected",
+    ({ noteNumber, expected }) => {
+      // given
+      const sut = asNoteNumber(noteNumber);
 
-    // when
-    const noteNames = getNoteNames(sut, PitchType.INTERNATIONAL);
+      // when
+      const noteNames = getNoteNames(sut, PitchType.ROLAND);
 
-    // then
-    expect(noteNames).toStrictEqual(expected);
-  });
+      // then
+      expect(noteNames).toStrictEqual(expected);
+    },
+  );
 });

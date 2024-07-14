@@ -75,12 +75,12 @@ describe(getRangeName, () => {
   it.each([
     { min: 0, max: 60, expected: "C-1 〜 C4" },
     { min: 58, max: 113, expected: "A♯3/B♭3 〜 F8" },
-  ])("国際式の場合: $min ~ $max => $expected", ({ min, max, expected }) => {
+  ])("ローランドの場合: $min ~ $max => $expected", ({ min, max, expected }) => {
     // given
     const sut = createNoteRange(asNoteNumber(min), asNoteNumber(max));
 
     // when
-    const noteNames = getRangeName(sut, PitchType.INTERNATIONAL);
+    const noteNames = getRangeName(sut, PitchType.ROLAND);
 
     // then
     expect(noteNames).toBe(expected);
