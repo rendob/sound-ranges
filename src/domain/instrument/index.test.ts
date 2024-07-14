@@ -1,31 +1,27 @@
 import { assert, describe, expect, it } from "vitest";
 import { InstrumentCategory } from "./instrumentCategory";
-import { canPlay, canPlayAll, createInstrument, setIsSelected } from ".";
+import { canPlay, canPlayAll, createInstrument, setSelectionStatus } from ".";
 import { TypeAssertionError } from "../error/appError";
-import { RgbColor, createRgbColor } from "../rgbColor";
 import { asNoteNumber, assertNoteNumber } from "../noteNumber";
-import { asUInt8 } from "../uint8";
 import { createNoteRange } from "../noteRange";
 import { asFilledString } from "../filledString";
+import { SelectionStatus } from "./selectionStatus";
 
 const createTestInstrument = ({
   name = "xxx",
   category = InstrumentCategory.BRASS,
   min = 0,
   max = 127,
-  color = createRgbColor(asUInt8(0), asUInt8(0), asUInt8(0)),
 }: {
   name?: string;
   category?: InstrumentCategory;
   min?: number;
   max?: number;
-  color?: RgbColor;
 } = {}) =>
   createInstrument(
     asFilledString(name),
     category,
     createNoteRange(asNoteNumber(min), asNoteNumber(max)),
-    color,
   );
 
 describe(createInstrument, () => {
@@ -58,14 +54,14 @@ describe(createInstrument, () => {
 });
 
 describe("initialization", () => {
-  it("初期化時は非選択状態", () => {
+  it("初期化時は選択状態", () => {
     // given
 
     // when
     const sut = createTestInstrument();
 
     // then
-    expect(sut.isSelected).toBe(false);
+    expect(sut.selectionStatus).toBe(SelectionStatus.SELECTED);
   });
 });
 
@@ -123,40 +119,49 @@ describe(canPlayAll, () => {
   );
 });
 
-describe(setIsSelected, () => {
+describe(setSelectionStatus, () => {
   it.each([
-    { isSelected: false, expected: false },
-    { isSelected: true, expected: true },
+    { selectionStatus: SelectionStatus.UNSELECTED },
+    { selectionStatus: SelectionStatus.SELECTED },
   ])(
-    "非選択状態で実行: set $isSelected => $expected",
-    ({ isSelected, expected }) => {
+    "選択状態で実行: set $selectionStatus => $selectionStatus",
+    ({ selectionStatus }) => {
       // given
       const sut = createTestInstrument();
-      assert(!sut.isSelected, "非選択状態のはず");
+      assert(
+        sut.selectionStatus === SelectionStatus.SELECTED,
+        "選択状態のはず",
+      );
 
       // when
-      const result = setIsSelected(sut, isSelected);
+      const result = setSelectionStatus(sut, selectionStatus);
 
       // then
-      expect(result.isSelected).toBe(expected);
+      expect(result.selectionStatus).toBe(selectionStatus);
     },
   );
 
   it.each([
-    { isSelected: false, expected: false },
-    { isSelected: true, expected: true },
+    { selectionStatus: SelectionStatus.UNSELECTED },
+    { selectionStatus: SelectionStatus.SELECTED },
   ])(
-    "選択状態で実行: set $isSelected => $expected",
-    ({ isSelected, expected }) => {
+    "非選択状態で実行: set $selectionStatus => $selectionStatus",
+    ({ selectionStatus }) => {
       // given
-      const sut = setIsSelected(createTestInstrument(), true);
-      assert(sut.isSelected, "選択状態のはず");
+      const sut = setSelectionStatus(
+        createTestInstrument(),
+        SelectionStatus.UNSELECTED,
+      );
+      assert(
+        sut.selectionStatus === SelectionStatus.UNSELECTED,
+        "非選択状態のはず",
+      );
 
       // when
-      const result = setIsSelected(sut, isSelected);
+      const result = setSelectionStatus(sut, selectionStatus);
 
       // then
-      expect(result.isSelected).toBe(expected);
+      expect(result.selectionStatus).toBe(selectionStatus);
     },
   );
 });

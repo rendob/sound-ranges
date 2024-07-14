@@ -1,11 +1,19 @@
+/** @jsxRuntime classic */
+/** @jsx jsx */
+import { css, jsx } from "@emotion/react";
 import { InstrumentCategory } from "../../domain/instrument/instrumentCategory";
 import { InstrumentGroupItem } from "./instrumentGroupItem";
+
+const style = css({
+  height: "auto",
+  overflowY: "scroll",
+});
 
 export const Instruments = () => {
   const categories = Object.values(InstrumentCategory);
 
   return (
-    <div>
+    <div css={style}>
       {categories.map((category) => (
         <InstrumentGroupItem key={category} category={category} />
       ))}

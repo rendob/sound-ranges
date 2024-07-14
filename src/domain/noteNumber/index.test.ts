@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { asNoteNumber, assertNoteNumber, getNoteNames, isAccidental } from ".";
+import {
+  asNoteNumber,
+  assertNoteNumber,
+  getNoteNames,
+  isAccidental,
+  isC,
+} from ".";
 import { TypeAssertionError } from "../error/appError";
 import { PitchType } from "./pitchType";
 
@@ -49,6 +55,29 @@ describe(assertNoteNumber, () => {
 
     // then
     expect(block).toThrow(TypeAssertionError);
+  });
+});
+
+describe(isC, () => {
+  it.each([
+    { noteNumber: 0, pitchName: "C", expected: true },
+    { noteNumber: 60, pitchName: "C", expected: true },
+    { noteNumber: 28, pitchName: "E", expected: false },
+    { noteNumber: 55, pitchName: "G", expected: false },
+    { noteNumber: 83, pitchName: "B", expected: false },
+    { noteNumber: 1, pitchName: "C♯/D♭", expected: false },
+    { noteNumber: 30, pitchName: "E♯/F♭", expected: false },
+    { noteNumber: 44, pitchName: "G♯/A♭", expected: false },
+    { noteNumber: 58, pitchName: "A♯/B♭", expected: false },
+  ])("$pitchName => $expected", ({ noteNumber, expected }) => {
+    // given
+    const sut = asNoteNumber(noteNumber);
+
+    // when
+    const result = isC(sut);
+
+    // then
+    expect(result).toBe(expected);
   });
 });
 

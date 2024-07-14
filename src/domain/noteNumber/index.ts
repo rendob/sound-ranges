@@ -49,6 +49,9 @@ export const asNoteNumber = (v: number): NoteNumber => {
 
 // ***** method *****
 
+export const isC = (noteNumber: NoteNumber): boolean =>
+  getPitchNumber(noteNumber) === 0;
+
 export const isAccidental = (noteNumber: NoteNumber): boolean =>
   ACCIDENTAL_PITCH_NUMBERS.includes(getPitchNumber(noteNumber));
 

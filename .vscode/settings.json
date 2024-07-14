@@ -4,5 +4,8 @@
   "workbench.editor.customLabels.patterns": {
     "**/src/**/index.{ts,tsx}": "${dirname}.${extname}",
     "**/src/**/index.test.{ts,tsx}": "${dirname}.test.${extname}"
+  },
+  "color-highlight": {
+    "markerType": "dot-before",
   }
 }

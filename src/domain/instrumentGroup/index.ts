@@ -1,14 +1,7 @@
 import { Instrument } from "../instrument";
 import { InstrumentCategory } from "../instrument/instrumentCategory";
 import { InstrumentId } from "../instrument/instrumentId";
-
-export const SelectionStatus = {
-  SELECTED: "Selected",
-  MIXED: "Mixed",
-  UNSELECTED: "Unselected",
-} as const;
-export type SelectionStatus =
-  (typeof SelectionStatus)[keyof typeof SelectionStatus];
+import { SelectionStatus } from "../instrument/selectionStatus";
 
 export type InstrumentGroup = {
   id: InstrumentCategory;
@@ -32,9 +25,17 @@ export const getInstrumentGroup = (
 };
 
 const getSelectionStatus = (instruments: Instrument[]): SelectionStatus => {
-  if (instruments.every((instrument) => instrument.isSelected)) {
+  if (
+    instruments.every(
+      (instrument) => instrument.selectionStatus === SelectionStatus.SELECTED,
+    )
+  ) {
     return SelectionStatus.SELECTED;
-  } else if (instruments.some((instrument) => instrument.isSelected)) {
+  } else if (
+    instruments.some(
+      (instrument) => instrument.selectionStatus === SelectionStatus.SELECTED,
+    )
+  ) {
     return SelectionStatus.MIXED;
   } else {
     return SelectionStatus.UNSELECTED;

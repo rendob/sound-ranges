@@ -1,11 +1,11 @@
 import { InstrumentCategory } from "./instrumentCategory";
 import { NoteRange, contains } from "../noteRange";
-import { RgbColor } from "../rgbColor";
 import { NoteNumber } from "../noteNumber";
 import { Brand } from "../brand";
 import { InstrumentId, asInstrumentId } from "./instrumentId";
 import { FilledString } from "../filledString";
 import { TypeAssertionError } from "../error/appError";
+import { SelectionStatus } from "./selectionStatus";
 
 const typeName = "Instrument";
 type InstrumentType = {
@@ -13,8 +13,10 @@ type InstrumentType = {
   readonly name: FilledString;
   readonly category: InstrumentCategory;
   readonly range: NoteRange;
-  readonly color: RgbColor;
-  readonly isSelected: boolean;
+  readonly selectionStatus: Exclude<
+    SelectionStatus,
+    typeof SelectionStatus.MIXED
+  >;
 };
 export type Instrument = Brand<InstrumentType, typeof typeName>;
 
@@ -24,15 +26,13 @@ export const createInstrument = (
   name: FilledString,
   category: InstrumentCategory,
   range: NoteRange,
-  color: RgbColor,
 ): Instrument =>
   asInstrument({
     id: asInstrumentId(name),
     name,
     category,
     range,
-    color,
-    isSelected: false,
+    selectionStatus: SelectionStatus.SELECTED,
   });
 
 // ***** assertion *****
@@ -64,11 +64,11 @@ export const canPlayAll = (
 ): boolean =>
   canPlay(instrument, noteRange.min) && canPlay(instrument, noteRange.max);
 
-export const setIsSelected = (
+export const setSelectionStatus = (
   instrument: Instrument,
-  isSelected: boolean,
+  selectionStatus: InstrumentType["selectionStatus"],
 ): Instrument =>
   asInstrument({
     ...instrument,
-    isSelected,
+    selectionStatus,
   });
