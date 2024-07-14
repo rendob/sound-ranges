@@ -8,10 +8,11 @@ import { SoundRangeItem } from "./soundRangeItem";
 import { appDimen } from "../../style/appDimen";
 
 const styles = {
-  root: css({
-    flex: 1,
-    overflow: "visible",
-  }),
+  root: (width: number) =>
+    css({
+      width: width,
+      flex: 1,
+    }),
 };
 
 type Props = {
@@ -27,7 +28,7 @@ export const SoundRangeTableBody = ({ width }: Props) => {
   };
 
   return (
-    <div onClick={handleClick} css={styles.root}>
+    <div onClick={handleClick} css={styles.root(width)}>
       <svg
         width={width}
         height={height}

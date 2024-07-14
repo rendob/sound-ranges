@@ -9,11 +9,13 @@ import { clearKeyboardSelection } from "../../../infrastructure/zustand/keyboard
 import { appDimen } from "../../style/appDimen";
 
 const styles = {
-  root: css({
-    height: appDimen.keyboardHeight,
-    position: "sticky",
-    top: "0",
-  }),
+  root: (width: number) =>
+    css({
+      width: width,
+      height: appDimen.keyboardHeight,
+      position: "sticky",
+      top: "0",
+    }),
 };
 
 type Props = {
@@ -30,7 +32,7 @@ export const SoundRangeTableHeader = ({ width }: Props) => {
   };
 
   return (
-    <div css={styles.root}>
+    <div css={styles.root(width)}>
       <svg
         width={width}
         height={appDimen.keyboardHeight}
