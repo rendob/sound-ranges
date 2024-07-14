@@ -21,6 +21,7 @@ const styles = {
     }),
   title: css({
     flexGrow: 1,
+    fontWeight: 700,
     padding: "8px",
   }),
 };
