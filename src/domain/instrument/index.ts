@@ -1,6 +1,5 @@
 import { InstrumentCategory } from "./instrumentCategory";
 import { NoteRange, contains } from "../noteRange";
-import { RgbColor } from "../rgbColor";
 import { NoteNumber } from "../noteNumber";
 import { Brand } from "../brand";
 import { InstrumentId, asInstrumentId } from "./instrumentId";
@@ -14,7 +13,6 @@ type InstrumentType = {
   readonly name: FilledString;
   readonly category: InstrumentCategory;
   readonly range: NoteRange;
-  readonly color: RgbColor;
   readonly selectionStatus: Exclude<
     SelectionStatus,
     typeof SelectionStatus.MIXED
@@ -28,14 +26,12 @@ export const createInstrument = (
   name: FilledString,
   category: InstrumentCategory,
   range: NoteRange,
-  color: RgbColor,
 ): Instrument =>
   asInstrument({
     id: asInstrumentId(name),
     name,
     category,
     range,
-    color,
     selectionStatus: SelectionStatus.SELECTED,
   });
 

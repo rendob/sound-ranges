@@ -2,9 +2,7 @@ import { assert, describe, expect, it } from "vitest";
 import { InstrumentCategory } from "./instrumentCategory";
 import { canPlay, canPlayAll, createInstrument, setSelectionStatus } from ".";
 import { TypeAssertionError } from "../error/appError";
-import { RgbColor, createRgbColor } from "../rgbColor";
 import { asNoteNumber, assertNoteNumber } from "../noteNumber";
-import { asUInt8 } from "../uint8";
 import { createNoteRange } from "../noteRange";
 import { asFilledString } from "../filledString";
 import { SelectionStatus } from "./selectionStatus";
@@ -14,19 +12,16 @@ const createTestInstrument = ({
   category = InstrumentCategory.BRASS,
   min = 0,
   max = 127,
-  color = createRgbColor(asUInt8(0), asUInt8(0), asUInt8(0)),
 }: {
   name?: string;
   category?: InstrumentCategory;
   min?: number;
   max?: number;
-  color?: RgbColor;
 } = {}) =>
   createInstrument(
     asFilledString(name),
     category,
     createNoteRange(asNoteNumber(min), asNoteNumber(max)),
-    color,
   );
 
 describe(createInstrument, () => {

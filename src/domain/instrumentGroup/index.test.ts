@@ -6,10 +6,8 @@ import {
 } from "../instrument";
 import { InstrumentCategory } from "../instrument/instrumentCategory";
 import { createNoteRange } from "../noteRange";
-import { createRgbColor } from "../rgbColor";
 import { InstrumentGroup, getInstrumentGroup } from ".";
 import { asNoteNumber } from "../noteNumber";
-import { asUInt8 } from "../uint8";
 import { asFilledString } from "../filledString";
 import { SelectionStatus } from "../instrument/selectionStatus";
 
@@ -22,7 +20,6 @@ const anInstrument = (
     asFilledString(name),
     category,
     createNoteRange(asNoteNumber(0), asNoteNumber(127)),
-    createRgbColor(asUInt8(0), asUInt8(0), asUInt8(0)),
   );
   return setSelectionStatus(instrument, selectionStatus);
 };
