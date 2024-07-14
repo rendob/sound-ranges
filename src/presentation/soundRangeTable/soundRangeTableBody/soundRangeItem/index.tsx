@@ -19,6 +19,10 @@ export const SoundRangeItem = ({ instrument, index }: Props) => {
 
   return (
     <g>
+      <Guideline x={x} y={y} />
+
+      <Guideline x={x + width} y={y} />
+
       <rect
         x={x}
         y={y}
@@ -36,5 +40,23 @@ export const SoundRangeItem = ({ instrument, index }: Props) => {
         {instrument.name} {getRangeName(instrument.range, PitchType.YAMAHA)}
       </text>
     </g>
+  );
+};
+
+type GuidelineProps = {
+  x: number;
+  y: number;
+};
+
+const Guideline = ({ x, y }: GuidelineProps) => {
+  return (
+    <line
+      x1={x}
+      y1={0}
+      x2={x}
+      y2={y}
+      stroke={appColor.primary}
+      strokeDasharray={4}
+    />
   );
 };

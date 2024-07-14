@@ -27,6 +27,16 @@ export const SoundRangeTableBody = ({ width }: Props) => {
     dispatch(clearKeyboardSelection());
   };
 
+  const items = displayedInstruments
+    .map((instrument, index) => (
+      <SoundRangeItem
+        key={instrument.id}
+        instrument={instrument}
+        index={index}
+      />
+    ))
+    .reverse();
+
   return (
     <div onClick={handleClick} css={styles.root(width)}>
       <svg
@@ -35,13 +45,7 @@ export const SoundRangeTableBody = ({ width }: Props) => {
         viewBox={`0 0 ${width} ${height}`}
         xmlns="http://www.w3.org/2000/svg"
       >
-        {displayedInstruments.map((instrument, index) => (
-          <SoundRangeItem
-            key={instrument.id}
-            instrument={instrument}
-            index={index}
-          />
-        ))}
+        {items}
       </svg>
     </div>
   );
