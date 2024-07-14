@@ -5,9 +5,11 @@ import { Instruments } from "./instruments";
 import { AppBar } from "./appBar";
 import { useShouldShowInstruments } from "../infrastructure/zustand/uiState/selector";
 import { SoundRangeTable } from "./soundRangeTable";
+import { appColor } from "./style/appColor";
 
 const styles = {
   root: css({
+    backgroundColor: appColor.background,
     display: "flex",
     flexDirection: "column",
     height: "100vh",

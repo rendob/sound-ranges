@@ -1,12 +1,12 @@
 export const appColor = {
-  primary: "#3F51b5",
-  onPrimary: "#E6E0E9",
-  background: "#141218",
-  onBackground: "#E6E0E9",
+  primary: "#3949AB",
+  onPrimary: "#E0E0E0",
+  background: "#212121",
+  onBackground: "#E0E0E0",
   selected: (base: string) => `color-mix(in srgb, ${base} 70%, white)`,
   hover: (base: string) => `color-mix(in srgb, ${base}, white)`,
   keyboard: {
-    white: (isSelected: boolean) => (isSelected ? "#7097ca" : "#d9d9da"),
-    black: (isSelected: boolean) => (isSelected ? "#37557c" : "#232323"),
+    white: (isSelected: boolean) => (isSelected ? "#7097ca" : "#e0e0e0"),
+    black: (isSelected: boolean) => (isSelected ? "#37557c" : "#000000"),
   },
 } as const;

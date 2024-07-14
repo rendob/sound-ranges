@@ -10,7 +10,6 @@ import { Icon } from "../common/icon";
 const styles = {
   root: css({
     alignItems: "center",
-    backgroundColor: appColor.background,
     display: "flex",
     position: "sticky",
     top: 0,
