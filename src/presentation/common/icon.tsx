@@ -15,7 +15,7 @@ const styles = {
 };
 
 type Props = {
-  onClick: () => void;
+  onClick: (e: React.MouseEvent) => void;
   className?: string;
   children: React.ReactNode;
 };

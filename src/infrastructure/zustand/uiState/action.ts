@@ -8,3 +8,15 @@ export const toggleShouldShowInstruments = () =>
       shouldShowInstruments: !selectShouldShowInstruments(state),
     };
   });
+
+export const openSettings = () =>
+  createAction((state) => ({
+    ...state,
+    shouldShowSettings: true,
+  }));
+
+export const closeSettings = () =>
+  createAction((state) => ({
+    ...state,
+    shouldShowSettings: false,
+  }));
