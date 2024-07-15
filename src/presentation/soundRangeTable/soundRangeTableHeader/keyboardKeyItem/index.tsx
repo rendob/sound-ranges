@@ -13,7 +13,7 @@ import { appDimen } from "../../../style/appDimen";
 import { appColor } from "../../../style/appColor";
 import { isBlackKey } from "../../../../domain/keyboardKey";
 import { getNoteNames, isC } from "../../../../domain/noteNumber";
-import { PitchType } from "../../../../domain/noteNumber/pitchType";
+import { usePitchType } from "../../../../infrastructure/zustand/config/selector";
 
 const styles = {
   root: css({
@@ -25,13 +25,14 @@ type Props = { id: KeyboardKeyId };
 
 export const KeyboardKeyItem = ({ id }: Props) => {
   const keyboardKey = useKeyboardKey(id);
+  const pitchType = usePitchType();
 
   const x = keyboardKey.noteNumber * appDimen.keyboardKeyWidth;
   const color = (
     isBlackKey(keyboardKey) ? appColor.keyboard.black : appColor.keyboard.white
   )(keyboardKey.isSelected);
   const hasLabel = isC(keyboardKey.noteNumber);
-  const label = getNoteNames(keyboardKey.noteNumber, PitchType.YAMAHA)[0];
+  const label = getNoteNames(keyboardKey.noteNumber, pitchType)[0];
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!e.shiftKey) {
