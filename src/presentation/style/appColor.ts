@@ -3,6 +3,8 @@ export const appColor = {
   onPrimary: "#E0E0E0",
   background: "#212121",
   onBackground: "#E0E0E0",
+  surface: "#424242",
+  onSurface: "#E0E0E0",
   selected: (base: string) => `color-mix(in srgb, ${base} 70%, white)`,
   hover: (base: string) => `color-mix(in srgb, ${base}, white)`,
   keyboard: {
