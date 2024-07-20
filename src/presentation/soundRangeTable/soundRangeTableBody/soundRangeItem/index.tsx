@@ -1,6 +1,6 @@
 import { Instrument } from "../../../../domain/instrument";
-import { PitchType } from "../../../../domain/noteNumber/pitchType";
 import { getRangeName, getSize } from "../../../../domain/noteRange";
+import { usePitchType } from "../../../../infrastructure/zustand/config/selector";
 import { appColor } from "../../../style/appColor";
 import { appDimen } from "../../../style/appDimen";
 
@@ -11,6 +11,8 @@ const itemContentHeight =
 type Props = { instrument: Instrument; index: number };
 
 export const SoundRangeItem = ({ instrument, index }: Props) => {
+  const pitchType = usePitchType();
+
   const x = instrument.range.min * appDimen.keyboardKeyWidth;
   const width = getSize(instrument.range) * appDimen.keyboardKeyWidth;
   const centerX = x + width / 2;
@@ -37,7 +39,7 @@ export const SoundRangeItem = ({ instrument, index }: Props) => {
         fill={appColor.onPrimary}
         textAnchor="middle"
       >
-        {instrument.name} {getRangeName(instrument.range, PitchType.YAMAHA)}
+        {instrument.name} {getRangeName(instrument.range, pitchType)}
       </text>
     </g>
   );
