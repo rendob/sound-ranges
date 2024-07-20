@@ -26,6 +26,9 @@ const styles = {
   label: css({
     marginRight: "8px",
   }),
+  selector: css({
+    cursor: "pointer",
+  }),
 };
 
 export const SettingsDialog = () => {
@@ -56,6 +59,7 @@ export const SettingsDialog = () => {
           id={pitchTypeId}
           value={currentPitchType.name}
           onChange={handlePitchTypeChange}
+          css={styles.selector}
         >
           {pitchTypes.map((pitchType) => (
             <option key={pitchType.name} value={pitchType.name}>
