@@ -12,8 +12,8 @@ import { usePitchType } from "../../../infrastructure/zustand/config/selector";
 
 const styles = {
   root: css({
-    backgroundColor: appColor.surface,
-    color: appColor.onSurface,
+    backgroundColor: appColor.background,
+    border: `1px solid ${appColor.border}`,
     padding: "8px",
     position: "absolute",
     right: "4px",

@@ -16,6 +16,7 @@ import React from "react";
 const styles = {
   root: css({
     alignItems: "center",
+    borderBottom: `1px solid ${appColor.border}`,
     display: "flex",
     position: "sticky",
     top: 0,
