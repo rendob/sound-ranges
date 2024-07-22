@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   asNoteNumber,
   assertNoteNumber,
+  getFrequency,
   getNoteNames,
   isAccidental,
   isC,
@@ -154,4 +155,23 @@ describe(getNoteNames, () => {
       expect(noteNames).toStrictEqual(expected);
     },
   );
+});
+
+describe(getFrequency, () => {
+  it.each([
+    { noteNumber: 0, expected: 8.2 },
+    { noteNumber: 34, expected: 58.3 },
+    { noteNumber: 60, expected: 261.6 },
+    { noteNumber: 69, expected: 440.0 },
+    { noteNumber: 123, expected: 9956.1 },
+  ])("frequency of $noteNumber => $expected", ({ noteNumber, expected }) => {
+    // given
+    const sut = asNoteNumber(noteNumber);
+
+    // when
+    const result = getFrequency(sut);
+
+    // then
+    expect(result).toBeCloseTo(expected);
+  });
 });
