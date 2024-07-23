@@ -1,3 +1,4 @@
+import { round } from "../../util/round";
 import { Brand } from "../brand";
 import { TypeAssertionError } from "../error/appError";
 import { Int, asInt, assertInt } from "../int";
@@ -62,6 +63,16 @@ export const getNoteNames = (
   const pitchNames = PITCH_NAMES[getPitchNumber(noteNumber)];
   const octave = pitchType.minOctave + Math.floor(noteNumber / 12);
   return pitchNames.map((pitchName) => `${pitchName}${octave}`);
+};
+
+export const getFrequency = (noteNumber: NoteNumber): number => {
+  const midA = {
+    noteNumber: asNoteNumber(69),
+    frequency: 440,
+  } as const;
+  const exponent = (noteNumber - midA.noteNumber) / 12;
+  const frequency = midA.frequency * 2 ** exponent;
+  return round(frequency, 0.1);
 };
 
 const getPitchNumber = (noteNumber: NoteNumber): Int => asInt(noteNumber % 12);

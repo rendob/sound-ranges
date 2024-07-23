@@ -14,6 +14,7 @@ import { appColor } from "../../../style/appColor";
 import { isBlackKey } from "../../../../domain/keyboardKey";
 import { getNoteNames, isC } from "../../../../domain/noteNumber";
 import { usePitchType } from "../../../../infrastructure/zustand/config/selector";
+import { soundPlayer } from "../../../common/soundPlayer";
 
 const styles = {
   root: css({
@@ -34,18 +35,23 @@ export const KeyboardKeyItem = ({ id }: Props) => {
   const hasLabel = isC(keyboardKey.noteNumber);
   const label = getNoteNames(keyboardKey.noteNumber, pitchType)[0];
 
+  const pressKey = () => {
+    dispatch(selectKeyboardKey(id));
+    soundPlayer.playNote(keyboardKey.noteNumber);
+  };
+
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!e.shiftKey) {
       dispatch(clearKeyboardSelection());
     }
-    dispatch(selectKeyboardKey(id));
+    pressKey();
     e.stopPropagation();
   };
 
   const handleMouseEnter = (e: React.MouseEvent) => {
     // left click
     if (e.buttons === 1) {
-      dispatch(selectKeyboardKey(id));
+      pressKey();
     }
   };
 
