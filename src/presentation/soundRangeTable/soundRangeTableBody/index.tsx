@@ -10,9 +10,16 @@ import { appDimen } from "../../style/appDimen";
 const styles = {
   root: (width: number) =>
     css({
-      width: width,
       flex: 1,
+      position: "relative",
+      width: width,
     }),
+  copyright: css({
+    bottom: 0,
+    position: "absolute",
+    right: 0,
+    fontSize: "0.8rem",
+  }),
 };
 
 type Props = {
@@ -47,6 +54,8 @@ export const SoundRangeTableBody = ({ width }: Props) => {
       >
         {items}
       </svg>
+
+      <div css={styles.copyright}>© 2024-2024 RendoB</div>
     </div>
   );
 };

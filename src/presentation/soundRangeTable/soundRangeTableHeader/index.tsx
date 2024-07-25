@@ -15,6 +15,7 @@ const styles = {
       height: appDimen.keyboardHeight,
       position: "sticky",
       top: "0",
+      zIndex: 1,
     }),
 };
 
