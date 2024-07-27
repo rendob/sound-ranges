@@ -1,11 +1,7 @@
 import { Instrument } from "../../../domain/instrument";
-import { InstrumentCategory } from "../../../domain/instrument/instrumentCategory";
 import { InstrumentId } from "../../../domain/instrument/instrumentId";
 import { SelectionStatus } from "../../../domain/instrument/selectionStatus";
-import {
-  InstrumentGroup,
-  getInstrumentGroup,
-} from "../../../domain/instrumentGroup";
+import { InstrumentGroup } from "../../../domain/instrumentGroup";
 import { getAllItems } from "../../../util/normalize";
 import { useAppStore } from "../appStore";
 import { InstrumentsState } from "./state";
@@ -23,11 +19,28 @@ export const selectSelectedInstruments = (
 const selectInstrument = (id: InstrumentId) => (state: InstrumentsState) =>
   state.instruments.byId[id];
 
-export const selectInstrumentGroup =
-  (category: InstrumentCategory) =>
-  (state: InstrumentsState): InstrumentGroup => {
-    const instruments = selectInstruments(state);
-    return getInstrumentGroup(instruments, category);
+export const selectInstrumentGroupSelectionStatus =
+  (instrumentGroup: InstrumentGroup) => (state: InstrumentsState) => {
+    const instruments = instrumentGroup.instrumentIds.map(
+      (id) => state.instruments.byId[id],
+    );
+
+    if (
+      instruments.every(
+        (instrument) => instrument.selectionStatus === SelectionStatus.SELECTED,
+      )
+    ) {
+      return SelectionStatus.SELECTED;
+    } else if (
+      instruments.every(
+        (instrument) =>
+          instrument.selectionStatus === SelectionStatus.UNSELECTED,
+      )
+    ) {
+      return SelectionStatus.UNSELECTED;
+    } else {
+      return SelectionStatus.MIXED;
+    }
   };
 
 // ***** selector hooks *****
@@ -35,5 +48,6 @@ export const selectInstrumentGroup =
 export const useInstrument = (id: InstrumentId) =>
   useAppStore(selectInstrument(id));
 
-export const useInstrumentGroup = (category: InstrumentCategory) =>
-  useAppStore(selectInstrumentGroup(category));
+export const useInstrumentGroupSelectionStatus = (
+  instrumentGroup: InstrumentGroup,
+) => useAppStore(selectInstrumentGroupSelectionStatus(instrumentGroup));

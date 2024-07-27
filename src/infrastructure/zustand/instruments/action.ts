@@ -1,10 +1,10 @@
 import { setSelectionStatus } from "../../../domain/instrument";
-import { InstrumentCategory } from "../../../domain/instrument/instrumentCategory";
 import { InstrumentId } from "../../../domain/instrument/instrumentId";
 import { SelectionStatus } from "../../../domain/instrument/selectionStatus";
+import { InstrumentGroup } from "../../../domain/instrumentGroup";
 import { updateItem, updateItems } from "../../../util/normalize";
 import { createAction } from "../appStore";
-import { selectInstrumentGroup } from "./selector";
+import { selectInstrumentGroupSelectionStatus } from "./selector";
 
 export const toggleInstrumentSelection = (id: InstrumentId) =>
   createAction((state) => {
@@ -20,11 +20,14 @@ export const toggleInstrumentSelection = (id: InstrumentId) =>
     };
   });
 
-export const toggleInstrumentGroupSelection = (category: InstrumentCategory) =>
+export const toggleInstrumentGroupSelection = (
+  instrumentGroup: InstrumentGroup,
+) =>
   createAction((state) => {
-    const instrumentGroup = selectInstrumentGroup(category)(state);
+    const currentSelectionStatus =
+      selectInstrumentGroupSelectionStatus(instrumentGroup)(state);
     const selectionStatus =
-      instrumentGroup.selectionStatus === SelectionStatus.SELECTED
+      currentSelectionStatus === SelectionStatus.SELECTED
         ? SelectionStatus.UNSELECTED
         : SelectionStatus.SELECTED;
 

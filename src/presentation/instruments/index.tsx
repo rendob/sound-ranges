@@ -1,9 +1,9 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import { InstrumentCategory } from "../../domain/instrument/instrumentCategory";
 import { InstrumentGroupItem } from "./instrumentGroupItem";
 import { appColor } from "../style/appColor";
+import { instrumentGroups } from "../../infrastructure/source/instrumentGroup";
 
 const style = css({
   borderRight: `1px solid ${appColor.border}`,
@@ -12,12 +12,13 @@ const style = css({
 });
 
 export const Instruments = () => {
-  const categories = Object.values(InstrumentCategory);
-
   return (
     <div css={style}>
-      {categories.map((category) => (
-        <InstrumentGroupItem key={category} category={category} />
+      {instrumentGroups.map((instrumentGroup) => (
+        <InstrumentGroupItem
+          key={instrumentGroup.name}
+          instrumentGroup={instrumentGroup}
+        />
       ))}
     </div>
   );

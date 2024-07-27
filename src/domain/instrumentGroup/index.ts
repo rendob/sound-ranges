@@ -1,43 +1,40 @@
-import { Instrument } from "../instrument";
-import { InstrumentCategory } from "../instrument/instrumentCategory";
+import { Brand } from "../brand";
+import { TypeAssertionError } from "../error/appError";
+import { FilledString } from "../filledString";
 import { InstrumentId } from "../instrument/instrumentId";
-import { SelectionStatus } from "../instrument/selectionStatus";
 
-export type InstrumentGroup = {
-  id: InstrumentCategory;
-  instrumentIds: InstrumentId[];
-  selectionStatus: SelectionStatus;
+const typeName = "InstrumentGroup";
+type InstrumentGroupType = {
+  readonly name: FilledString;
+  readonly instrumentIds: InstrumentId[];
 };
+export type InstrumentGroup = Brand<InstrumentGroupType, typeof typeName>;
 
-export const getInstrumentGroup = (
-  instruments: Instrument[],
-  category: InstrumentCategory,
-): InstrumentGroup => {
-  const filteredInstruments = instruments.filter(
-    (instrument) => instrument.category === category,
-  );
+// ***** initialization *****
 
-  return {
-    id: category,
-    instrumentIds: filteredInstruments.map((instrument) => instrument.id),
-    selectionStatus: getSelectionStatus(filteredInstruments),
-  };
-};
+export const createInstrumentGroup = (
+  name: FilledString,
+  instrumentIds: InstrumentId[],
+): InstrumentGroup =>
+  asInstrumentGroup({
+    name,
+    instrumentIds,
+  });
 
-const getSelectionStatus = (instruments: Instrument[]): SelectionStatus => {
-  if (
-    instruments.every(
-      (instrument) => instrument.selectionStatus === SelectionStatus.SELECTED,
-    )
-  ) {
-    return SelectionStatus.SELECTED;
-  } else if (
-    instruments.some(
-      (instrument) => instrument.selectionStatus === SelectionStatus.SELECTED,
-    )
-  ) {
-    return SelectionStatus.MIXED;
-  } else {
-    return SelectionStatus.UNSELECTED;
+// ***** assertion *****
+
+function assertInstrumentGroup(
+  v: InstrumentGroupType,
+): asserts v is InstrumentGroup {
+  if (v.instrumentIds.length === 0) {
+    throw new TypeAssertionError(
+      typeName,
+      "instrumentIds should not be empty!",
+    );
   }
+}
+
+const asInstrumentGroup = (v: InstrumentGroupType): InstrumentGroup => {
+  assertInstrumentGroup(v);
+  return v;
 };

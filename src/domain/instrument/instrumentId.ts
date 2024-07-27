@@ -1,5 +1,5 @@
 import { Brand } from "../brand";
-import { FilledString, assertFilledString } from "../filledString";
+import { assertFilledString, FilledString } from "../filledString";
 
 const typeName = "InstrumentId";
 export type InstrumentId = Brand<FilledString, typeof typeName>;

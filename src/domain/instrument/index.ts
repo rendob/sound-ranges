@@ -1,4 +1,3 @@
-import { InstrumentCategory } from "./instrumentCategory";
 import { NoteRange, contains } from "../noteRange";
 import { NoteNumber } from "../noteNumber";
 import { Brand } from "../brand";
@@ -6,12 +5,13 @@ import { InstrumentId, asInstrumentId } from "./instrumentId";
 import { FilledString } from "../filledString";
 import { TypeAssertionError } from "../error/appError";
 import { SelectionStatus } from "./selectionStatus";
+import { MidiProgramNumber } from "../midiProgramNumber";
 
 const typeName = "Instrument";
 type InstrumentType = {
   readonly id: InstrumentId;
+  readonly midiProgramNumber: MidiProgramNumber;
   readonly name: FilledString;
-  readonly category: InstrumentCategory;
   readonly range: NoteRange;
   readonly selectionStatus: Exclude<
     SelectionStatus,
@@ -23,14 +23,14 @@ export type Instrument = Brand<InstrumentType, typeof typeName>;
 // ***** initialization *****
 
 export const createInstrument = (
+  midiProgramNumber: MidiProgramNumber,
   name: FilledString,
-  category: InstrumentCategory,
   range: NoteRange,
 ): Instrument =>
   asInstrument({
-    id: asInstrumentId(name),
+    id: asInstrumentId(String(midiProgramNumber)),
+    midiProgramNumber,
     name,
-    category,
     range,
     selectionStatus: SelectionStatus.SELECTED,
   });
@@ -38,10 +38,10 @@ export const createInstrument = (
 // ***** assertion *****
 
 function assertInstrument(v: InstrumentType): asserts v is Instrument {
-  if (v.id !== v.name) {
+  if (v.id !== asInstrumentId(String(v.midiProgramNumber))) {
     throw new TypeAssertionError(
       typeName,
-      `id (${v.id}) should equals name (${v.name})!`,
+      `id (${v.id}) should equals midiProgramNumber (${v.midiProgramNumber})!`,
     );
   }
 }

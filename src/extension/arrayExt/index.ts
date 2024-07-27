@@ -1,3 +1,4 @@
+import { asInt, Int } from "../../domain/int";
 import { extend } from "../extend";
 
 type ArrayExt = typeof arrayExt;
@@ -19,3 +20,21 @@ const arrayExt = {
 };
 
 extend(Array, arrayExt);
+
+/**
+ * 等差数列の作成
+ *
+ * @param start 最初の要素
+ * @param end 最後の要素 (inclusive)
+ * @param step 公差
+ */
+export const createArithmeticSequence = (
+  start: Int,
+  end: Int,
+  step: Int = asInt(1),
+): Int[] => {
+  const length = Math.floor((end - start) / step) + 1;
+  return new Array(length)
+    .fill(0)
+    .map((_, index) => asInt(start + index * step));
+};

@@ -1,26 +1,26 @@
 import { assert, describe, expect, it } from "vitest";
-import { InstrumentCategory } from "./instrumentCategory";
 import { canPlay, canPlayAll, createInstrument, setSelectionStatus } from ".";
 import { TypeAssertionError } from "../error/appError";
 import { asNoteNumber, assertNoteNumber } from "../noteNumber";
 import { createNoteRange } from "../noteRange";
 import { asFilledString } from "../filledString";
 import { SelectionStatus } from "./selectionStatus";
+import { asMidiProgramNumber } from "../midiProgramNumber";
 
 const createTestInstrument = ({
+  midiProgramNumber = 1,
   name = "xxx",
-  category = InstrumentCategory.BRASS,
   min = 0,
   max = 127,
 }: {
+  midiProgramNumber?: number;
   name?: string;
-  category?: InstrumentCategory;
   min?: number;
   max?: number;
 } = {}) =>
   createInstrument(
+    asMidiProgramNumber(midiProgramNumber),
     asFilledString(name),
-    category,
     createNoteRange(asNoteNumber(min), asNoteNumber(max)),
   );
 
