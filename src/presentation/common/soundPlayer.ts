@@ -5,7 +5,8 @@ const DEFAULT_VOLUME = 0.3;
 const audioContext = new AudioContext();
 let oscillator: OscillatorNode | null = null;
 
-const playNote = (noteNumber: NoteNumber) => {
+const playNote = async (noteNumber: NoteNumber) => {
+  await audioContext.resume();
   stopPlaying();
   oscillator = audioContext.createOscillator();
   oscillator.type = "sine";
