@@ -33,7 +33,7 @@ export const AppBar = () => {
     <header css={styles.root}>
       <InstrumentsMenuIcon />
 
-      <span css={styles.title}>Sound Ranges</span>
+      <span css={styles.title}>MIDI Sound Ranges</span>
 
       <SettingsIcon />
     </header>
