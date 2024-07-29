@@ -1,14 +1,14 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import { appColor } from "../../style/appColor";
-import { PitchType } from "../../../domain/noteNumber/pitchType";
-import { asNoteNumber, getNoteNames } from "../../../domain/noteNumber";
+import { appColor } from "../style/appColor";
+import { PitchType } from "../../domain/noteNumber/pitchType";
+import { asNoteNumber, getNoteNames } from "../../domain/noteNumber";
 import React from "react";
-import { dispatch } from "../../../infrastructure/zustand/appStore";
-import { setPitchType } from "../../../infrastructure/zustand/config/action";
-import { assertExists } from "../../../util/exists";
-import { usePitchType } from "../../../infrastructure/zustand/config/selector";
+import { dispatch } from "../../infrastructure/zustand/appStore";
+import { setPitchType } from "../../infrastructure/zustand/config/action";
+import { assertExists } from "../../util/exists";
+import { usePitchType } from "../../infrastructure/zustand/config/selector";
 
 const styles = {
   root: css({
@@ -18,6 +18,7 @@ const styles = {
     position: "absolute",
     right: "4px",
     top: "4px",
+    zIndex: 100,
   }),
   row: css({
     display: "flex",

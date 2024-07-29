@@ -4,13 +4,9 @@ import { css, jsx } from "@emotion/react";
 import { appColor } from "../style/appColor";
 import { dispatch } from "../../infrastructure/zustand/appStore";
 import { toggleShouldShowInstruments } from "../../infrastructure/zustand/uiState/action";
-import {
-  useShouldShowInstruments,
-  useShouldShowSettings,
-} from "../../infrastructure/zustand/uiState/selector";
+import { useShouldShowInstruments } from "../../infrastructure/zustand/uiState/selector";
 import { Icon } from "../common/icon";
 import { openSettings } from "../../infrastructure/zustand/uiState/action";
-import { SettingsDialog } from "./settingsDialog";
 import React from "react";
 
 const styles = {
@@ -18,9 +14,8 @@ const styles = {
     alignItems: "center",
     borderBottom: `1px solid ${appColor.border}`,
     display: "flex",
-    position: "sticky",
     top: 0,
-    zIndex: 1,
+    // zIndex: 10,
   }),
   instrumentsMenuIcon: (isSelected: boolean) =>
     css({
@@ -34,8 +29,6 @@ const styles = {
 };
 
 export const AppBar = () => {
-  const shouldShowSettings = useShouldShowSettings();
-
   return (
     <header css={styles.root}>
       <InstrumentsMenuIcon />
@@ -43,8 +36,6 @@ export const AppBar = () => {
       <span css={styles.title}>Sound Ranges</span>
 
       <SettingsIcon />
-
-      {shouldShowSettings && <SettingsDialog />}
     </header>
   );
 };

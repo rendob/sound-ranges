@@ -3,11 +3,15 @@
 import { css, jsx } from "@emotion/react";
 import { Instruments } from "./instruments";
 import { AppBar } from "./appBar";
-import { useShouldShowInstruments } from "../infrastructure/zustand/uiState/selector";
+import {
+  useShouldShowInstruments,
+  useShouldShowSettings,
+} from "../infrastructure/zustand/uiState/selector";
 import { SoundRangeTable } from "./soundRangeTable";
 import { appColor } from "./style/appColor";
 import { dispatch } from "../infrastructure/zustand/appStore";
 import { closeSettings } from "../infrastructure/zustand/uiState/action";
+import { SettingsDialog } from "./settingsDialog";
 
 const styles = {
   root: css({
@@ -26,6 +30,7 @@ const styles = {
 
 function App() {
   const shouldShowInstruments = useShouldShowInstruments();
+  const shouldShowSettings = useShouldShowSettings();
 
   const handleClick = () => {
     dispatch(closeSettings());
@@ -34,10 +39,13 @@ function App() {
   return (
     <div onClick={handleClick} css={styles.root}>
       <AppBar />
+
       <div css={styles.content}>
         {shouldShowInstruments && <Instruments />}
         <SoundRangeTable />
       </div>
+
+      {shouldShowSettings && <SettingsDialog />}
     </div>
   );
 }
