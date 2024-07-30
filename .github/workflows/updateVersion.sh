@@ -96,3 +96,6 @@ CURRENT_VERSION=$(jq -r '.version' "$FILE_PATH")
 NEW_VERSION=$(incrementVersion "$CURRENT_VERSION" "$TYPE" "$STEP")
 TMP_FILE_PATH="tmp"
 jq ".version=\"$NEW_VERSION\"" "$FILE_PATH" >$TMP_FILE_PATH && mv $TMP_FILE_PATH "$FILE_PATH"
+
+echo "***** Exporting values... ***** "
+echo "NEW_VERSION=$NEW_VERSION" >>"$GITHUB_ENV"
