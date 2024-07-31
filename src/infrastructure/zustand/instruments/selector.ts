@@ -19,29 +19,35 @@ export const selectSelectedInstruments = (
 const selectInstrument = (id: InstrumentId) => (state: InstrumentsState) =>
   state.instruments.byId[id];
 
-export const selectInstrumentGroupSelectionStatus =
-  (instrumentGroup: InstrumentGroup) => (state: InstrumentsState) => {
-    const instruments = instrumentGroup.instrumentIds.map(
-      (id) => state.instruments.byId[id],
-    );
+const selectInstrumentGroupSelectionStatus =
+  (instrumentGroup: InstrumentGroup) => (state: InstrumentsState) =>
+    selectSelectionStatus(state, instrumentGroup.instrumentIds);
 
-    if (
-      instruments.every(
-        (instrument) => instrument.selectionStatus === SelectionStatus.SELECTED,
-      )
-    ) {
-      return SelectionStatus.SELECTED;
-    } else if (
-      instruments.every(
-        (instrument) =>
-          instrument.selectionStatus === SelectionStatus.UNSELECTED,
-      )
-    ) {
-      return SelectionStatus.UNSELECTED;
-    } else {
-      return SelectionStatus.MIXED;
-    }
-  };
+const selectAllSelectionStatus = (state: InstrumentsState): SelectionStatus =>
+  selectSelectionStatus(state, state.instruments.allIds);
+
+export const selectSelectionStatus = (
+  state: InstrumentsState,
+  instrumentIds: InstrumentId[],
+): SelectionStatus => {
+  const instruments = instrumentIds.map((id) => state.instruments.byId[id]);
+
+  if (
+    instruments.every(
+      (instrument) => instrument.selectionStatus === SelectionStatus.SELECTED,
+    )
+  ) {
+    return SelectionStatus.SELECTED;
+  } else if (
+    instruments.every(
+      (instrument) => instrument.selectionStatus === SelectionStatus.UNSELECTED,
+    )
+  ) {
+    return SelectionStatus.UNSELECTED;
+  } else {
+    return SelectionStatus.MIXED;
+  }
+};
 
 // ***** selector hooks *****
 
@@ -51,3 +57,6 @@ export const useInstrument = (id: InstrumentId) =>
 export const useInstrumentGroupSelectionStatus = (
   instrumentGroup: InstrumentGroup,
 ) => useAppStore(selectInstrumentGroupSelectionStatus(instrumentGroup));
+
+export const useAllSelectionStatus = () =>
+  useAppStore(selectAllSelectionStatus);

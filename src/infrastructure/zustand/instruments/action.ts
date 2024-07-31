@@ -4,7 +4,8 @@ import { SelectionStatus } from "../../../domain/instrument/selectionStatus";
 import { InstrumentGroup } from "../../../domain/instrumentGroup";
 import { updateItem, updateItems } from "../../../util/normalize";
 import { createAction } from "../appStore";
-import { selectInstrumentGroupSelectionStatus } from "./selector";
+import { selectSelectionStatus } from "./selector";
+import { InstrumentsState } from "./state";
 
 export const toggleInstrumentSelection = (id: InstrumentId) =>
   createAction((state) => {
@@ -23,20 +24,29 @@ export const toggleInstrumentSelection = (id: InstrumentId) =>
 export const toggleInstrumentGroupSelection = (
   instrumentGroup: InstrumentGroup,
 ) =>
-  createAction((state) => {
-    const currentSelectionStatus =
-      selectInstrumentGroupSelectionStatus(instrumentGroup)(state);
-    const selectionStatus =
-      currentSelectionStatus === SelectionStatus.SELECTED
-        ? SelectionStatus.UNSELECTED
-        : SelectionStatus.SELECTED;
+  createAction((state) =>
+    toggleInstrumentsSelection(state, instrumentGroup.instrumentIds),
+  );
 
-    return {
-      ...state,
-      instruments: updateItems(
-        state.instruments,
-        instrumentGroup.instrumentIds,
-        (item) => setSelectionStatus(item, selectionStatus),
-      ),
-    };
-  });
+export const toggleAllInstrumentsSelection = () =>
+  createAction((state) =>
+    toggleInstrumentsSelection(state, state.instruments.allIds),
+  );
+
+const toggleInstrumentsSelection = <T extends InstrumentsState>(
+  state: T,
+  instrumentIds: InstrumentId[],
+): T => {
+  const currentSelectionStatus = selectSelectionStatus(state, instrumentIds);
+  const selectionStatus =
+    currentSelectionStatus === SelectionStatus.SELECTED
+      ? SelectionStatus.UNSELECTED
+      : SelectionStatus.SELECTED;
+
+  return {
+    ...state,
+    instruments: updateItems(state.instruments, instrumentIds, (item) =>
+      setSelectionStatus(item, selectionStatus),
+    ),
+  };
+};
