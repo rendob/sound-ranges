@@ -11,7 +11,7 @@ import { instrumentsStyles } from "../style";
 import { asInt } from "../../../domain/int";
 
 const styles = {
-  root: css(instrumentsStyles.item(asInt(0)), {
+  root: css(instrumentsStyles.item(asInt(1)), {
     position: "sticky",
     top: "0",
   }),

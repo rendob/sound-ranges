@@ -17,7 +17,7 @@ export const InstrumentItem = ({ id }: Props) => {
   const handleClick = () => dispatch(toggleInstrumentSelection(id));
 
   return (
-    <div onClick={handleClick} css={instrumentsStyles.item(asInt(1))}>
+    <div onClick={handleClick} css={instrumentsStyles.item(asInt(2))}>
       <Checkbox selectionStatus={instrument.selectionStatus} />
       <span css={instrumentsStyles.itemLabel}>{instrument.name}</span>
     </div>
