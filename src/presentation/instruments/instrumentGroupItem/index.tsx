@@ -4,26 +4,16 @@ import { css, jsx } from "@emotion/react";
 import { toggleInstrumentGroupSelection } from "../../../infrastructure/zustand/instruments/action";
 import { dispatch } from "../../../infrastructure/zustand/appStore";
 import { InstrumentItem } from "../instrumentItem";
-import { appColor } from "../../style/appColor";
 import { Checkbox } from "../../common/checkbox";
 import { InstrumentGroup } from "../../../domain/instrumentGroup";
 import { useInstrumentGroupSelectionStatus } from "../../../infrastructure/zustand/instruments/selector";
+import { instrumentsStyles } from "../style";
+import { asInt } from "../../../domain/int";
 
 const styles = {
-  root: css({
-    alignItems: "center",
-    backgroundColor: appColor.background,
-    cursor: "pointer",
-    display: "flex",
-    padding: "4px",
+  root: css(instrumentsStyles.item(asInt(0)), {
     position: "sticky",
     top: "0",
-    ":hover": {
-      backgroundColor: appColor.hover(appColor.background),
-    },
-  }),
-  label: css({
-    marginLeft: "4px",
   }),
 };
 
@@ -39,7 +29,7 @@ export const InstrumentGroupItem = ({ instrumentGroup }: Props) => {
     <div>
       <div onClick={handleClick} css={styles.root}>
         <Checkbox selectionStatus={selectionStatus} />
-        <span css={styles.label}>{instrumentGroup.name}</span>
+        <span css={instrumentsStyles.itemLabel}>{instrumentGroup.name}</span>
       </div>
 
       {instrumentGroup.instrumentIds.map((id) => (
