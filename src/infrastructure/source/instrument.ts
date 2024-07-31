@@ -7,13 +7,15 @@ import { createNoteRange } from "../../domain/noteRange";
 const create = (
   midiProgramNumber: number,
   name: string,
-  rangeStart: number,
-  rangeEnd: number,
+  rangeStart: number | null,
+  rangeEnd: number | null,
 ): Instrument =>
   createInstrument(
     asMidiProgramNumber(midiProgramNumber),
     asFilledString(name),
-    createNoteRange(asNoteNumber(rangeStart), asNoteNumber(rangeEnd)),
+    rangeStart !== null && rangeEnd !== null
+      ? createNoteRange(asNoteNumber(rangeStart), asNoteNumber(rangeEnd))
+      : null,
   );
 
 export const createInstruments = (): Instrument[] => [
@@ -132,17 +134,17 @@ export const createInstruments = (): Instrument[] => [
   create(113, "Tinkle Bell", 72, 84),
   create(114, "Agogo", 60, 72),
   create(115, "Steel Drums", 52, 96),
-  create(116, "Woodblock", 0, 0),
-  create(117, "Taiko Drum", 0, 0),
-  create(118, "Melodic Tom", 0, 0),
-  create(119, "Synth Drum", 0, 0),
-  create(120, "Reverse Cymbal", 0, 0),
-  create(121, "Guitar Fret Noise", 0, 0),
-  create(122, "Breath Noise", 0, 0),
-  create(123, "Seashore", 0, 0),
-  create(124, "Bird Tweet", 0, 0),
-  create(125, "Telephone Ring", 0, 0),
-  create(126, "Helicopter", 0, 0),
-  create(127, "Applause", 0, 0),
-  create(128, "Gunshot", 0, 0),
+  create(116, "Woodblock", null, null),
+  create(117, "Taiko Drum", null, null),
+  create(118, "Melodic Tom", null, null),
+  create(119, "Synth Drum", null, null),
+  create(120, "Reverse Cymbal", null, null),
+  create(121, "Guitar Fret Noise", null, null),
+  create(122, "Breath Noise", null, null),
+  create(123, "Seashore", null, null),
+  create(124, "Bird Tweet", null, null),
+  create(125, "Telephone Ring", null, null),
+  create(126, "Helicopter", null, null),
+  create(127, "Applause", null, null),
+  create(128, "Gunshot", null, null),
 ];

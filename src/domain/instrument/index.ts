@@ -6,13 +6,14 @@ import { FilledString } from "../filledString";
 import { TypeAssertionError } from "../error/appError";
 import { SelectionStatus } from "./selectionStatus";
 import { MidiProgramNumber } from "../midiProgramNumber";
+import { exists } from "../../util/exists";
 
 const typeName = "Instrument";
 type InstrumentType = {
   readonly id: InstrumentId;
   readonly midiProgramNumber: MidiProgramNumber;
   readonly name: FilledString;
-  readonly range: NoteRange;
+  readonly range: NoteRange | null;
   readonly selectionStatus: Exclude<
     SelectionStatus,
     typeof SelectionStatus.MIXED
@@ -25,7 +26,7 @@ export type Instrument = Brand<InstrumentType, typeof typeName>;
 export const createInstrument = (
   midiProgramNumber: MidiProgramNumber,
   name: FilledString,
-  range: NoteRange,
+  range: NoteRange | null,
 ): Instrument =>
   asInstrument({
     id: asInstrumentId(String(midiProgramNumber)),
@@ -59,7 +60,8 @@ export const getDisplayName = (instrument: Instrument): string =>
 export const canPlay = (
   instrument: Instrument,
   noteNumber: NoteNumber,
-): boolean => contains(instrument.range, noteNumber);
+): boolean =>
+  exists(instrument.range) && contains(instrument.range, noteNumber);
 
 export const canPlayAll = (
   instrument: Instrument,

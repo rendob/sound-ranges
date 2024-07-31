@@ -21,13 +21,15 @@ const createTestInstrument = ({
 }: {
   midiProgramNumber?: number;
   name?: string;
-  min?: number;
-  max?: number;
+  min?: number | null;
+  max?: number | null;
 } = {}) =>
   createInstrument(
     asMidiProgramNumber(midiProgramNumber),
     asFilledString(name),
-    createNoteRange(asNoteNumber(min), asNoteNumber(max)),
+    min !== null && max !== null
+      ? createNoteRange(asNoteNumber(min), asNoteNumber(max))
+      : null,
   );
 
 describe(createInstrument, () => {
