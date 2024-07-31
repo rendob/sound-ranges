@@ -1,5 +1,11 @@
 import { assert, describe, expect, it } from "vitest";
-import { canPlay, canPlayAll, createInstrument, setSelectionStatus } from ".";
+import {
+  canPlay,
+  canPlayAll,
+  createInstrument,
+  getDisplayName,
+  setSelectionStatus,
+} from ".";
 import { TypeAssertionError } from "../error/appError";
 import { asNoteNumber, assertNoteNumber } from "../noteNumber";
 import { createNoteRange } from "../noteRange";
@@ -63,6 +69,25 @@ describe("initialization", () => {
     // then
     expect(sut.selectionStatus).toBe(SelectionStatus.SELECTED);
   });
+});
+
+describe(getDisplayName, () => {
+  it.each([
+    { midiProgramNumber: 1, name: "Piano", expected: "1. Piano" },
+    { midiProgramNumber: 106, name: "Tuba", expected: "106. Tuba" },
+  ])(
+    "midiProgramNumber: $midiProgramNumber, name: $name => $expected",
+    ({ midiProgramNumber, name, expected }) => {
+      // given
+      const sut = createTestInstrument({ midiProgramNumber, name });
+
+      // when
+      const result = getDisplayName(sut);
+
+      // then
+      expect(result).toBe(expected);
+    },
+  );
 });
 
 describe(canPlay, () => {

@@ -53,6 +53,9 @@ const asInstrument = (v: InstrumentType): Instrument => {
 
 // ***** method *****
 
+export const getDisplayName = (instrument: Instrument): string =>
+  `${instrument.midiProgramNumber}. ${instrument.name}`;
+
 export const canPlay = (
   instrument: Instrument,
   noteNumber: NoteNumber,

@@ -1,4 +1,4 @@
-import { Instrument } from "../../../../domain/instrument";
+import { getDisplayName, Instrument } from "../../../../domain/instrument";
 import { getRangeName, getSize } from "../../../../domain/noteRange";
 import { usePitchType } from "../../../../infrastructure/zustand/config/selector";
 import { appColor } from "../../../style/appColor";
@@ -18,6 +18,7 @@ export const SoundRangeItem = ({ instrument, index }: Props) => {
   const centerX = x + width / 2;
   const y = appDimen.soundRangeItemHeight * index + itemMarginVertical;
   const baselineY = y + itemContentHeight * 0.8;
+  const label = `${getDisplayName(instrument)} ${getRangeName(instrument.range, pitchType)}`;
 
   return (
     <g>
@@ -39,7 +40,7 @@ export const SoundRangeItem = ({ instrument, index }: Props) => {
         fill={appColor.onPrimary}
         textAnchor="middle"
       >
-        {instrument.name} {getRangeName(instrument.range, pitchType)}
+        {label}
       </text>
     </g>
   );
