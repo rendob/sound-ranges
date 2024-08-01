@@ -7,5 +7,9 @@
   },
   "color-highlight": {
     "markerType": "dot-before",
+  },
+  "[shellscript]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format",
+    "editor.formatOnSave": true
   }
 }
