@@ -1,7 +1,7 @@
 import { Instrument } from "../../../domain/instrument";
 import { InstrumentId } from "../../../domain/instrument/instrumentId";
 import { Normalized, normalize } from "../../../util/normalize";
-import { createInstruments } from "../../source/instrumentData";
+import { createInstruments } from "../../source/instrument";
 
 export type InstrumentsState = {
   instruments: Normalized<InstrumentId, Instrument>;

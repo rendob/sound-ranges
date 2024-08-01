@@ -1,27 +1,35 @@
 import { assert, describe, expect, it } from "vitest";
-import { InstrumentCategory } from "./instrumentCategory";
-import { canPlay, canPlayAll, createInstrument, setSelectionStatus } from ".";
+import {
+  canPlay,
+  canPlayAll,
+  createInstrument,
+  getDisplayName,
+  setSelectionStatus,
+} from ".";
 import { TypeAssertionError } from "../error/appError";
 import { asNoteNumber, assertNoteNumber } from "../noteNumber";
 import { createNoteRange } from "../noteRange";
 import { asFilledString } from "../filledString";
 import { SelectionStatus } from "./selectionStatus";
+import { asMidiProgramNumber } from "../midiProgramNumber";
 
 const createTestInstrument = ({
+  midiProgramNumber = 1,
   name = "xxx",
-  category = InstrumentCategory.BRASS,
   min = 0,
   max = 127,
 }: {
+  midiProgramNumber?: number;
   name?: string;
-  category?: InstrumentCategory;
-  min?: number;
-  max?: number;
+  min?: number | null;
+  max?: number | null;
 } = {}) =>
   createInstrument(
+    asMidiProgramNumber(midiProgramNumber),
     asFilledString(name),
-    category,
-    createNoteRange(asNoteNumber(min), asNoteNumber(max)),
+    min !== null && max !== null
+      ? createNoteRange(asNoteNumber(min), asNoteNumber(max))
+      : null,
   );
 
 describe(createInstrument, () => {
@@ -63,6 +71,25 @@ describe("initialization", () => {
     // then
     expect(sut.selectionStatus).toBe(SelectionStatus.SELECTED);
   });
+});
+
+describe(getDisplayName, () => {
+  it.each([
+    { midiProgramNumber: 1, name: "Piano", expected: "1. Piano" },
+    { midiProgramNumber: 106, name: "Tuba", expected: "106. Tuba" },
+  ])(
+    "midiProgramNumber: $midiProgramNumber, name: $name => $expected",
+    ({ midiProgramNumber, name, expected }) => {
+      // given
+      const sut = createTestInstrument({ midiProgramNumber, name });
+
+      // when
+      const result = getDisplayName(sut);
+
+      // then
+      expect(result).toBe(expected);
+    },
+  );
 });
 
 describe(canPlay, () => {
