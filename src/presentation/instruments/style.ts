@@ -1,4 +1,3 @@
-/** @jsxRuntime classic */
 import { css } from "@emotion/react";
 import { appColor } from "../style/appColor";
 import { Int } from "../../domain/int";

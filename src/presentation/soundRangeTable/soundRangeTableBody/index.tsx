@@ -1,6 +1,4 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { css, jsx } from "@emotion/react";
+import { css } from "@emotion/react";
 import { useDisplayedInstruments } from "../../../infrastructure/zustand/shared/selector";
 import { dispatch } from "../../../infrastructure/zustand/appStore";
 import { clearKeyboardSelection } from "../../../infrastructure/zustand/keyboard/action";

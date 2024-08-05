@@ -1,6 +1,4 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { css, jsx } from "@emotion/react";
+import { css } from "@emotion/react";
 import { appColor } from "../style/appColor";
 import { PitchType } from "../../domain/noteNumber/pitchType";
 import { asNoteNumber, getNoteNames } from "../../domain/noteNumber";

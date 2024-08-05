@@ -1,6 +1,4 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { css, jsx } from "@emotion/react";
+import { css } from "@emotion/react";
 import { InstrumentGroupItem } from "./instrumentGroupItem";
 import { appColor } from "../style/appColor";
 import { instrumentGroups } from "../../infrastructure/source/instrumentGroup";
