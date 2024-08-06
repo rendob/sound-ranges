@@ -8,21 +8,36 @@ import { toggleAllInstrumentsSelection } from "../../infrastructure/zustand/inst
 import { Checkbox } from "../common/checkbox";
 import { instrumentsStyles } from "./style";
 import { asInt } from "../../domain/int";
+import { useShouldShowInstruments } from "../../infrastructure/zustand/uiState/selector";
 
 const styles = {
-  root: css({
-    borderRight: `1px solid ${appColor.border}`,
-    display: "flex",
-    flexDirection: "column",
-  }),
+  root: (shouldShowInstruments: boolean) =>
+    css({
+      borderRight: `1px solid ${appColor.border}`,
+      display: shouldShowInstruments ? "flex" : "none",
+      flexDirection: "column",
+      height: "100%",
+      position: "absolute",
+      transform: `translateX(${shouldShowInstruments ? 0 : "-100%"})`,
+      transitionBehavior: "allow-discrete",
+      transitionDuration: "0.2s",
+      transitionProperty: "display,transform",
+      zIndex: 2,
+
+      "@starting-style": {
+        transform: "translateX(-100%)",
+      },
+    }),
   instruments: css({
     overflowY: "scroll",
   }),
 };
 
 export const Instruments = () => {
+  const shouldShowInstruments = useShouldShowInstruments();
+
   return (
-    <div css={styles.root}>
+    <div css={styles.root(shouldShowInstruments)}>
       <AllItem />
 
       <div css={styles.instruments}>
