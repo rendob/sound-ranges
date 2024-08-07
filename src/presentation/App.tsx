@@ -1,6 +1,5 @@
 import { css } from "@emotion/react";
 import { AppBar } from "./appBar";
-import { useShouldShowSettings } from "../infrastructure/zustand/uiState/selector";
 import { SoundRangeTable } from "./soundRangeTable";
 import { appColor } from "./style/appColor";
 import { dispatch } from "../infrastructure/zustand/appStore";
@@ -25,8 +24,6 @@ const styles = {
 };
 
 function App() {
-  const shouldShowSettings = useShouldShowSettings();
-
   const handleClick = () => {
     dispatch(closeSettings());
   };
@@ -40,7 +37,7 @@ function App() {
         <SoundRangeTable />
       </div>
 
-      {shouldShowSettings && <SettingsDialog />}
+      <SettingsDialog />
     </div>
   );
 }

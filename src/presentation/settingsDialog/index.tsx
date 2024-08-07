@@ -7,17 +7,20 @@ import { dispatch } from "../../infrastructure/zustand/appStore";
 import { setPitchType } from "../../infrastructure/zustand/config/action";
 import { assertExists } from "../../util/exists";
 import { usePitchType } from "../../infrastructure/zustand/config/selector";
+import { useShouldShowSettings } from "../../infrastructure/zustand/uiState/selector";
 
 const styles = {
-  root: css({
-    backgroundColor: appColor.background,
-    border: `1px solid ${appColor.border}`,
-    padding: "8px",
-    position: "absolute",
-    right: "4px",
-    top: "4px",
-    zIndex: 100,
-  }),
+  root: (shouldShowDialog: boolean) =>
+    css({
+      backgroundColor: appColor.background,
+      border: `1px solid ${appColor.border}`,
+      display: shouldShowDialog ? "block" : "none",
+      padding: "8px",
+      position: "absolute",
+      right: "4px",
+      top: "4px",
+      zIndex: 100,
+    }),
   row: css({
     display: "flex",
     alignItems: "center",
@@ -31,8 +34,9 @@ const styles = {
 };
 
 export const SettingsDialog = () => {
+  const shouldShowSettings = useShouldShowSettings();
   const currentPitchType = usePitchType();
-  const pitchTypeId = "pitch-type";
+
   const pitchTypes = Object.values(PitchType);
   const middleC = asNoteNumber(60);
   const getPitchTypeLabel = (pitchType: PitchType) =>
@@ -51,11 +55,10 @@ export const SettingsDialog = () => {
   };
 
   return (
-    <div css={styles.root} onClick={onClick}>
+    <div css={styles.root(shouldShowSettings)} onClick={onClick}>
       <div css={styles.row}>
         <span css={styles.label}>Display middle C as:</span>
         <select
-          id={pitchTypeId}
           value={currentPitchType.name}
           onChange={handlePitchTypeChange}
           css={styles.selector}
