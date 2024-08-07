@@ -15,11 +15,19 @@ const styles = {
       backgroundColor: appColor.background,
       border: `1px solid ${appColor.border}`,
       display: shouldShowDialog ? "block" : "none",
+      opacity: shouldShowDialog ? 1 : 0,
       padding: "8px",
       position: "absolute",
       right: "4px",
       top: "4px",
+      transitionBehavior: "allow-discrete",
+      transitionDuration: "0.2s",
+      transitionProperty: "display,opacity",
       zIndex: 100,
+
+      "@starting-style": {
+        opacity: 0,
+      },
     }),
   row: css({
     display: "flex",
