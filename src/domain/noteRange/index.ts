@@ -3,6 +3,7 @@ import { NoteNumber, getNoteNames } from "../noteNumber";
 import { Brand } from "../brand";
 import { Int, asInt } from "../int";
 import { PitchType } from "../noteNumber/pitchType";
+import { exists } from "../../util/exists";
 
 const typeName = "NoteRangeType";
 type NoteRangeType = {
@@ -36,9 +37,11 @@ export const getSize = (noteRange: NoteRange): Int =>
   asInt(noteRange.max - noteRange.min + 1);
 
 export const getRangeName = (
-  noteRange: NoteRange,
+  noteRange: NoteRange | null,
   pitchType: PitchType,
 ): string => {
+  if (!exists(noteRange)) return "-";
+
   const separator = "/";
   const min = getNoteNames(noteRange.min, pitchType).join(separator);
   const max = getNoteNames(noteRange.max, pitchType).join(separator);

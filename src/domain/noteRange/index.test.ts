@@ -85,6 +85,17 @@ describe(getRangeName, () => {
     // then
     expect(noteNames).toBe(expected);
   });
+
+  it("noteRange == null => -", () => {
+    // given
+    const sut = null;
+
+    // when
+    const noteNames = getRangeName(sut, PitchType.YAMAHA);
+
+    // then
+    expect(noteNames).toBe("-");
+  });
 });
 
 describe(contains, () => {
