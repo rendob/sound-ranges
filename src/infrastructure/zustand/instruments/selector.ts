@@ -1,23 +1,15 @@
-import { Instrument } from "../../../domain/instrument";
 import { InstrumentId } from "../../../domain/instrument/instrumentId";
 import { SelectionStatus } from "../../../domain/instrument/selectionStatus";
 import { InstrumentGroup } from "../../../domain/instrumentGroup";
-import { getAllItems } from "../../../util/normalize";
 import { useAppStore } from "../appStore";
 import { InstrumentsState } from "./state";
 
-const selectInstruments = (state: InstrumentsState): Instrument[] =>
-  getAllItems(state.instruments);
+const selectInstrumentIds = (state: InstrumentsState): InstrumentId[] =>
+  state.instruments.allIds;
 
-export const selectSelectedInstruments = (
-  state: InstrumentsState,
-): Instrument[] =>
-  selectInstruments(state).filter(
-    (instrument) => instrument.selectionStatus === SelectionStatus.SELECTED,
-  );
-
-const selectInstrument = (id: InstrumentId) => (state: InstrumentsState) =>
-  state.instruments.byId[id];
+export const selectInstrument =
+  (id: InstrumentId) => (state: InstrumentsState) =>
+    state.instruments.byId[id];
 
 const selectInstrumentGroupSelectionStatus =
   (instrumentGroup: InstrumentGroup) => (state: InstrumentsState) =>
@@ -50,6 +42,8 @@ export const selectSelectionStatus = (
 };
 
 // ***** selector hooks *****
+
+export const useInstrumentIds = () => useAppStore(selectInstrumentIds);
 
 export const useInstrument = (id: InstrumentId) =>
   useAppStore(selectInstrument(id));

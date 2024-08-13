@@ -1,9 +1,8 @@
 import { css } from "@emotion/react";
-import { useDisplayedInstruments } from "../../../infrastructure/zustand/shared/selector";
 import { dispatch } from "../../../infrastructure/zustand/appStore";
 import { clearKeyboardSelection } from "../../../infrastructure/zustand/keyboard/action";
 import { SoundRangeItem } from "./soundRangeItem";
-import { appDimen } from "../../style/appDimen";
+import { useInstrumentIds } from "../../../infrastructure/zustand/instruments/selector";
 
 const styles = {
   root: (width: number) =>
@@ -11,6 +10,10 @@ const styles = {
       flex: 1,
       position: "relative",
       width: width,
+    }),
+  soundRangeBody: (width: number) =>
+    css({
+      width,
     }),
   copyright: css({
     bottom: 0,
@@ -25,33 +28,19 @@ type Props = {
 };
 
 export const SoundRangeTableBody = ({ width }: Props) => {
-  const displayedInstruments = useDisplayedInstruments();
-  const height = appDimen.soundRangeItemHeight * displayedInstruments.length;
+  const instrumentIds = useInstrumentIds();
 
   const handleClick = () => {
     dispatch(clearKeyboardSelection());
   };
 
-  const items = displayedInstruments
-    .map((instrument, index) => (
-      <SoundRangeItem
-        key={instrument.id}
-        instrument={instrument}
-        index={index}
-      />
-    ))
-    .reverse();
+  const items = instrumentIds.map((id) => (
+    <SoundRangeItem key={id} instrumentId={id} />
+  ));
 
   return (
     <div onClick={handleClick} css={styles.root(width)}>
-      <svg
-        width={width}
-        height={height}
-        viewBox={`0 0 ${width} ${height}`}
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        {items}
-      </svg>
+      <div css={styles.soundRangeBody(width)}>{items}</div>
 
       <div css={styles.copyright}>© 2024-2024 RendoB</div>
     </div>
