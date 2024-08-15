@@ -1,6 +1,4 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { css, jsx } from "@emotion/react";
+import { css } from "@emotion/react";
 import { toggleInstrumentGroupSelection } from "../../../infrastructure/zustand/instruments/action";
 import { dispatch } from "../../../infrastructure/zustand/appStore";
 import { InstrumentItem } from "../instrumentItem";

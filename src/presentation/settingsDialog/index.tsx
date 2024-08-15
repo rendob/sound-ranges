@@ -1,6 +1,4 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { css, jsx } from "@emotion/react";
+import { css } from "@emotion/react";
 import { appColor } from "../style/appColor";
 import { PitchType } from "../../domain/noteNumber/pitchType";
 import { asNoteNumber, getNoteNames } from "../../domain/noteNumber";
@@ -9,17 +7,28 @@ import { dispatch } from "../../infrastructure/zustand/appStore";
 import { setPitchType } from "../../infrastructure/zustand/config/action";
 import { assertExists } from "../../util/exists";
 import { usePitchType } from "../../infrastructure/zustand/config/selector";
+import { useShouldShowSettings } from "../../infrastructure/zustand/uiState/selector";
 
 const styles = {
-  root: css({
-    backgroundColor: appColor.background,
-    border: `1px solid ${appColor.border}`,
-    padding: "8px",
-    position: "absolute",
-    right: "4px",
-    top: "4px",
-    zIndex: 100,
-  }),
+  root: (shouldShowDialog: boolean) =>
+    css({
+      backgroundColor: appColor.background,
+      border: `1px solid ${appColor.border}`,
+      display: shouldShowDialog ? "block" : "none",
+      opacity: shouldShowDialog ? 1 : 0,
+      padding: "8px",
+      position: "absolute",
+      right: "4px",
+      top: "4px",
+      transitionBehavior: "allow-discrete",
+      transitionDuration: "0.2s",
+      transitionProperty: "display,opacity",
+      zIndex: 100,
+
+      "@starting-style": {
+        opacity: 0,
+      },
+    }),
   row: css({
     display: "flex",
     alignItems: "center",
@@ -33,8 +42,9 @@ const styles = {
 };
 
 export const SettingsDialog = () => {
+  const shouldShowSettings = useShouldShowSettings();
   const currentPitchType = usePitchType();
-  const pitchTypeId = "pitch-type";
+
   const pitchTypes = Object.values(PitchType);
   const middleC = asNoteNumber(60);
   const getPitchTypeLabel = (pitchType: PitchType) =>
@@ -53,11 +63,10 @@ export const SettingsDialog = () => {
   };
 
   return (
-    <div css={styles.root} onClick={onClick}>
+    <div css={styles.root(shouldShowSettings)} onClick={onClick}>
       <div css={styles.row}>
         <span css={styles.label}>Display middle C as:</span>
         <select
-          id={pitchTypeId}
           value={currentPitchType.name}
           onChange={handlePitchTypeChange}
           css={styles.selector}

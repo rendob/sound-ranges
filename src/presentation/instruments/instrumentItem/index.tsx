@@ -1,6 +1,3 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { jsx } from "@emotion/react";
 import { toggleInstrumentSelection } from "../../../infrastructure/zustand/instruments/action";
 import { InstrumentId } from "../../../domain/instrument/instrumentId";
 import { dispatch } from "../../../infrastructure/zustand/appStore";
