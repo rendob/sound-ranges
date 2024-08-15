@@ -5,29 +5,51 @@ import { SoundRangeItem } from "./soundRangeItem";
 import { useInstrumentIds } from "../../../infrastructure/zustand/instruments/selector";
 import { appColor } from "../../style/appColor";
 import { appDimen } from "../../style/appDimen";
+import { asNoteNumber } from "../../../domain/noteNumber";
+import { createArithmeticSequence } from "../../../extension/arrayExt";
+import { asInt } from "../../../domain/int";
+import { createKeyboardKey, isBlackKey } from "../../../domain/keyboardKey";
 
-const getTableBackground = () => {
-  const borderColor = `${appColor.border}40`;
+const createTableBackground = () => {
   const borderWidth = 1;
-  const leftBoundary = borderWidth / 2;
-  const rightBoundary = appDimen.keyboardKeyWidth - borderWidth / 2;
-  return `
-    repeating-linear-gradient(
-      to right,
-      ${borderColor},
-      ${borderColor} ${leftBoundary}px,
-      transparent ${leftBoundary}px,
-      transparent ${rightBoundary}px,
-      ${borderColor} ${rightBoundary}px,
-      ${borderColor} ${appDimen.keyboardKeyWidth}px
-    )
-  `.trim();
+  const opacity = "10";
+
+  const createBorderBackground = (x: number): string[] => {
+    const borderColor = `${appColor.keyboard.black(false)}${opacity}`;
+    return [`${borderColor} ${x}px`, `${borderColor} ${x + borderWidth}px`];
+  };
+
+  const createKeyBackground = (
+    x: number,
+    isBlack: boolean = false,
+  ): string[] => {
+    const width = appDimen.keyboardKeyWidth - borderWidth;
+    const color = `${isBlack ? appColor.keyboard.black(false) : appColor.keyboard.white(false)}${opacity}`;
+    return [`${color} ${x}px`, `${color} ${x + width}px`];
+  };
+
+  const octaveBackground = createArithmeticSequence(asInt(0), asInt(11))
+    .map(asNoteNumber)
+    .map(createKeyboardKey)
+    .map((key) => [
+      ...createBorderBackground(
+        key.noteNumber * appDimen.keyboardKeyWidth - borderWidth / 2,
+      ),
+      ...createKeyBackground(
+        key.noteNumber * appDimen.keyboardKeyWidth + borderWidth / 2,
+        isBlackKey(key),
+      ),
+    ])
+    .flat()
+    .join(",");
+
+  return `repeating-linear-gradient(to right, ${octaveBackground})`;
 };
 
 const styles = {
   root: (width: number) =>
     css({
-      background: getTableBackground(),
+      background: createTableBackground(),
       flex: 1,
       position: "relative",
       width: width,
