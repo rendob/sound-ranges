@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./presentation/App.tsx";
 import "./index.css";
 import { soundPlayer } from "./presentation/common/soundPlayer.ts";
+import "./i18n/configs.ts";
 
 document.addEventListener("mouseup", () => {
   soundPlayer.stopPlaying();

@@ -8,6 +8,7 @@ import { setPitchType } from "../../infrastructure/zustand/config/action";
 import { assertExists } from "../../util/exists";
 import { usePitchType } from "../../infrastructure/zustand/config/selector";
 import { useShouldShowSettings } from "../../infrastructure/zustand/uiState/selector";
+import { useTranslation } from "react-i18next";
 
 const styles = {
   root: (shouldShowDialog: boolean) =>
@@ -42,6 +43,7 @@ const styles = {
 };
 
 export const SettingsDialog = () => {
+  const { t } = useTranslation();
   const shouldShowSettings = useShouldShowSettings();
   const currentPitchType = usePitchType();
 
@@ -65,7 +67,7 @@ export const SettingsDialog = () => {
   return (
     <div css={styles.root(shouldShowSettings)} onClick={onClick}>
       <div css={styles.row}>
-        <span css={styles.label}>Display middle C as:</span>
+        <span css={styles.label}>{t("settings.pitchTypeLabel")}:</span>
         <select
           value={currentPitchType.name}
           onChange={handlePitchTypeChange}
