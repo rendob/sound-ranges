@@ -110,7 +110,7 @@ const LanguageSelector = () => {
   const handleLanguageChange: React.ChangeEventHandler<HTMLSelectElement> = (
     e,
   ) => {
-    i18n.changeLanguage(e.target.value);
+    i18n.changeLanguage(e.target.value as LangCode);
   };
 
   return (

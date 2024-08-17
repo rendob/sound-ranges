@@ -1,11 +1,12 @@
 import i18next from "i18next";
-import translation_en from "./en.json";
-import translation_ja from "./ja.json";
+import translation_en from "./locale/en.json";
+import translation_ja from "./locale/ja.json";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 
 export const langCodes = ["en", "ja"] as const;
 export type LangCode = (typeof langCodes)[number];
+export type Localizable<T> = { [key in LangCode]: T };
 export const i18nResources = {
   en: {
     translation: translation_en,
@@ -13,7 +14,7 @@ export const i18nResources = {
   ja: {
     translation: translation_ja,
   },
-} as const satisfies { [key in LangCode]: unknown };
+} as const satisfies Localizable<{ translation: typeof translation_en }>;
 
 i18next
   .use(initReactI18next)
