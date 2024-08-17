@@ -4,6 +4,7 @@
     "all": "全選択"
   },
   "settings": {
-    "pitchTypeLabel": "中央Cの表示形式"
+    "pitchTypeLabel": "中央Cの表示形式",
+    "languageLabel": "言語"
   }
 }

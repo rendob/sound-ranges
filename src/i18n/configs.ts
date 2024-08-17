@@ -3,6 +3,8 @@ import translation_en from "./en.json";
 import translation_ja from "./ja.json";
 import { initReactI18next } from "react-i18next";
 
+export const langCodes = ["en", "ja"] as const;
+export type LangCode = (typeof langCodes)[number];
 export const i18nResources = {
   en: {
     translation: translation_en,
@@ -10,7 +12,7 @@ export const i18nResources = {
   ja: {
     translation: translation_ja,
   },
-} as const;
+} as const satisfies { [key in LangCode]: unknown };
 
 i18next.use(initReactI18next).init({
   resources: i18nResources,
