@@ -7,6 +7,7 @@ import { InstrumentGroup } from "../../../domain/instrumentGroup";
 import { useInstrumentGroupSelectionStatus } from "../../../infrastructure/zustand/instruments/selector";
 import { instrumentsStyles } from "../style";
 import { asInt } from "../../../domain/int";
+import { useLocalizer } from "../../../i18n/localize";
 
 const styles = {
   root: css(instrumentsStyles.item(asInt(1)), {
@@ -19,6 +20,7 @@ type Props = { instrumentGroup: InstrumentGroup };
 
 export const InstrumentGroupItem = ({ instrumentGroup }: Props) => {
   const selectionStatus = useInstrumentGroupSelectionStatus(instrumentGroup);
+  const { localize } = useLocalizer();
 
   const handleClick = () =>
     dispatch(toggleInstrumentGroupSelection(instrumentGroup));
@@ -27,7 +29,9 @@ export const InstrumentGroupItem = ({ instrumentGroup }: Props) => {
     <div>
       <div onClick={handleClick} css={styles.root}>
         <Checkbox selectionStatus={selectionStatus} />
-        <span css={instrumentsStyles.itemLabel}>{instrumentGroup.name}</span>
+        <span css={instrumentsStyles.itemLabel}>
+          {localize(instrumentGroup.name)}
+        </span>
       </div>
 
       {instrumentGroup.instrumentIds.map((id) => (

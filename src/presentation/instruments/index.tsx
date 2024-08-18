@@ -44,7 +44,7 @@ export const Instruments = () => {
       <div css={styles.instruments}>
         {instrumentGroups.map((instrumentGroup) => (
           <InstrumentGroupItem
-            key={instrumentGroup.name}
+            key={instrumentGroup.name.en}
             instrumentGroup={instrumentGroup}
           />
         ))}
