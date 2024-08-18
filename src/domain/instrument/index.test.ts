@@ -6,60 +6,34 @@ import {
   getDisplayName,
   setSelectionStatus,
 } from ".";
-import { TypeAssertionError } from "../error/appError";
 import { asNoteNumber, assertNoteNumber } from "../noteNumber";
 import { createNoteRange } from "../noteRange";
-import { asFilledString } from "../filledString";
+import { asFilledString, FilledString } from "../filledString";
 import { SelectionStatus } from "./selectionStatus";
 import { asMidiProgramNumber } from "../midiProgramNumber";
+import { LangCode, Localizable } from "../../i18n/configs";
 
 const createTestInstrument = ({
   midiProgramNumber = 1,
-  name = "xxx",
+  name = {
+    en: asFilledString("xxx"),
+    ja: asFilledString("あああ"),
+  },
   min = 0,
   max = 127,
 }: {
   midiProgramNumber?: number;
-  name?: string;
+  name?: Localizable<FilledString>;
   min?: number | null;
   max?: number | null;
 } = {}) =>
   createInstrument(
     asMidiProgramNumber(midiProgramNumber),
-    asFilledString(name),
+    name,
     min !== null && max !== null
       ? createNoteRange(asNoteNumber(min), asNoteNumber(max))
       : null,
   );
-
-describe(createInstrument, () => {
-  it.each([{ name: "violin" }, { name: "piano" }])(
-    "名前が空でない: $name => OK",
-    ({ name }) => {
-      // given
-
-      // when
-      const block = () => {
-        createTestInstrument({ name });
-      };
-
-      // then
-      expect(block).not.toThrow();
-    },
-  );
-
-  it("名前が空 => Error", () => {
-    // given
-
-    // when
-    const block = () => {
-      createTestInstrument({ name: "" });
-    };
-
-    // then
-    expect(block).toThrow(TypeAssertionError);
-  });
-});
 
 describe("initialization", () => {
   it("初期化時は選択状態", () => {
@@ -75,16 +49,41 @@ describe("initialization", () => {
 
 describe(getDisplayName, () => {
   it.each([
-    { midiProgramNumber: 1, name: "Piano", expected: "1. Piano" },
-    { midiProgramNumber: 106, name: "Tuba", expected: "106. Tuba" },
+    {
+      midiProgramNumber: 1,
+      name: { en: "Piano", ja: "ピアノ" },
+      langCode: "en",
+      expected: "1. Piano",
+    },
+    {
+      midiProgramNumber: 1,
+      name: { en: "Piano", ja: "ピアノ" },
+      langCode: "ja",
+      expected: "1. ピアノ",
+    },
+    {
+      midiProgramNumber: 106,
+      name: { en: "Tuba", ja: "チューバ" },
+      langCode: "en",
+      expected: "106. Tuba",
+    },
+    {
+      midiProgramNumber: 106,
+      name: { en: "Tuba", ja: "チューバ" },
+      langCode: "ja",
+      expected: "106. チューバ",
+    },
   ])(
-    "midiProgramNumber: $midiProgramNumber, name: $name => $expected",
-    ({ midiProgramNumber, name, expected }) => {
+    "midiProgramNumber: $midiProgramNumber, name: $name, langCode: $langCode => $expected",
+    ({ midiProgramNumber, name, langCode, expected }) => {
       // given
-      const sut = createTestInstrument({ midiProgramNumber, name });
+      const sut = createTestInstrument({
+        midiProgramNumber,
+        name: name as Localizable<FilledString>,
+      });
 
       // when
-      const result = getDisplayName(sut);
+      const result = getDisplayName(sut, langCode as LangCode);
 
       // then
       expect(result).toBe(expected);

@@ -6,13 +6,16 @@ import { createNoteRange } from "../../domain/noteRange";
 
 const create = (
   midiProgramNumber: number,
-  name: string,
+  nameEn: string,
   rangeStart: number | null,
   rangeEnd: number | null,
 ): Instrument =>
   createInstrument(
     asMidiProgramNumber(midiProgramNumber),
-    asFilledString(name),
+    {
+      en: asFilledString(nameEn),
+      ja: asFilledString("ああ"),
+    },
     rangeStart !== null && rangeEnd !== null
       ? createNoteRange(asNoteNumber(rangeStart), asNoteNumber(rangeEnd))
       : null,

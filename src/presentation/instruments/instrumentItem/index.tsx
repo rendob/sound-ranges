@@ -6,10 +6,12 @@ import { Checkbox } from "../../common/checkbox";
 import { instrumentsStyles } from "../style";
 import { asInt } from "../../../domain/int";
 import { getDisplayName } from "../../../domain/instrument";
+import { useTranslation } from "react-i18next";
 
 type Props = { id: InstrumentId };
 
 export const InstrumentItem = ({ id }: Props) => {
+  const { i18n } = useTranslation();
   const instrument = useInstrument(id);
 
   const handleClick = () => dispatch(toggleInstrumentSelection(id));
@@ -18,7 +20,7 @@ export const InstrumentItem = ({ id }: Props) => {
     <div onClick={handleClick} css={instrumentsStyles.item(asInt(2))}>
       <Checkbox selectionStatus={instrument.selectionStatus} />
       <span css={instrumentsStyles.itemLabel}>
-        {getDisplayName(instrument)}
+        {getDisplayName(instrument, i18n.language)}
       </span>
     </div>
   );

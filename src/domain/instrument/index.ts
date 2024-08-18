@@ -7,12 +7,13 @@ import { TypeAssertionError } from "../error/appError";
 import { SelectionStatus } from "./selectionStatus";
 import { MidiProgramNumber } from "../midiProgramNumber";
 import { exists } from "../../util/exists";
+import { LangCode, Localizable } from "../../i18n/configs";
 
 const typeName = "Instrument";
 type InstrumentType = {
   readonly id: InstrumentId;
   readonly midiProgramNumber: MidiProgramNumber;
-  readonly name: FilledString;
+  readonly name: Localizable<FilledString>;
   readonly range: NoteRange | null;
   readonly selectionStatus: Exclude<
     SelectionStatus,
@@ -25,7 +26,7 @@ export type Instrument = Brand<InstrumentType, typeof typeName>;
 
 export const createInstrument = (
   midiProgramNumber: MidiProgramNumber,
-  name: FilledString,
+  name: Localizable<FilledString>,
   range: NoteRange | null,
 ): Instrument =>
   asInstrument({
@@ -54,8 +55,10 @@ const asInstrument = (v: InstrumentType): Instrument => {
 
 // ***** method *****
 
-export const getDisplayName = (instrument: Instrument): string =>
-  `${instrument.midiProgramNumber}. ${instrument.name}`;
+export const getDisplayName = (
+  instrument: Instrument,
+  langCode: LangCode,
+): string => `${instrument.midiProgramNumber}. ${instrument.name[langCode]}`;
 
 export const canPlay = (
   instrument: Instrument,

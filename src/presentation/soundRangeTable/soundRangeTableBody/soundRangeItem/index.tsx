@@ -9,6 +9,7 @@ import { appDimen } from "../../../style/appDimen";
 import { InstrumentId } from "../../../../domain/instrument/instrumentId";
 import { useIsDisplayed } from "../../../../infrastructure/zustand/shared/selector";
 import { useInstrument } from "../../../../infrastructure/zustand/instruments/selector";
+import { useTranslation } from "react-i18next";
 
 const itemMarginVertical = 4;
 const itemContentHeight =
@@ -47,6 +48,7 @@ const styles = {
 type Props = { instrumentId: InstrumentId };
 
 export const SoundRangeItem = ({ instrumentId }: Props) => {
+  const { i18n } = useTranslation();
   const pitchType = usePitchType();
   const instrument = useInstrument(instrumentId);
   const isDisplayed = useIsDisplayed(instrumentId);
@@ -56,7 +58,7 @@ export const SoundRangeItem = ({ instrumentId }: Props) => {
   const width =
     (hasRange ? getSize(instrument.range) : allNoteNumbers.length) *
     appDimen.keyboardKeyWidth;
-  const label = `${getDisplayName(instrument)} ${getRangeName(instrument.range, pitchType)}`;
+  const label = `${getDisplayName(instrument, i18n.language)} ${getRangeName(instrument.range, pitchType)}`;
 
   return (
     <div css={styles.root(isDisplayed)}>
