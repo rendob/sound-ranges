@@ -14,11 +14,11 @@ type Props = { selectionStatus: SelectionStatus };
 export const Checkbox = ({ selectionStatus }: Props) => {
   const content = (() => {
     switch (selectionStatus) {
-      case "Selected":
+      case SelectionStatus.SELECTED:
         return <SelectedCheckbox />;
-      case "Mixed":
+      case SelectionStatus.MIXED:
         return <MixedCheckbox />;
-      case "Unselected":
+      case SelectionStatus.UNSELECTED:
         return <UnselectedCheckbox />;
     }
   })();
