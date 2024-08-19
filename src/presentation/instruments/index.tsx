@@ -10,6 +10,7 @@ import { instrumentsStyles } from "./style";
 import { asInt } from "../../domain/int";
 import { useShouldShowInstruments } from "../../infrastructure/zustand/uiState/selector";
 import { useTranslation } from "react-i18next";
+import { appDimen } from "../style/appDimen";
 
 const styles = {
   root: (shouldShowInstruments: boolean) =>
@@ -18,6 +19,7 @@ const styles = {
       display: shouldShowInstruments ? "flex" : "none",
       flexDirection: "column",
       height: "100%",
+      maxWidth: `${appDimen.keyboardKeyWidth * 20}px`,
       position: "absolute",
       transform: `translateX(${shouldShowInstruments ? 0 : "-100%"})`,
       transitionBehavior: "allow-discrete",
