@@ -41,6 +41,7 @@ const styles = {
       left: `${x}px`,
       position: "relative",
       textAlign: "center",
+      whiteSpace: "nowrap",
       width,
     }),
 };
