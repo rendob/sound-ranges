@@ -9,6 +9,8 @@ import { Checkbox } from "../common/checkbox";
 import { instrumentsStyles } from "./style";
 import { asInt } from "../../domain/int";
 import { useShouldShowInstruments } from "../../infrastructure/zustand/uiState/selector";
+import { useTranslation } from "react-i18next";
+import { appDimen } from "../style/appDimen";
 
 const styles = {
   root: (shouldShowInstruments: boolean) =>
@@ -17,6 +19,7 @@ const styles = {
       display: shouldShowInstruments ? "flex" : "none",
       flexDirection: "column",
       height: "100%",
+      maxWidth: `${appDimen.keyboardKeyWidth * 20}px`,
       position: "absolute",
       transform: `translateX(${shouldShowInstruments ? 0 : "-100%"})`,
       transitionBehavior: "allow-discrete",
@@ -43,7 +46,7 @@ export const Instruments = () => {
       <div css={styles.instruments}>
         {instrumentGroups.map((instrumentGroup) => (
           <InstrumentGroupItem
-            key={instrumentGroup.name}
+            key={instrumentGroup.name.en}
             instrumentGroup={instrumentGroup}
           />
         ))}
@@ -53,6 +56,7 @@ export const Instruments = () => {
 };
 
 const AllItem = () => {
+  const { t } = useTranslation();
   const selectionStatus = useAllSelectionStatus();
 
   const handleClick = () => dispatch(toggleAllInstrumentsSelection());
@@ -60,7 +64,7 @@ const AllItem = () => {
   return (
     <div onClick={handleClick} css={instrumentsStyles.item(asInt(0))}>
       <Checkbox selectionStatus={selectionStatus} />
-      <span css={instrumentsStyles.itemLabel}>All</span>
+      <span css={instrumentsStyles.itemLabel}>{t("instruments.all")}</span>
     </div>
   );
 };
