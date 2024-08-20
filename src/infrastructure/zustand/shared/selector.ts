@@ -1,27 +1,26 @@
-import { Instrument, canPlayAll } from "../../../domain/instrument";
+import { canPlayAll } from "../../../domain/instrument";
+import { InstrumentId } from "../../../domain/instrument/instrumentId";
+import { SelectionStatus } from "../../../domain/instrument/selectionStatus";
 import { exists } from "../../../util/exists";
 import { useAppStore } from "../appStore";
-import { selectSelectedInstruments } from "../instruments/selector";
+import { selectInstrument } from "../instruments/selector";
 import { InstrumentsState } from "../instruments/state";
 import { selectSelectedNoteRange } from "../keyboard/selector";
 import { KeyboardState } from "../keyboard/state";
 
-const selectDisplayedInstruments = (
-  state: InstrumentsState & KeyboardState,
-): Instrument[] => {
-  const selectedNoteRange = selectSelectedNoteRange(state);
-  const selectedInstruments = selectSelectedInstruments(state);
+const selectIsDisplayed =
+  (id: InstrumentId) =>
+  (state: InstrumentsState & KeyboardState): boolean => {
+    const instrument = selectInstrument(id)(state);
+    const selectedNoteRange = selectSelectedNoteRange(state);
 
-  if (!exists(selectedNoteRange)) {
-    return selectedInstruments;
-  }
-
-  return selectedInstruments.filter((instrument) =>
-    canPlayAll(instrument, selectedNoteRange),
-  );
-};
+    const canPlay = exists(selectedNoteRange)
+      ? canPlayAll(instrument, selectedNoteRange)
+      : true;
+    return canPlay && instrument.selectionStatus === SelectionStatus.SELECTED;
+  };
 
 // ***** selector hooks *****
 
-export const useDisplayedInstruments = () =>
-  useAppStore(selectDisplayedInstruments);
+export const useIsDisplayed = (id: InstrumentId) =>
+  useAppStore(selectIsDisplayed(id));

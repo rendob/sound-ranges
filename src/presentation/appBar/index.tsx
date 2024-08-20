@@ -1,6 +1,4 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { css, jsx } from "@emotion/react";
+import { css } from "@emotion/react";
 import { appColor } from "../style/appColor";
 import { dispatch } from "../../infrastructure/zustand/appStore";
 import { toggleShouldShowInstruments } from "../../infrastructure/zustand/uiState/action";
@@ -8,6 +6,7 @@ import { useShouldShowInstruments } from "../../infrastructure/zustand/uiState/s
 import { Icon } from "../common/icon";
 import { openSettings } from "../../infrastructure/zustand/uiState/action";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const styles = {
   root: css({
@@ -29,11 +28,12 @@ const styles = {
 };
 
 export const AppBar = () => {
+  const { t } = useTranslation();
   return (
     <header css={styles.root}>
       <InstrumentsMenuIcon />
 
-      <span css={styles.title}>MIDI Sound Ranges</span>
+      <span css={styles.title}>{t("title")}</span>
 
       <SettingsIcon />
     </header>

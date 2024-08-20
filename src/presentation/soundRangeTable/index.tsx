@@ -1,6 +1,4 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { css, jsx } from "@emotion/react";
+import { css } from "@emotion/react";
 import { appDimen } from "../style/appDimen";
 import { allNoteNumbers } from "../../domain/noteNumber";
 import { SoundRangeTableHeader } from "./soundRangeTableHeader";

@@ -1,17 +1,24 @@
+import { css } from "@emotion/react";
 import { SelectionStatus } from "../../domain/instrument/selectionStatus";
 import { appColor } from "../style/appColor";
 import { Fragment } from "react";
+
+const styles = {
+  root: css({
+    flexShrink: 0,
+  }),
+};
 
 type Props = { selectionStatus: SelectionStatus };
 
 export const Checkbox = ({ selectionStatus }: Props) => {
   const content = (() => {
     switch (selectionStatus) {
-      case "Selected":
+      case SelectionStatus.SELECTED:
         return <SelectedCheckbox />;
-      case "Mixed":
+      case SelectionStatus.MIXED:
         return <MixedCheckbox />;
-      case "Unselected":
+      case SelectionStatus.UNSELECTED:
         return <UnselectedCheckbox />;
     }
   })();
@@ -23,6 +30,7 @@ export const Checkbox = ({ selectionStatus }: Props) => {
       viewBox="0 0 18 18"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      css={styles.root}
     >
       {content}
     </svg>

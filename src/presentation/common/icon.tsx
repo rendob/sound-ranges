@@ -1,13 +1,13 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { css, jsx } from "@emotion/react";
+import { css } from "@emotion/react";
 import { appColor } from "../style/appColor";
 import React from "react";
+import { appStyle } from "../style/appStyle";
 
 const styles = {
   root: css({
     cursor: "pointer",
     padding: "8px",
+    transition: `background-color ${appStyle.hoverAnimationDuration}`,
     ":hover": {
       backgroundColor: appColor.hover(appColor.background),
     },

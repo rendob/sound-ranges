@@ -3,12 +3,16 @@ import { createInstrumentGroup } from ".";
 import { asFilledString, FilledString } from "../filledString";
 import { TypeAssertionError } from "../error/appError";
 import { asInstrumentId, InstrumentId } from "../instrument/instrumentId";
+import { Localizable } from "../../i18n/configs";
 
 const createTestInstrumentGroup = ({
-  name = asFilledString("xxx"),
+  name = {
+    en: asFilledString("xxx"),
+    ja: asFilledString("あああ"),
+  },
   instrumentIds = [asInstrumentId("1")],
 }: {
-  name?: FilledString;
+  name?: Localizable<FilledString>;
   instrumentIds?: InstrumentId[];
 } = {}) => createInstrumentGroup(name, instrumentIds);
 
