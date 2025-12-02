@@ -1,7 +1,9 @@
 {
   "title": "MIDI 楽器 音域表",
   "language": "日本語",
+  "instrumentsLabel": "楽器",
   "settings": {
+    "label": "設定",
     "languageLabel": "言語"
   }
 }
