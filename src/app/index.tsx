@@ -1,4 +1,4 @@
-import { Button, ButtonVariant } from "../_components/Button";
+import { Button, ButtonVariant } from "@/_components/Button";
 
 export const App: React.FC = () => {
   return (
