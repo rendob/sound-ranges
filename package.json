@@ -11,7 +11,8 @@
     "check": "concurrently -c auto npm:check:*",
     "check:tsc": "tsc -b",
     "check:biome": "biome check",
-    "fix": "biome check --write --unsafe"
+    "fix": "biome check --write --unsafe",
+    "test": "vitest run"
   },
   "dependencies": {
     "react": "^19.2.0",
@@ -27,7 +28,8 @@
     "globals": "^16.5.0",
     "husky": "^9.1.7",
     "typescript": "~5.9.3",
-    "vite": "^7.2.4"
+    "vite": "^7.2.4",
+    "vitest": "^4.0.14"
   },
   "volta": {
     "node": "24.11.1"
