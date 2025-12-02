@@ -1,0 +1,19 @@
+name: Test
+
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v6
+
+      - name: Set up
+        uses: ./.github/actions/setup
+
+      - name: Set up Playwright
+        uses: ./.github/actions/playwright-setup
+
+      - name: Execute test
+        run: npm run test
