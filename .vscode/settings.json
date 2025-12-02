@@ -6,5 +6,12 @@
     "source.organizeImports.biome": "explicit",
     "source.addMissingImports.ts": "explicit",
     "source.removeUnusedImports": "explicit"
-  }
+  },
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "tailwindCSS.experimental.classRegex": [
+    ["tv\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+    ["(?:twMerge|twJoin)\\(([^;]*)[\\);]", "[`'\"`]([^'\"`;]*)[`'\"`]"]
+  ]
 }
