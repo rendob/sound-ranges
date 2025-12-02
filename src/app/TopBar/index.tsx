@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { SettingsButton } from "./SettingsButton";
 
 export const TopBar: React.FC = () => {
   const { t } = useTranslation();
@@ -6,6 +7,8 @@ export const TopBar: React.FC = () => {
   return (
     <header className="flex items-center border-border border-b">
       <span className="flex-1 p-2 font-bold">{t("title")}</span>
+
+      <SettingsButton />
     </header>
   );
 };
