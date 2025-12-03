@@ -1,9 +1,10 @@
 import z from "zod";
-import { type LangCode, localizableSchema } from "@/_lib/i18n/i18n";
+import { localizableSchema } from "@/_lib/i18n/i18n";
+import { localize } from "@/_lib/i18n/localize";
 import { noteRangeSchema } from "../noteRange/model";
 import { SelectionStatus, selectionStatusSchema } from "./selectionStatus";
 
-const midiProgramNumberSchema = z
+export const midiProgramNumberSchema = z
   .int()
   .min(1)
   .max(128)
@@ -22,7 +23,5 @@ export type Instrument = z.infer<typeof instrumentSchema>;
 
 // methods
 
-export const getDisplayName = (
-  instrument: Instrument,
-  langCode: LangCode,
-): string => `${instrument.midiProgramNumber}. ${instrument.name[langCode]}`;
+export const getDisplayName = (instrument: Instrument): string =>
+  `${instrument.midiProgramNumber}. ${localize(instrument.name)}`;

@@ -1,17 +1,12 @@
-import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
-import { createInstruments } from "@/_features/instrument/data";
-import { getDisplayName } from "@/_features/instrument/model";
-
-const instruments = createInstruments();
+import { instrumentGroups } from "@/_features/instrumentGroup/data";
+import { InstrumentsGroupItem } from "./InstrumentsGroupItem";
 
 type Props = {
   isOpen: boolean;
 };
 
 export const InstrumentsList: React.FC<Props> = ({ isOpen }) => {
-  const { i18n } = useTranslation();
-
   return (
     <aside
       className={twMerge(
@@ -20,10 +15,11 @@ export const InstrumentsList: React.FC<Props> = ({ isOpen }) => {
         isOpen ? "translate-x-0" : "-translate-x-full hidden",
       )}
     >
-      {instruments.map((instrument) => (
-        <p key={instrument.midiProgramNumber}>
-          {getDisplayName(instrument, i18n.language)}
-        </p>
+      {instrumentGroups.map((instrumentGroup) => (
+        <InstrumentsGroupItem
+          key={instrumentGroup.name.en}
+          instrumentGroup={instrumentGroup}
+        />
       ))}
     </aside>
   );
