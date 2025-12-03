@@ -20,6 +20,22 @@ const hooks = {
     ),
 };
 
+const actions = {
+  selectKey: (noteNumber: NoteNumber) => {
+    const pianoKey = asExists(
+      store.pianoKeys.find((pianoKey) => pianoKey.noteNumber === noteNumber),
+    );
+    pianoKey.isSelected = true;
+  },
+
+  clearSelection: () => {
+    for (const pianoKey of store.pianoKeys) {
+      pianoKey.isSelected = false;
+    }
+  },
+};
+
 export const pianoKeyStore = {
   ...hooks,
+  ...actions,
 };

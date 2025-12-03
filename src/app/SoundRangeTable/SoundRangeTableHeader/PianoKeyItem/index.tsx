@@ -5,26 +5,55 @@ import {
   isC,
   type NoteNumber,
 } from "@/_features/noteNumber/model";
+import { pianoKeyStore } from "@/_features/pianoKey/store";
 import { pitchTypeStore } from "@/_features/pitchType/store";
 
 type Props = { noteNumber: NoteNumber };
 
 export const PianoKeyItem: React.FC<Props> = ({ noteNumber }) => {
   const pitchType = pitchTypeStore.usePitchType();
+  const pianoKey = pianoKeyStore.usePianoKey(noteNumber);
+
+  const selectKey = () => {
+    pianoKeyStore.selectKey(noteNumber);
+  };
+
+  const handleMouseDown: React.MouseEventHandler = (e) => {
+    if (!e.shiftKey) {
+      pianoKeyStore.clearSelection();
+    }
+    selectKey();
+  };
+
+  const handleMouseEnter: React.MouseEventHandler = (e) => {
+    // left click
+    if (e.buttons === 1) {
+      selectKey();
+    }
+  };
 
   return (
-    <div
+    <button
       className={twMerge(
-        "h-12 w-(--piano-key-width) shrink-0 border-[0.5px] border-piano-border",
+        "h-12 w-(--piano-key-width) shrink-0 cursor-pointer border-[0.5px] border-piano-border",
         "flex items-end justify-center",
-        isAccidental(noteNumber) ? "bg-piano-black" : "bg-piano-white",
+        isAccidental(noteNumber)
+          ? pianoKey.isSelected
+            ? "bg-piano-black-selected"
+            : "bg-piano-black"
+          : pianoKey.isSelected
+            ? "bg-piano-white-selected"
+            : "bg-piano-white",
       )}
+      type="button"
+      onMouseDown={handleMouseDown}
+      onMouseEnter={handleMouseEnter}
     >
       {isC(noteNumber) && (
         <span className="text-[9px] text-piano-label">
           {getNoteNames(noteNumber, pitchType)}
         </span>
       )}
-    </div>
+    </button>
   );
 };
