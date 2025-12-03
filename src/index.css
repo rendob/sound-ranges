@@ -3,7 +3,10 @@
 
 @theme {
   --color-base: #212121;
+  --color-base-hover: color-mix(in srgb, var(--color-base), white);
   --color-base-content: #e0e0e0;
+  --color-primary: #3949ab;
+  --color-primary-content: var(--color-base-content);
   --color-border: #616161;
 }
 

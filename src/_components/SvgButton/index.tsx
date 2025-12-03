@@ -16,7 +16,7 @@ export const SvgButton: React.FC<Props> = ({
   return (
     <button
       className={twMerge(
-        "cursor-pointer p-2 transition-colors hover:bg-white/50",
+        "cursor-pointer p-2 transition-colors hover:bg-base-hover",
         className,
       )}
       type="button"
