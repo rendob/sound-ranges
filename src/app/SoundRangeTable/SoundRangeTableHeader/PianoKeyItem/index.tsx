@@ -7,6 +7,7 @@ import {
 } from "@/_features/noteNumber/model";
 import { pianoKeyStore } from "@/_features/pianoKey/store";
 import { pitchTypeStore } from "@/_features/pitchType/store";
+import { soundPlayer } from "../../../../_components/soundPlayer";
 
 type Props = { noteNumber: NoteNumber };
 
@@ -16,6 +17,7 @@ export const PianoKeyItem: React.FC<Props> = ({ noteNumber }) => {
 
   const selectKey = () => {
     pianoKeyStore.selectKey(noteNumber);
+    soundPlayer.playNote(noteNumber);
   };
 
   const handleMouseDown: React.MouseEventHandler = (e) => {

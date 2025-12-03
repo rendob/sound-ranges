@@ -50,4 +50,14 @@ export const getNoteNames = (
   return pitchNames.map((pitchName) => `${pitchName}${octave}`);
 };
 
+export const getFrequency = (noteNumber: NoteNumber): number => {
+  const middleA = {
+    noteNumber: asNoteNumber(69),
+    frequency: 440,
+  } as const;
+  const exponent = (noteNumber - middleA.noteNumber) / 12;
+  const frequency = middleA.frequency * 2 ** exponent;
+  return frequency;
+};
+
 const getPitchNumber = (noteNumber: NoteNumber): number => noteNumber % 12;
