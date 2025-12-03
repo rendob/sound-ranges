@@ -1,12 +1,16 @@
 import i18n from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
+import z from "zod";
 import translationEn from "./locale/en.json";
 import translationJa from "./locale/ja.json";
 
 export const langCodes = ["en", "ja"] as const;
 export type LangCode = (typeof langCodes)[number];
-type Localizable<T> = { [key in LangCode]: T };
+
+export const localizableSchema = <T extends z.ZodType>(value: T) =>
+  z.record(z.enum(langCodes), value);
+export type Localizable<T> = Record<LangCode, T>;
 
 export const resources = {
   en: {
