@@ -8,6 +8,8 @@
   --color-primary: #3949ab;
   --color-primary-content: var(--color-base-content);
   --color-border: #616161;
+
+  --piano-key-width: 16px;
 }
 
 :root {

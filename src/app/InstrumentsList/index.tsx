@@ -11,7 +11,7 @@ export const InstrumentsList: React.FC<Props> = ({ isOpen }) => {
   return (
     <aside
       className={twMerge(
-        "absolute top-10 flex h-[calc(100vh-40px)] max-w-80 flex-col border-border border-t border-r bg-base",
+        "absolute top-10 flex h-[calc(100vh-40px)] max-w-[calc(var(--piano-key-width)*20)] flex-col border-border border-t border-r bg-base",
         "starting:-translate-x-full transition-[display,translate] transition-discrete",
         isOpen ? "translate-x-0" : "-translate-x-full hidden",
       )}
