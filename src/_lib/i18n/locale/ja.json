@@ -7,6 +7,7 @@
   },
   "settings": {
     "label": "設定",
+    "pitchTypeLabel": "中央Cの表示形式",
     "languageLabel": "言語"
   }
 }

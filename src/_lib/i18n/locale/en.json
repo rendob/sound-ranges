@@ -7,6 +7,7 @@
   },
   "settings": {
     "label": "Settings",
+    "pitchTypeLabel": "Display middle C as",
     "languageLabel": "Language"
   }
 }
