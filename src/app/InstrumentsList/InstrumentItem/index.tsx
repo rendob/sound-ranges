@@ -10,12 +10,16 @@ type Props = { midiProgramNumber: MidiProgramNumber };
 export const InstrumentItem: React.FC<Props> = ({ midiProgramNumber }) => {
   const instrument = instrumentStore.useInstrument(midiProgramNumber);
 
+  const handleClick: React.MouseEventHandler = () => {
+    instrumentStore.toggleSelection(midiProgramNumber);
+  };
+
   return (
     <ListItem
       className="pl-7"
       label={getDisplayName(instrument)}
       selectionStatus={instrument.selectionStatus}
-      onClick={() => {}}
+      onClick={handleClick}
     />
   );
 };
