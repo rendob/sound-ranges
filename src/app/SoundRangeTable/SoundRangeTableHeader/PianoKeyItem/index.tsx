@@ -5,11 +5,13 @@ import {
   isC,
   type NoteNumber,
 } from "@/_features/noteNumber/model";
-import { PitchType } from "@/_features/noteNumber/pitchType";
+import { pitchTypeStore } from "@/_features/pitchType/store";
 
 type Props = { noteNumber: NoteNumber };
 
 export const PianoKeyItem: React.FC<Props> = ({ noteNumber }) => {
+  const pitchType = pitchTypeStore.usePitchType();
+
   return (
     <div
       className={twMerge(
@@ -20,7 +22,7 @@ export const PianoKeyItem: React.FC<Props> = ({ noteNumber }) => {
     >
       {isC(noteNumber) && (
         <span className="text-[9px] text-piano-label">
-          {getNoteNames(noteNumber, PitchType.YAMAHA)}
+          {getNoteNames(noteNumber, pitchType)}
         </span>
       )}
     </div>

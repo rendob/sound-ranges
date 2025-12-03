@@ -1,5 +1,5 @@
 import z from "zod";
-import type { PitchType } from "./pitchType";
+import type { PitchType } from "../pitchType/model";
 
 const MIN_NOTE_NUMBER = 0;
 const MAX_NOTE_NUMBER = 127;
