@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Button, ButtonVariant } from "@/_components/Button";
+import { SoundRangeTable } from "./SoundRangeTable";
 import { TopBar } from "./TopBar";
 
 export const App: React.FC = () => {
@@ -11,11 +11,7 @@ export const App: React.FC = () => {
 
       <TopBar />
 
-      <div className="space-x-2">
-        <Button variant={ButtonVariant.FILLED}>Filled</Button>
-        <Button variant={ButtonVariant.OUTLINED}>Outlined</Button>
-        <Button variant={ButtonVariant.DESTRUCTIVE}>Destructive</Button>
-      </div>
+      <SoundRangeTable />
     </main>
   );
 };

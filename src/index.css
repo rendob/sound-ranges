@@ -9,6 +9,11 @@
   --color-primary-content: var(--color-base-content);
   --color-border: #616161;
 
+  --color-piano-white: #e0e0e0;
+  --color-piano-black: #000000;
+  --color-piano-label: #000000;
+  --color-piano-border: #000000;
+
   --piano-key-width: 16px;
 }
 
