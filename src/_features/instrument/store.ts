@@ -1,7 +1,11 @@
 import { proxy, type Snapshot, useSnapshot } from "valtio";
 import { asExists } from "@/_lib/utils/exists";
 import { createInstruments } from "./data";
-import type { Instrument, MidiProgramNumber } from "./model";
+import {
+  getSelectionStatus,
+  type Instrument,
+  type MidiProgramNumber,
+} from "./model";
 import { SelectionStatus } from "./selectionStatus";
 
 type InstrumentStore = {
@@ -12,15 +16,6 @@ const store = proxy<InstrumentStore>({
   instruments: createInstruments(),
 });
 
-const getters = {
-  getInstrument: (midiProgramNumber: MidiProgramNumber): Instrument =>
-    asExists(
-      store.instruments.find(
-        (instrument) => instrument.midiProgramNumber === midiProgramNumber,
-      ),
-    ),
-};
-
 const hooks = {
   useInstrument: (midiProgramNumber: MidiProgramNumber): Snapshot<Instrument> =>
     asExists(
@@ -29,39 +24,43 @@ const hooks = {
       ),
     ),
 
-  useSelectionStatus: (
+  useGroupSelectionStatus: (
     midiProgramNumbers: MidiProgramNumber[],
   ): Snapshot<SelectionStatus> => {
     const instruments = useSnapshot(store).instruments.filter((instrument) =>
       midiProgramNumbers.includes(instrument.midiProgramNumber),
     );
-
-    if (
-      instruments.every(
-        (instrument) => instrument.selectionStatus === SelectionStatus.SELECTED,
-      )
-    ) {
-      return SelectionStatus.SELECTED;
-    } else if (
-      instruments.every(
-        (instrument) =>
-          instrument.selectionStatus === SelectionStatus.UNSELECTED,
-      )
-    ) {
-      return SelectionStatus.UNSELECTED;
-    } else {
-      return SelectionStatus.MIXED;
-    }
+    return getSelectionStatus(instruments);
   },
 };
 
 const actions = {
   toggleSelection: (midiProgramNumber: MidiProgramNumber) => {
-    const instrument = getters.getInstrument(midiProgramNumber);
+    const instrument = asExists(
+      store.instruments.find(
+        (instrument) => instrument.midiProgramNumber === midiProgramNumber,
+      ),
+    );
+
     if (instrument.selectionStatus === SelectionStatus.SELECTED) {
       instrument.selectionStatus = SelectionStatus.UNSELECTED;
     } else {
       instrument.selectionStatus = SelectionStatus.SELECTED;
+    }
+  },
+
+  toggleGroupSelection: (midiProgramNumbers: MidiProgramNumber[]) => {
+    const instruments = store.instruments.filter((instrument) =>
+      midiProgramNumbers.includes(instrument.midiProgramNumber),
+    );
+    const selectionStatus = getSelectionStatus(instruments);
+    const nextSelectionStatus =
+      selectionStatus === SelectionStatus.SELECTED
+        ? SelectionStatus.UNSELECTED
+        : SelectionStatus.SELECTED;
+
+    for (const instrument of instruments) {
+      instrument.selectionStatus = nextSelectionStatus;
     }
   },
 };

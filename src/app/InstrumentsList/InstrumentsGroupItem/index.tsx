@@ -7,9 +7,13 @@ import { ListItem } from "../ListItem";
 type Props = { instrumentGroup: InstrumentGroup };
 
 export const InstrumentsGroupItem: React.FC<Props> = ({ instrumentGroup }) => {
-  const selectionStatus = instrumentStore.useSelectionStatus(
+  const selectionStatus = instrumentStore.useGroupSelectionStatus(
     instrumentGroup.midiProgramNumbers,
   );
+
+  const handleClick: React.MouseEventHandler = () => {
+    instrumentStore.toggleGroupSelection(instrumentGroup.midiProgramNumbers);
+  };
 
   return (
     <div>
@@ -17,7 +21,7 @@ export const InstrumentsGroupItem: React.FC<Props> = ({ instrumentGroup }) => {
         className="sticky top-0 pl-4"
         label={localize(instrumentGroup.name)}
         selectionStatus={selectionStatus}
-        onClick={() => {}}
+        onClick={handleClick}
       />
 
       {instrumentGroup.midiProgramNumbers.map((midiProgramNumber) => (

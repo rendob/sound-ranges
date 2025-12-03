@@ -25,3 +25,23 @@ export type Instrument = z.infer<typeof instrumentSchema>;
 
 export const getDisplayName = (instrument: Instrument): string =>
   `${instrument.midiProgramNumber}. ${localize(instrument.name)}`;
+
+export const getSelectionStatus = (
+  instruments: Instrument[],
+): SelectionStatus => {
+  if (
+    instruments.every(
+      (instrument) => instrument.selectionStatus === SelectionStatus.SELECTED,
+    )
+  ) {
+    return SelectionStatus.SELECTED;
+  } else if (
+    instruments.every(
+      (instrument) => instrument.selectionStatus === SelectionStatus.UNSELECTED,
+    )
+  ) {
+    return SelectionStatus.UNSELECTED;
+  } else {
+    return SelectionStatus.MIXED;
+  }
+};
