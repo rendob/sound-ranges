@@ -28,6 +28,31 @@ const hooks = {
         (instrument) => instrument.midiProgramNumber === midiProgramNumber,
       ),
     ),
+
+  useSelectionStatus: (
+    midiProgramNumbers: MidiProgramNumber[],
+  ): Snapshot<SelectionStatus> => {
+    const instruments = useSnapshot(store).instruments.filter((instrument) =>
+      midiProgramNumbers.includes(instrument.midiProgramNumber),
+    );
+
+    if (
+      instruments.every(
+        (instrument) => instrument.selectionStatus === SelectionStatus.SELECTED,
+      )
+    ) {
+      return SelectionStatus.SELECTED;
+    } else if (
+      instruments.every(
+        (instrument) =>
+          instrument.selectionStatus === SelectionStatus.UNSELECTED,
+      )
+    ) {
+      return SelectionStatus.UNSELECTED;
+    } else {
+      return SelectionStatus.MIXED;
+    }
+  },
 };
 
 const actions = {
