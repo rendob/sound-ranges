@@ -18,7 +18,7 @@ export const SettingsButton: React.FC = () => {
       </SvgButton>
 
       <dialog
-        className="m-auto mt-1 mr-1 border border-border bg-base p-1 text-base-content opacity-0 transition-[display,opacity] transition-discrete backdrop:bg-transparent open:opacity-100 starting:open:opacity-0"
+        className="m-auto mt-1 mr-1 border border-border bg-base p-1 text-base-content opacity-0 transition-[display,opacity] transition-discrete backdrop:hidden backdrop:bg-transparent open:opacity-100 starting:open:opacity-0"
         ref={dialogRef}
         closedby="any"
       >
