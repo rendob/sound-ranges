@@ -1,7 +1,5 @@
-import {
-  getDisplayName,
-  type MidiProgramNumber,
-} from "@/_features/instrument/model";
+import type { MidiProgramNumber } from "@/_features/instrument/midiProgramNumber";
+import { getDisplayName } from "@/_features/instrument/model";
 import { instrumentStore } from "@/_features/instrument/store";
 import { ListItem } from "../ListItem";
 

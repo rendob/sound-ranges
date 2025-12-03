@@ -1,7 +1,10 @@
 {
   "title": "MIDI Sound Ranges",
   "language": "English",
-  "instrumentsLabel": "Instruments",
+  "instruments": {
+    "label": "Instruments",
+    "all": "All"
+  },
   "settings": {
     "label": "Settings",
     "languageLabel": "Language"

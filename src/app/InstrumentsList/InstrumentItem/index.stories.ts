@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { asMidiProgramNumber } from "@/_features/instrument/model";
+import { asMidiProgramNumber } from "@/_features/instrument/midiProgramNumber";
 import { InstrumentItem } from "./index";
 
 const meta = {

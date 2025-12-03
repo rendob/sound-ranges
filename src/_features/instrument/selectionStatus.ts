@@ -7,3 +7,13 @@ export const selectionStatusSchema = z.enum([
 ]);
 export type SelectionStatus = z.infer<typeof selectionStatusSchema>;
 export const SelectionStatus = selectionStatusSchema.enum;
+
+// methods
+
+export const getNextStatus = (
+  currentStatus: SelectionStatus,
+): Exclude<SelectionStatus, "MIXED"> => {
+  return currentStatus === SelectionStatus.SELECTED
+    ? SelectionStatus.UNSELECTED
+    : SelectionStatus.SELECTED;
+};

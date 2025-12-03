@@ -1,12 +1,9 @@
 import { proxy, type Snapshot, useSnapshot } from "valtio";
 import { asExists } from "@/_lib/utils/exists";
 import { createInstruments } from "./data";
-import {
-  getSelectionStatus,
-  type Instrument,
-  type MidiProgramNumber,
-} from "./model";
-import { SelectionStatus } from "./selectionStatus";
+import type { MidiProgramNumber } from "./midiProgramNumber";
+import { getSelectionStatus, type Instrument } from "./model";
+import { getNextStatus, SelectionStatus } from "./selectionStatus";
 
 type InstrumentStore = {
   instruments: Instrument[];
@@ -32,6 +29,11 @@ const hooks = {
     );
     return getSelectionStatus(instruments);
   },
+
+  useAllSelectionStatus: (): Snapshot<SelectionStatus> => {
+    const instruments = useSnapshot(store).instruments;
+    return getSelectionStatus(instruments);
+  },
 };
 
 const actions = {
@@ -53,13 +55,19 @@ const actions = {
     const instruments = store.instruments.filter((instrument) =>
       midiProgramNumbers.includes(instrument.midiProgramNumber),
     );
-    const selectionStatus = getSelectionStatus(instruments);
-    const nextSelectionStatus =
-      selectionStatus === SelectionStatus.SELECTED
-        ? SelectionStatus.UNSELECTED
-        : SelectionStatus.SELECTED;
+    const currentStatus = getSelectionStatus(instruments);
+    const nextSelectionStatus = getNextStatus(currentStatus);
 
     for (const instrument of instruments) {
+      instrument.selectionStatus = nextSelectionStatus;
+    }
+  },
+
+  toggleAllSelection: () => {
+    const currentStatus = getSelectionStatus(store.instruments);
+    const nextSelectionStatus = getNextStatus(currentStatus);
+
+    for (const instrument of store.instruments) {
       instrument.selectionStatus = nextSelectionStatus;
     }
   },
