@@ -1,5 +1,6 @@
 import { proxy, type Snapshot, useSnapshot } from "valtio";
 import { asExists } from "@/_lib/utils/exists";
+import type { InstrumentGroup } from "../instrumentGroup/model";
 import { createInstruments } from "./data";
 import type { MidiProgramNumber } from "./midiProgramNumber";
 import { getSelectionStatus, type Instrument } from "./model";
@@ -22,10 +23,10 @@ const hooks = {
     ),
 
   useGroupSelectionStatus: (
-    midiProgramNumbers: MidiProgramNumber[],
+    instrumentGroup: InstrumentGroup,
   ): Snapshot<SelectionStatus> => {
     const instruments = useSnapshot(store).instruments.filter((instrument) =>
-      midiProgramNumbers.includes(instrument.midiProgramNumber),
+      instrumentGroup.midiProgramNumbers.includes(instrument.midiProgramNumber),
     );
     return getSelectionStatus(instruments);
   },
@@ -51,9 +52,9 @@ const actions = {
     }
   },
 
-  toggleGroupSelection: (midiProgramNumbers: MidiProgramNumber[]) => {
+  toggleGroupSelection: (instrumentGroup: InstrumentGroup) => {
     const instruments = store.instruments.filter((instrument) =>
-      midiProgramNumbers.includes(instrument.midiProgramNumber),
+      instrumentGroup.midiProgramNumbers.includes(instrument.midiProgramNumber),
     );
     const currentStatus = getSelectionStatus(instruments);
     const nextSelectionStatus = getNextStatus(currentStatus);

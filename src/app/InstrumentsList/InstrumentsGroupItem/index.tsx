@@ -7,12 +7,11 @@ import { ListItem } from "../ListItem";
 type Props = { instrumentGroup: InstrumentGroup };
 
 export const InstrumentsGroupItem: React.FC<Props> = ({ instrumentGroup }) => {
-  const selectionStatus = instrumentStore.useGroupSelectionStatus(
-    instrumentGroup.midiProgramNumbers,
-  );
+  const selectionStatus =
+    instrumentStore.useGroupSelectionStatus(instrumentGroup);
 
   const handleClick: React.MouseEventHandler = () => {
-    instrumentStore.toggleGroupSelection(instrumentGroup.midiProgramNumbers);
+    instrumentStore.toggleGroupSelection(instrumentGroup);
   };
 
   return (
