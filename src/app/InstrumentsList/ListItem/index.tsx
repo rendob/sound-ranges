@@ -27,7 +27,7 @@ export const ListItem: React.FC<Props> = ({
     >
       <Checkbox selectionStatus={selectionStatus} />
 
-      <span>{label}</span>
+      <span className="text-start">{label}</span>
     </button>
   );
 };
