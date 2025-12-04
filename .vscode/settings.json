@@ -7,8 +7,13 @@
     "source.addMissingImports.ts": "explicit",
     "source.removeUnusedImports": "explicit"
   },
+  "explorer.sortOrder": "filesFirst",
+  "workbench.tree.indent": 16,
   "files.associations": {
     "*.css": "tailwindcss"
+  },
+  "workbench.editor.customLabels.patterns": {
+    "**/*": "${dirname}/${filename}.${extname}"
   },
   "tailwindCSS.experimental.classRegex": [
     ["tv\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
