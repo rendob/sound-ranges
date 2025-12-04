@@ -11,10 +11,8 @@ export const AllItem: React.FC = () => {
   };
 
   return (
-    <ListItem
-      label={t("instruments.all")}
-      selectionStatus={allSelectionStatus}
-      onClick={handleAllItemClick}
-    />
+    <ListItem selectionStatus={allSelectionStatus} onClick={handleAllItemClick}>
+      {t("instruments.all")}
+    </ListItem>
   );
 };

@@ -4,15 +4,15 @@ import { Checkbox } from "./Checkbox";
 
 type Props = {
   className?: string;
-  label: string;
   selectionStatus: SelectionStatus;
+  children: React.ReactNode;
   onClick: React.MouseEventHandler;
 };
 
 export const ListItem: React.FC<Props> = ({
   className,
-  label,
   selectionStatus,
+  children,
   onClick,
 }) => {
   return (
@@ -27,7 +27,7 @@ export const ListItem: React.FC<Props> = ({
     >
       <Checkbox selectionStatus={selectionStatus} />
 
-      <span className="text-start">{label}</span>
+      <span className="text-start">{children}</span>
     </button>
   );
 };

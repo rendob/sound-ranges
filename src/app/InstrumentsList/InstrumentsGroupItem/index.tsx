@@ -18,10 +18,11 @@ export const InstrumentsGroupItem: React.FC<Props> = ({ instrumentGroup }) => {
     <div>
       <ListItem
         className="sticky top-0 pl-4"
-        label={localize(instrumentGroup.name)}
         selectionStatus={selectionStatus}
         onClick={handleClick}
-      />
+      >
+        {localize(instrumentGroup.name)}
+      </ListItem>
 
       {instrumentGroup.midiProgramNumbers.map((midiProgramNumber) => (
         <InstrumentItem

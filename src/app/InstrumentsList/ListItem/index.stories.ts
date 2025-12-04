@@ -9,7 +9,7 @@ const meta = {
     layout: "centered",
   },
   args: {
-    label: "Item",
+    children: "Item",
     onClick: fn(),
   },
 } satisfies Meta<typeof ListItem>;
