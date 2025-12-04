@@ -1,14 +1,23 @@
+import { allMidiProgramNumbers } from "@/_features/instrument/midiProgramNumber";
 import { allNoteNumbers } from "@/_features/noteNumber/model";
 import { createTableBackground } from "./createTableBackground";
+import { SoundRangeItem } from "./SoundRangeItem";
 
 export const SoundRangeTableBody: React.FC = () => {
   return (
     <div
-      className="h-full"
+      className="h-full overflow-y-scroll"
       style={{
         width: `calc(var(--piano-key-width)*${allNoteNumbers.length})`,
         background: createTableBackground(),
       }}
-    ></div>
+    >
+      {allMidiProgramNumbers.map((midiProgramNumber) => (
+        <SoundRangeItem
+          key={midiProgramNumber}
+          midiProgramNumber={midiProgramNumber}
+        />
+      ))}
+    </div>
   );
 };
