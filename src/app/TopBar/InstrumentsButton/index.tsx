@@ -5,7 +5,7 @@ import { InstrumentsList } from "@/app/InstrumentsList";
 
 export const InstrumentsButton: React.FC = () => {
   const { t } = useTranslation();
-  const [isInstrumentsListOpen, setIsInstrumentsListOpen] = useState(false);
+  const [isInstrumentsListOpen, setIsInstrumentsListOpen] = useState(true);
 
   const handleClick: React.MouseEventHandler = () => {
     setIsInstrumentsListOpen((prev) => !prev);
