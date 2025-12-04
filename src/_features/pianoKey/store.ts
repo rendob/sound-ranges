@@ -1,7 +1,6 @@
 import { proxy, type Snapshot, useSnapshot } from "valtio";
 import { asExists } from "@/_lib/utils/exists";
 import type { NoteNumber } from "../noteNumber/model";
-import { asNoteRange, type NoteRange } from "../noteRange/model";
 import { createAllPianoKeys, type PianoKey } from "./model";
 
 type PianoKeyStore = {
@@ -12,24 +11,13 @@ const store = proxy<PianoKeyStore>({
   pianoKeys: createAllPianoKeys(),
 });
 
+const getters = {
+  getPianoKeys: (): PianoKey[] => store.pianoKeys,
+};
+
 const hooks = {
   usePianoKey: (noteNumber: NoteNumber): Snapshot<PianoKey> =>
-    asExists(
-      useSnapshot(store).pianoKeys.find(
-        (pianoKey) => pianoKey.noteNumber === noteNumber,
-      ),
-    ),
-
-  useSelectedRange: (): Snapshot<NoteRange | null> => {
-    const pianoKeys = useSnapshot(store).pianoKeys;
-    const start = pianoKeys.find((pianoKey) => pianoKey.isSelected);
-    const end = pianoKeys.findLast((pianoKey) => pianoKey.isSelected);
-
-    return asNoteRange({
-      start: start?.noteNumber,
-      end: end?.noteNumber,
-    });
-  },
+    useSnapshot(store).pianoKeys[noteNumber],
 };
 
 const actions = {
@@ -48,6 +36,7 @@ const actions = {
 };
 
 export const pianoKeyStore = {
+  ...getters,
   ...hooks,
   ...actions,
 };

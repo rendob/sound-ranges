@@ -1,6 +1,8 @@
+import { derive } from "derive-valtio";
 import { proxy, type Snapshot, useSnapshot } from "valtio";
 import { asExists, exists } from "@/_lib/utils/exists";
 import type { InstrumentGroup } from "../instrumentGroup/model";
+import { getSelectedRange } from "../pianoKey/model";
 import { pianoKeyStore } from "../pianoKey/store";
 import { createInstruments } from "./data";
 import type { MidiProgramNumber } from "./midiProgramNumber";
@@ -15,22 +17,27 @@ const store = proxy<InstrumentStore>({
   instruments: createInstruments(),
 });
 
+const derived = derive({
+  isShowns: (get) => {
+    const instruments = get(store).instruments;
+    const pianoKeys = get(pianoKeyStore.getPianoKeys());
+
+    const selectedRange = getSelectedRange(pianoKeys);
+
+    return instruments.map(
+      (instrument) =>
+        instrument.selectionStatus === SelectionStatus.SELECTED &&
+        (!exists(selectedRange) || canPlay(instrument, selectedRange)),
+    );
+  },
+});
+
 const hooks = {
   useInstrument: (midiProgramNumber: MidiProgramNumber): Snapshot<Instrument> =>
-    asExists(
-      useSnapshot(store).instruments.find(
-        (instrument) => instrument.midiProgramNumber === midiProgramNumber,
-      ),
-    ),
+    useSnapshot(store).instruments[midiProgramNumber - 1],
 
   useIsShown: (midiProgramNumber: MidiProgramNumber): boolean => {
-    const instrument = hooks.useInstrument(midiProgramNumber);
-    const selectedRange = pianoKeyStore.useSelectedRange();
-
-    return (
-      instrument.selectionStatus === SelectionStatus.SELECTED &&
-      (!exists(selectedRange) || canPlay(instrument, selectedRange))
-    );
+    return useSnapshot(derived).isShowns[midiProgramNumber - 1];
   },
 
   useGroupSelectionStatus: (
