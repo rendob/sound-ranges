@@ -9,17 +9,16 @@ import type { MidiProgramNumber } from "./midiProgramNumber";
 import { canPlay, getSelectionStatus, type Instrument } from "./model";
 import { getNextStatus, SelectionStatus } from "./selectionStatus";
 
-type InstrumentStore = {
+type InstrumentState = {
   instruments: Instrument[];
 };
-
-const store = proxy<InstrumentStore>({
+const state = proxy<InstrumentState>({
   instruments: createInstruments(),
 });
 
 const derived = derive({
   isShowns: (get) => {
-    const instruments = get(store).instruments;
+    const instruments = get(state).instruments;
     const pianoKeys = get(pianoKeyStore.getPianoKeys());
 
     const selectedRange = getSelectedRange(pianoKeys);
@@ -34,7 +33,7 @@ const derived = derive({
 
 const hooks = {
   useInstrument: (midiProgramNumber: MidiProgramNumber): Snapshot<Instrument> =>
-    useSnapshot(store).instruments[midiProgramNumber - 1],
+    useSnapshot(state).instruments[midiProgramNumber - 1],
 
   useIsShown: (midiProgramNumber: MidiProgramNumber): boolean => {
     return useSnapshot(derived).isShowns[midiProgramNumber - 1];
@@ -43,14 +42,14 @@ const hooks = {
   useGroupSelectionStatus: (
     instrumentGroup: InstrumentGroup,
   ): Snapshot<SelectionStatus> => {
-    const instruments = useSnapshot(store).instruments.filter((instrument) =>
+    const instruments = useSnapshot(state).instruments.filter((instrument) =>
       instrumentGroup.midiProgramNumbers.includes(instrument.midiProgramNumber),
     );
     return getSelectionStatus(instruments);
   },
 
   useAllSelectionStatus: (): Snapshot<SelectionStatus> => {
-    const instruments = useSnapshot(store).instruments;
+    const instruments = useSnapshot(state).instruments;
     return getSelectionStatus(instruments);
   },
 };
@@ -58,7 +57,7 @@ const hooks = {
 const actions = {
   toggleSelection: (midiProgramNumber: MidiProgramNumber) => {
     const instrument = asExists(
-      store.instruments.find(
+      state.instruments.find(
         (instrument) => instrument.midiProgramNumber === midiProgramNumber,
       ),
     );
@@ -71,7 +70,7 @@ const actions = {
   },
 
   toggleGroupSelection: (instrumentGroup: InstrumentGroup) => {
-    const instruments = store.instruments.filter((instrument) =>
+    const instruments = state.instruments.filter((instrument) =>
       instrumentGroup.midiProgramNumbers.includes(instrument.midiProgramNumber),
     );
     const currentStatus = getSelectionStatus(instruments);
@@ -83,10 +82,10 @@ const actions = {
   },
 
   toggleAllSelection: () => {
-    const currentStatus = getSelectionStatus(store.instruments);
+    const currentStatus = getSelectionStatus(state.instruments);
     const nextSelectionStatus = getNextStatus(currentStatus);
 
-    for (const instrument of store.instruments) {
+    for (const instrument of state.instruments) {
       instrument.selectionStatus = nextSelectionStatus;
     }
   },

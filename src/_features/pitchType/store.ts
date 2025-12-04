@@ -1,21 +1,20 @@
 import { proxy, type Snapshot, useSnapshot } from "valtio";
 import { PitchType } from "./model";
 
-type PitchTypeStore = {
+type PitchTypeState = {
   pitchType: PitchType;
 };
-
-const store = proxy<PitchTypeStore>({
+const state = proxy<PitchTypeState>({
   pitchType: PitchType.YAMAHA,
 });
 
 const hooks = {
-  usePitchType: (): Snapshot<PitchType> => useSnapshot(store).pitchType,
+  usePitchType: (): Snapshot<PitchType> => useSnapshot(state).pitchType,
 };
 
 const actions = {
   changePitchType: (newPitchType: PitchType) => {
-    store.pitchType = newPitchType;
+    state.pitchType = newPitchType;
   },
 };
 
