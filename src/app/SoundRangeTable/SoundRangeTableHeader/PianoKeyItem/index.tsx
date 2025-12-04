@@ -34,6 +34,19 @@ export const PianoKeyItem: React.FC<Props> = ({ noteNumber }) => {
     }
   };
 
+  const handleKeyDown: React.KeyboardEventHandler = (e) => {
+    if (e.code === "Enter" || e.code === "Space") {
+      if (!e.shiftKey) {
+        pianoKeyStore.clearSelection();
+      }
+      selectKey();
+    }
+  };
+
+  const handleKeyUp: React.KeyboardEventHandler = () => {
+    soundPlayer.stopPlaying();
+  };
+
   return (
     <button
       className={twMerge(
@@ -50,6 +63,8 @@ export const PianoKeyItem: React.FC<Props> = ({ noteNumber }) => {
       type="button"
       onMouseDown={handleMouseDown}
       onMouseEnter={handleMouseEnter}
+      onKeyDown={handleKeyDown}
+      onKeyUp={handleKeyUp}
     >
       {isC(noteNumber) && (
         <span className="text-[9px] text-piano-label">
