@@ -1,9 +1,10 @@
 import { proxy, type Snapshot, useSnapshot } from "valtio";
-import { asExists } from "@/_lib/utils/exists";
+import { asExists, exists } from "@/_lib/utils/exists";
 import type { InstrumentGroup } from "../instrumentGroup/model";
+import { pianoKeyStore } from "../pianoKey/store";
 import { createInstruments } from "./data";
 import type { MidiProgramNumber } from "./midiProgramNumber";
-import { getSelectionStatus, type Instrument } from "./model";
+import { canPlay, getSelectionStatus, type Instrument } from "./model";
 import { getNextStatus, SelectionStatus } from "./selectionStatus";
 
 type InstrumentStore = {
@@ -21,6 +22,16 @@ const hooks = {
         (instrument) => instrument.midiProgramNumber === midiProgramNumber,
       ),
     ),
+
+  useIsShown: (midiProgramNumber: MidiProgramNumber): boolean => {
+    const instrument = hooks.useInstrument(midiProgramNumber);
+    const selectedRange = pianoKeyStore.useSelectedRange();
+
+    return (
+      instrument.selectionStatus === SelectionStatus.SELECTED &&
+      (!exists(selectedRange) || canPlay(instrument, selectedRange))
+    );
+  },
 
   useGroupSelectionStatus: (
     instrumentGroup: InstrumentGroup,

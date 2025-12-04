@@ -1,7 +1,6 @@
 import type { Localizable } from "@/_lib/i18n/i18n";
-import { exists } from "@/_lib/utils/exists";
 import type { WithKey } from "@/_lib/utils/withKey";
-import type { NoteRange } from "../noteRange/model";
+import { asNoteRange } from "../noteRange/model";
 import { type Instrument, instrumentSchema } from "./model";
 import { SelectionStatus } from "./selectionStatus";
 
@@ -203,12 +202,9 @@ const create = (
       en: nameEn,
       ja: nameJa,
     } satisfies Localizable<string>,
-    range:
-      exists(rangeStart) && exists(rangeEnd)
-        ? ({
-            start: rangeStart,
-            end: rangeEnd,
-          } satisfies WithKey<NoteRange>)
-        : null,
+    range: asNoteRange({
+      start: rangeStart,
+      end: rangeEnd,
+    }),
     selectionStatus: SelectionStatus.SELECTED,
   } satisfies WithKey<Instrument>);

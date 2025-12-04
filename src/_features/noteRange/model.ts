@@ -1,5 +1,6 @@
 import z from "zod";
 import { exists } from "@/_lib/utils/exists";
+import type { WithKey } from "@/_lib/utils/withKey";
 import { getNoteNames, noteNumberSchema } from "../noteNumber/model";
 import type { PitchType } from "../pitchType/model";
 
@@ -8,10 +9,21 @@ export const noteRangeSchema = z
     start: noteNumberSchema,
     end: noteNumberSchema,
   })
-  .refine(({ start, end }) => start < end, {
-    error: "end value should be greater than start value.",
+  .refine(({ start, end }) => start <= end, {
+    error: "start value cannot be greater than end value.",
   });
 export type NoteRange = z.infer<typeof noteRangeSchema>;
+
+export const asNoteRange = (
+  value: WithKey<NoteRange, number | null | undefined>,
+): NoteRange | null => {
+  const parseResult = noteRangeSchema.safeParse(value);
+  if (parseResult.success) {
+    return parseResult.data;
+  } else {
+    return null;
+  }
+};
 
 // methods
 

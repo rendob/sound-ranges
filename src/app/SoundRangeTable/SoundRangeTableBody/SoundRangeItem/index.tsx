@@ -2,7 +2,6 @@ import type { JSX } from "react";
 import { twMerge } from "tailwind-merge";
 import type { MidiProgramNumber } from "@/_features/instrument/midiProgramNumber";
 import { getDisplayName } from "@/_features/instrument/model";
-import { SelectionStatus } from "@/_features/instrument/selectionStatus";
 import { instrumentStore } from "@/_features/instrument/store";
 import { getLength, getRangeName } from "@/_features/noteRange/model";
 import { pitchTypeStore } from "@/_features/pitchType/store";
@@ -12,9 +11,8 @@ type Props = { midiProgramNumber: MidiProgramNumber };
 
 export const SoundRangeItem: React.FC<Props> = ({ midiProgramNumber }) => {
   const instrument = instrumentStore.useInstrument(midiProgramNumber);
+  const isShown = instrumentStore.useIsShown(midiProgramNumber);
   const pitchType = pitchTypeStore.usePitchType();
-
-  const isShown = instrument.selectionStatus === SelectionStatus.SELECTED;
 
   return (
     <div
