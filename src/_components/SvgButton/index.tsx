@@ -1,17 +1,14 @@
 import { twMerge } from "tailwind-merge";
 
-type Props = {
+type Props = React.ComponentProps<"button"> & {
   label: string;
-  onClick: React.MouseEventHandler;
-  className?: string;
-  children: React.ReactNode;
 };
 
 export const SvgButton: React.FC<Props> = ({
   label,
-  onClick,
   className,
   children,
+  ...rest
 }) => {
   return (
     <button
@@ -20,7 +17,7 @@ export const SvgButton: React.FC<Props> = ({
         className,
       )}
       type="button"
-      onClick={onClick}
+      {...rest}
     >
       <svg
         className="fill-base-content"
