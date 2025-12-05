@@ -25,6 +25,10 @@ export const SoundRangeTableBody: React.FC = () => {
           midiProgramNumber={midiProgramNumber}
         />
       ))}
+
+      <span className="sticky top-[100vh] self-end p-1 text-xs">
+        © 2024- RendoB
+      </span>
     </button>
   );
 };
