@@ -1,0 +1,13 @@
+{
+  "title": "MIDI 楽器 音域表",
+  "language": "日本語",
+  "instruments": {
+    "label": "楽器",
+    "all": "全選択"
+  },
+  "settings": {
+    "label": "設定",
+    "pitchTypeLabel": "中央Cの表示形式",
+    "languageLabel": "言語"
+  }
+}

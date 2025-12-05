@@ -1,16 +1,18 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./presentation/App.tsx";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { asExists } from "./_lib/utils/exists";
+import { App } from "./app";
+import "./_lib/i18n/i18n";
 import "./index.css";
-import { soundPlayer } from "./presentation/common/soundPlayer.ts";
-import "./i18n/configs.ts";
+import { soundPlayer } from "./_components/soundPlayer";
 
 document.addEventListener("mouseup", () => {
   soundPlayer.stopPlaying();
 });
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+const root = asExists(document.getElementById("root"));
+createRoot(root).render(
+  <StrictMode>
     <App />
-  </React.StrictMode>,
+  </StrictMode>,
 );

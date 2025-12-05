@@ -1,19 +1,22 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "biomejs.biome",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
+    "source.fixAll.biome": "explicit",
+    "source.organizeImports.biome": "explicit",
     "source.addMissingImports.ts": "explicit",
-    "source.removeUnusedImports": "explicit",
+    "source.removeUnusedImports": "explicit"
+  },
+  "explorer.sortOrder": "filesFirst",
+  "workbench.tree.indent": 16,
+  "files.associations": {
+    "*.css": "tailwindcss"
   },
   "workbench.editor.customLabels.patterns": {
-    "**/src/**/index.{ts,tsx}": "${dirname}.${extname}",
-    "**/src/**/index.test.{ts,tsx}": "${dirname}.test.${extname}"
+    "**/*": "${dirname}/${filename}.${extname}"
   },
-  "color-highlight": {
-    "markerType": "dot-before",
-  },
-  "[shellscript]": {
-    "editor.defaultFormatter": "foxundermoon.shell-format",
-    "editor.formatOnSave": true
-  }
+  "tailwindCSS.experimental.classRegex": [
+    ["tv\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+    ["(?:twMerge|twJoin)\\(([^;]*)[\\);]", "[`'\"`]([^'\"`;]*)[`'\"`]"]
+  ]
 }

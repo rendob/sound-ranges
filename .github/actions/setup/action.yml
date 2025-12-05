@@ -1,0 +1,25 @@
+name: Setup
+description: Set up Volta and node_modules
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Volta
+      uses: volta-cli/action@v4
+
+    - name: Get Node version
+      id: node-version
+      run: echo "node-version=$(node --version)" >> ${GITHUB_OUTPUT}
+      shell: bash
+
+    - name: Cache node_modules
+      id: npm-cache
+      uses: actions/cache@v4
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node-${{ steps.node-version.outputs.node-version }}-${{ hashFiles('**/package-lock.json') }}
+
+    - name: Install dependencies
+      if: steps.npm-cache.outputs.cache-hit != 'true'
+      run: npm ci
+      shell: bash

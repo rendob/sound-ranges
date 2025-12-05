@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "biomejs.biome",
+    "bradlc.vscode-tailwindcss",
+    "scaffdog.scaffdog-vscode",
+    "vitest.explorer"
+  ]
+}

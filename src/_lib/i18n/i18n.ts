@@ -1,0 +1,40 @@
+import i18n from "i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
+import { initReactI18next } from "react-i18next";
+import z from "zod";
+import translationEn from "./locale/en.json";
+import translationJa from "./locale/ja.json";
+
+export const langCodes = ["en", "ja"] as const;
+export type LangCode = (typeof langCodes)[number];
+
+export const localizableSchema = <T extends z.ZodType>(value: T) =>
+  z.record(z.enum(langCodes), value);
+export type Localizable<T> = Record<LangCode, T>;
+
+export const resources = {
+  en: {
+    translation: translationEn,
+  },
+  ja: {
+    translation: translationJa,
+  },
+} as const satisfies Localizable<{ translation: typeof translationEn }>;
+
+i18n
+  .use(initReactI18next)
+  .use(LanguageDetector)
+  .init({
+    fallbackLng: langCodes[0],
+    supportedLngs: langCodes,
+    resources,
+    interpolation: {
+      escapeValue: false,
+    },
+  });
+
+i18n.on("languageChanged", (language) => {
+  document.documentElement.lang = language;
+});
+
+export default i18n;
