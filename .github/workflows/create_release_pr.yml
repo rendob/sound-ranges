@@ -1,0 +1,39 @@
+name: Create Release PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      type:
+        type: choice
+        description: 更新するバージョン
+        required: true
+        default: minor
+        options:
+          - major
+          - minor
+          - patch
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  create_release_pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v6
+
+      - name: Update version
+        run: |
+          git config --local user.name "actions-user"
+          git config --local user.email "action@github.com"
+          npm version ${{ github.event.inputs.type }}
+          git push --follow-tags
+
+      - name: Create PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION_TAG=$(git tag --sort=-creatordate | head -n 1)
+          gh pr create --base main --head ${{ github.ref_name }} --title "リリース $VERSION_TAG" --body ""
