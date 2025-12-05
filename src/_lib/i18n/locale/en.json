@@ -1,0 +1,13 @@
+{
+  "title": "MIDI Sound Ranges",
+  "language": "English",
+  "instruments": {
+    "label": "Instruments",
+    "all": "All"
+  },
+  "settings": {
+    "label": "Settings",
+    "pitchTypeLabel": "Display middle C as",
+    "languageLabel": "Language"
+  }
+}

@@ -1,17 +1,32 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Music&display=swap&text=♯♭");
+@import "tailwindcss";
 
-  color-scheme: dark;
-  background-color: #212121;
+@theme {
+  --color-base: #212121;
+  --color-base-hover: color-mix(in srgb, var(--color-base), white);
+  --color-base-content: #e0e0e0;
+  --color-primary: #3949ab;
+  --color-primary-content: var(--color-base-content);
+  --color-border: #616161;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --color-piano-white: #e0e0e0;
+  --color-piano-white-selected: #7097ca;
+  --color-piano-black: #000000;
+  --color-piano-black-selected: #37557c;
+  --color-piano-label: #000000;
+  --color-piano-border: #000000;
+
+  --font-music: "Noto Music", sans-serif;
+
+  --piano-key-width: 16px;
 }
 
-body {
-  margin: 0;
+:root {
+  font-family: "Noto Sans JP", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  color-scheme: dark;
+  background-color: var(--color-base);
+  color: var(--color-base-content);
 }
