@@ -20,7 +20,7 @@ export const SoundRangeItem: React.FC<Props> = ({ midiProgramNumber }) => {
         "relative shrink-0 items-center justify-center gap-2 whitespace-nowrap",
         isShown ? "mb-2 flex h-8 opacity-100" : "mb-0 hidden h-0 opacity-0",
         "starting:h-0 starting:opacity-0 transition-all transition-discrete",
-        exists(instrument.range) && "bg-primary",
+        exists(instrument.range) ? "bg-primary" : "w-full",
       )}
       style={
         exists(instrument.range)
