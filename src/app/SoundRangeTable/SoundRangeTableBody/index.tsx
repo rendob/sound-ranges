@@ -11,7 +11,7 @@ export const SoundRangeTableBody: React.FC = () => {
 
   return (
     <button
-      className="h-full overflow-y-scroll pt-1"
+      className="flex h-full flex-col overflow-y-scroll pt-1"
       style={{
         width: `calc(var(--piano-key-width)*${allNoteNumbers.length})`,
         background: createTableBackground(),
