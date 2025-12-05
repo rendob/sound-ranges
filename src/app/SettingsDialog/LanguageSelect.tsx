@@ -10,7 +10,7 @@ export const LanguageSelect: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-between gap-2 p-1">
+    <div className="flex items-center justify-between gap-2">
       <span>{t("settings.languageLabel")}:</span>
 
       <Select value={i18n.language} onChange={handleChange}>

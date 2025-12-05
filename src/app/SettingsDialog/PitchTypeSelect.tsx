@@ -17,7 +17,7 @@ export const PitchTypeSelect: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-between gap-2 p-1">
+    <div className="flex items-center justify-between gap-2">
       <span>{t("settings.pitchTypeLabel")}:</span>
 
       <Select value={pitchType.name} onChange={handleChange}>
