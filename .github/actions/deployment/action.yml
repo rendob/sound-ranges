@@ -1,0 +1,33 @@
+name: Deployment
+description: Deploy to preview or production environment
+
+inputs:
+  environment:
+    description: "Environment to deploy to. (preview | production)"
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Set environment flag
+      shell: bash
+      run: |
+        if [ ${{ inputs.environment }} = "production" ]; then
+          echo "ENV_FLAG=--prod" >> $GITHUB_ENV
+        fi
+
+    - name: Install Vercel CLI
+      shell: bash
+      run: npm i -g vercel
+
+    - name: Pull environment information
+      shell: bash
+      run: vercel pull --yes --environment=${{ inputs.environment }} --token=$VERCEL_TOKEN
+
+    - name: Build
+      shell: bash
+      run: vercel build $ENV_FLAG --token=$VERCEL_TOKEN
+
+    - name: Deploy
+      shell: bash
+      run: vercel deploy --prebuilt $ENV_FLAG --token=$VERCEL_TOKEN

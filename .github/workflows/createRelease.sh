@@ -3,7 +3,7 @@
 set -eu
 
 echo "***** Getting version... *****"
-VERSION_TAG=$(git tag --sort=-creatordate | head -n 1)
+VERSION_TAG=$(git describe --tags --abbrev=0)
 
 echo "***** Creating release... *****"
 LATEST_RELEASE_TAG=$(gh release view --json name --jq ".name" || :) # ignore error
