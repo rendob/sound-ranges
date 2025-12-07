@@ -30,4 +30,30 @@ runs:
 
     - name: Deploy
       shell: bash
-      run: vercel deploy --prebuilt $ENV_FLAG --token=$VERCEL_TOKEN
+      run: vercel deploy --prebuilt $ENV_FLAG --token=$VERCEL_TOKEN > deployment_url.txt
+    
+    - name: Create GitHub Deployment
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      run: |
+        ENVIRONMENT=${{ inputs.environment }}
+        DEPLOYMENT_ID=$(gh api \
+          --method POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          repos/${{ github.repository }}/deployments \
+          -F ref=${{ github.sha }} \
+          -F environment=${ENVIRONMENT^} \
+          -F auto_merge=false \
+          -F required_contexts[]=check \
+          -F required_contexts[]=test \
+          -q ".id")
+        gh api \
+          --method POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          /repos/${{ github.repository }}/deployments/$DEPLOYMENT_ID/statuses \
+          -F state=success \
+          -F environment_url=$(cat deployment_url.txt) \
+          -F log_url=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
