@@ -4,8 +4,8 @@ description: Set up Volta and node_modules
 runs:
   using: composite
   steps:
-    - name: Set up Volta
-      uses: volta-cli/action@v4
+    - name: Set up mise
+      uses: jdx/mise-action@v3
 
     - name: Get Node version
       id: node-version
