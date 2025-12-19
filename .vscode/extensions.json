@@ -2,6 +2,7 @@
   "recommendations": [
     "biomejs.biome",
     "bradlc.vscode-tailwindcss",
+    "hverlin.mise-vscode",
     "scaffdog.scaffdog-vscode",
     "vitest.explorer"
   ]
