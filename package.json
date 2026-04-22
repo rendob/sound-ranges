@@ -52,7 +52,7 @@
     "scaffdog": "^4.1.0",
     "storybook": "^10.1.10",
     "typescript": "~5.9.3",
-    "vite": "^7.2.4",
+    "vite": "^7.3.2",
     "vitest": "^4.0.14"
   }
 }
